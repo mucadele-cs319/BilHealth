@@ -43,3 +43,11 @@
 - [Bilkent International Center - Health Care](https://w3.bilkent.edu.tr/bilkent/international-center/health-care/)
 - [CS 319 Homepage](http://www.cs.bilkent.edu.tr/~eraytuzun/teaching/cs319/)
 - [CS 319 Project Description](https://docs.google.com/document/d/1puvB-hY725Av7boHbbAH3WhnFuxw43weXf--gsyHZLE)
+
+## Git Workflow
+
+We use a simple and robust workflow where the `master` branch **only receives commits through GitHub pull requests**.
+Any new commits must first be made to a new branch based on `master`, such as `readme-gitflow`, and once the feature is ready, they can be merged through pull requests on GitHub.
+Preferably, the pull requests should be **reviewed and approved** through the GitHub UI before being merged into `master`. Each distinct feature should get its own branch and have its own pull request.
+
+See the relevant page on [Microsoft Docs](https://docs.microsoft.com/en-us/azure/devops/repos/git/git-branching-guidance?view=azure-devops#keep-your-branch-strategy-simple) for more information about this workflow.
