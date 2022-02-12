@@ -32,9 +32,10 @@
 - **C# (ASP.NET Core)** as the back-end API platform language
 - **PostgreSQL** as the database solution
 - **TypeScript (ReactJS)** as the front-end SPA client language
-- **SASS** or **Tailwind** for front-end styling
-- **Docker** may be used if it makes development/deployment easier
-- Hosting could be a **VPS** or a cloud service such as **Azure**.
+- **Tailwind CSS** for front-end styling
+- **Docker (docker-compose)** may be used to make development/deployment/testing easier
+- Hosting could be a **VPS** or a cloud service such as **Azure**
+- If testing is viable, **Moq** or **Playwright** may be used for unit tests and integration tests respectively
 
 ## Useful Links
 
