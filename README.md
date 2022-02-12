@@ -16,17 +16,16 @@
 
 ### Features
 
-- Appointments & emergency appointments
-- Post-appointment follow-up with patients
-- Patient & doctor profiles with past data
-- Basic calculations (BMI, etc.)
-- Restricted panel for health center employees
-- Online test results (Blood, urine, etc.)
-- Pharmacies <!-- Explain -->
-- Psychology Center <!-- Explain -->
-- Convert patient data to inclusive report (PDF/HTML)
-- First-aid course information/appointment
-- List of nearby hospitals (with a map?)
+- Open a case with the ability to specify your concern and proceed to schedule appointments
+- Post-appointment follow-up with patients through the opened case
+- Send email notifications to patients regarding updates to their cases
+- Services include those given by the psychology center, where applicable
+- User profiles for patients (past cases, physical measurements, etc.) and doctors (specialization, etc.)
+- Specialized dashboards for patients and health center employees where cases can be opened or browsed.
+- Get medical test results online (Blood, urine, etc.)
+- An announcements page for any news such as seminars or first-aid courses
+- Convert individual or campus-wide patient data to inclusive report (HTML format, but PDF compatible)
+- Do basic calculations such as BMI measurements
 
 ### Tech Stack
 
