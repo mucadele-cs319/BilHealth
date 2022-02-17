@@ -23,6 +23,7 @@
 - User profiles for patients (past cases, physical measurements, etc.) and doctors (specialization, etc.)
 - Specialized dashboards for patients and health center employees where cases can be opened or browsed.
 - Get medical test results online (Blood, urine, etc.)
+- Prescriptions are added to cases, and [printable documents](https://developer.mozilla.org/en-US/docs/Web/Guide/Printing#print_an_external_page_without_opening_it) are generated for pharmacies
 - An announcements page for any news such as seminars or first-aid courses
 - Convert individual or campus-wide patient data to inclusive report (HTML format, but PDF compatible)
 - Do basic calculations such as BMI measurements
