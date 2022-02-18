@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Utility;
+using BilHealth.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/";
     options.SlidingExpiration = true;
 }); // May want to use a server-side ticket instead: https://mikerussellnz.github.io/.NET-Core-Auth-Ticket-Redis/
+
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
