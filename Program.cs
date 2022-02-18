@@ -20,6 +20,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
