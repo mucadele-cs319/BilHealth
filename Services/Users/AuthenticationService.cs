@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using BilHealth.Model;
 using BilHealth.Utility;
+using Microsoft.AspNetCore.Identity;
 
 namespace BilHealth.Services.Users
 {

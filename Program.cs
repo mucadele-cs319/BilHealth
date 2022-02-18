@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using BilHealth.Data;
 using BilHealth.Model;
-using BilHealth.Utility;
 using BilHealth.Services.Users;
+using BilHealth.Utility;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
