@@ -1,0 +1,31 @@
+services:
+  aspnet:
+    build:
+      context: .
+      dockerfile: Dockerfile.devel
+    ports:
+      - "44440:44440" # CRA live server (HTTPS)
+      - "7257:7257" # ASP.NET Core (HTTPS)
+      - "5222:5222" # ASP.NET Core (HTTP)
+    volumes:
+      - .:/app # Watch source code changes from host system
+    depends_on:
+      - dbpostgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # The following is overridden by `launchSettings.json`. Also, `0.0.0.0` is preferred over `*` for the CRA proxy
+      #- ASPNETCORE_URLS=https://0.0.0.0:7257;http://0.0.0.0:5222
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - PGUSER=postgres
+      - RUNNING_IN_CONTAINER=true
+
+  dbpostgres:
+    image: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust # Allow connection without password
+      - POSTGRES_DB=bilhealthdevel
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
