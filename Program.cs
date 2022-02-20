@@ -51,8 +51,14 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. See https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    // For production scenarios, it may make more sense to use a reverse-proxy instead of Kestrel-based HTTPS
+    // See the comments in file `docker-compose.prod.yml` for details
+    app.UseHttpsRedirection();
+    // Although, is this needed even in development where the edge server is CRA's live Express server?
+}
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
