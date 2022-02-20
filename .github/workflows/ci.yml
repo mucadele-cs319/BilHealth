@@ -55,6 +55,10 @@ jobs:
           mapfile -t csfiles < <(git diff --name-only --diff-filter=AM HEAD^ HEAD | grep '.*\.cs$')
           if [ ${#csfiles[@]} -ne 0 ]; then dotnet format --verify-no-changes --include "${csfiles[@]}"; fi
 
+      - name: Install npm dependencies
+        working-directory: ClientApp
+        run: npm install --no-audit
+
       - name: Lint Node.js
         run: |
           mapfile -t tsxfiles < <(git diff --name-only --diff-filter=AM HEAD^ HEAD | grep '.*\.tsx$')
