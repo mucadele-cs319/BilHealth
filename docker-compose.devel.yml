@@ -1,5 +1,6 @@
 services:
   aspnet:
+    image: aspnetdevel
     build:
       context: .
       dockerfile: Dockerfile.devel
@@ -9,6 +10,7 @@ services:
       - "5222:5222" # ASP.NET Core (HTTP)
     volumes:
       - .:/app # Watch source code changes from host system
+      - dataprotection:/root/.aspnet/DataProtection-Keys
     depends_on:
       - dbpostgres
     environment:
@@ -29,3 +31,4 @@ services:
 
 volumes:
   postgres:
+  dataprotection:

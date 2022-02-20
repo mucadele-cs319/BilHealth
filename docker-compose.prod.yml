@@ -1,5 +1,6 @@
 services:
   aspnet:
+    image: aspnetprod
     build:
       context: .
       dockerfile: Dockerfile.prod
@@ -13,6 +14,8 @@ services:
       - ASPNETCORE_URLS=http://+:5000 # Not having an HTTPS address here seems to disable redirection
       - PGUSER=postgres
       - RUNNING_IN_CONTAINER=true
+    volumes:
+      - dataprotection:/root/.aspnet/DataProtection-Keys
 
   dbpostgres:
     image: postgres
@@ -29,3 +32,4 @@ services:
 
 volumes:
   postgres:
+  dataprotection:
