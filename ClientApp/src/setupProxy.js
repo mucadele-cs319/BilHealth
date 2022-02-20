@@ -14,14 +14,14 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const { env } = require("process");
 
 const aspnetcore = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
-    env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(";")[0] : "http://localhost:55892";
+  env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(";")[0] : "http://localhost:55892";
 
 module.exports = function (app) {
-    app.use("/api", createProxyMiddleware({
-        target: aspnetcore,
-        secure: false,
-        headers: {
-            Connection: "Keep-Alive"
-        }
-    }));
+  app.use("/api", createProxyMiddleware({
+    target: aspnetcore,
+    secure: false,
+    headers: {
+      Connection: "Keep-Alive"
+    }
+  }));
 };
