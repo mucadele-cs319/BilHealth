@@ -19,6 +19,13 @@ jobs:
         with:
           dotnet-version: "6.0.x"
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "npm"
+          cache-dependency-path: ClientApp/package-lock.json
+
       - name: Build All
         run: dotnet publish
 
@@ -34,26 +41,31 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "6.0.102" # 6.0.200 breaks dotnet-format (https://github.com/dotnet/format/issues/1519)
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "16"
           cache: "npm"
+          cache-dependency-path: ClientApp/package-lock.json
 
-      - name: Lint .NET
+      - name: dotnet format
         run: |
           mapfile -t csfiles < <(git diff --name-only --diff-filter=AM HEAD^ HEAD | grep '.*\.cs$')
           if [ ${#csfiles[@]} -ne 0 ]; then dotnet format --verify-no-changes --include "${csfiles[@]}"; fi
 
-      - name: Lint Node.js
+      - name: eslint & prettier
         run: |
+          read -ra npmopts <<< "--prefix ClientApp"
           mapfile -t tsxfiles < <(git diff --name-only --diff-filter=AM HEAD^ HEAD | grep '.*\.tsx$')
           mapfile -t cssfiles < <(git diff --name-only --diff-filter=AM HEAD^ HEAD | grep '.*\.css$')
-          if [ ${#tsxfiles[@]} -ne 0 ]; then npx --prefix ClientApp eslint "${tsxfiles[@]}"; fi
-          if [ ${#tsxfiles[@]} -ne 0 ]; then npx --prefix ClientApp prettier --check "${tsxfiles[@]}"; fi
-          if [ ${#cssfiles[@]} -ne 0 ]; then npx --prefix ClientApp prettier --check "${cssfiles[@]}"; fi
+          if [ ${#tsxfiles[@]} -ne 0 ]; then
+            npm "${npmopts[@]}" install --no-audit
+            npx "${npmopts[@]}" eslint "${tsxfiles[@]}"
+            npx "${npmopts[@]}" prettier --check "${tsxfiles[@]}"
+          fi
+          if [ ${#cssfiles[@]} -ne 0 ]; then npx "${npmopts[@]}" prettier --check "${cssfiles[@]}"; fi
 
   # unittest: # Maybe this should use Docker instead? Or GitHub Actions "services"?
   #   name: Unit Tests
