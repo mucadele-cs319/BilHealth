@@ -41,6 +41,7 @@ jobs:
         with:
           node-version: "16"
           cache: "npm"
+          cache-dependency-path: ClientApp/package-lock.json
 
       - name: Lint .NET
         run: |
