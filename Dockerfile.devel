@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS sdk
+WORKDIR /app
+
+# Install node.js v16.x
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - ; apt-get install -y nodejs
+
+# Install dotnet-ef for migrations
+ENV PATH="$PATH:/root/.dotnet/tools"
+RUN dotnet tool install --global dotnet-ef
+
+# Restore packages as a cached layer
+COPY *.csproj .
+RUN dotnet restore
+
+# Generate self-signed development certificate - CRA live server should also be using this certificate
+RUN dotnet dev-certs https --export-path $HOME/.aspnet/https/bilhealth.pem --format Pem --no-password
+
+# Migrate DB and start watching
+ENTRYPOINT [ "./scripts/entrypoint-migrate.sh", "dotnet", "watch", "run" ]
