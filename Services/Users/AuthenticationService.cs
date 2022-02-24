@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using BilHealth.Model;
-using BilHealth.Model.Transaction;
+using BilHealth.Model.Dto;
 using BilHealth.Utility;
 using Microsoft.AspNetCore.Identity;
 

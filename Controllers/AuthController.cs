@@ -1,4 +1,4 @@
-using BilHealth.Model.Transaction;
+using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using Microsoft.AspNetCore.Authorization;

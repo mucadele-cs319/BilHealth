@@ -1,4 +1,4 @@
-using BilHealth.Model.Transaction;
+using BilHealth.Model.Dto;
 using Microsoft.AspNetCore.Identity;
 
 namespace BilHealth.Model
