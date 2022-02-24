@@ -33,17 +33,30 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.Cookie.Name = "bilhealthsess";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
-    options.LoginPath = "/login";
-    options.AccessDeniedPath = "/forbidden"; // This should probably change later
-    options.LogoutPath = "/";
     options.SlidingExpiration = true;
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        return Task.CompletedTask;
+    };
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
 }); // May want to use a server-side ticket instead: https://mikerussellnz.github.io/.NET-Core-Auth-Ticket-Redis/
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    scope.ServiceProvider.GetRequiredService<IAuthenticationService>().CreateRoles().Wait();
+}
 
 if (!app.Environment.IsDevelopment())
 {
@@ -55,8 +68,26 @@ else
 {
     // For production scenarios, it may make more sense to use a reverse-proxy instead of Kestrel-based HTTPS
     // See the comments in file `docker-compose.prod.yml` for details
-    app.UseHttpsRedirection();
     // Although, is this needed even in development where the edge server is CRA's live Express server?
+    app.UseHttpsRedirection();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        // Register an admin user for development-only
+        var authService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+        var adminUsername = "0000";
+
+        authService.DeleteUser(adminUsername).Wait();
+        authService.Register(new()
+        {
+            UserName = adminUsername,
+            Password = "admin123",
+            Email = "tempmail@example.com",
+            FirstName = "John",
+            LastName = "Smith"
+        }).Wait();
+        authService.AssignRole(adminUsername, UserRoles.Admin).Wait();
+    }
 }
 
 app.UseStaticFiles();
