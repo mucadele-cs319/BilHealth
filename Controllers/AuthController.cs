@@ -17,7 +17,8 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(Register registration)
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> Register(Registration registration)
         {
             throw new NotImplementedException();
         }

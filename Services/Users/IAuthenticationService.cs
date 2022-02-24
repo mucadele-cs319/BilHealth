@@ -5,9 +5,9 @@ namespace BilHealth.Services.Users
 {
     public interface IAuthenticationService
     {
-        public Task<IdentityResult> Register(string username, string password, string email);
-        public Task RegisterMany(IList<User> users, IList<string> passwords);
-        public Task<SignInResult> LogIn(User user, string password, bool persist);
+        public Task<IdentityResult> Register(Registration registration);
+        public Task RegisterMany(IList<Registration> registrations);
+        public Task<SignInResult> LogIn(Login login);
         public Task LogOut();
 
         public Task CreateRoles();
