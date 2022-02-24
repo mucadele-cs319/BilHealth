@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BilHealth.Model;
 using BilHealth.Model.Transaction;
 using BilHealth.Utility;
@@ -66,10 +67,51 @@ namespace BilHealth.Services.Users
             return await UserManager.AddToRoleAsync(user, roleName);
         }
 
+        public async Task<IdentityResult> AssignRole(string userName, string roleName)
+        {
+            var user = await UserManager.FindByNameAsync(userName);
+            if (user == null)
+                return IdentityResult.Failed();
+
+            return await AssignRole(user, roleName);
+        }
+
         public async Task AssignRoles(User user, IEnumerable<string> roleNames)
         {
             foreach (var roleName in roleNames)
                 await AssignRole(user, roleName);
+        }
+
+        public async Task AssignRoles(string userName, IEnumerable<string> roleNames)
+        {
+            var user = await UserManager.FindByNameAsync(userName);
+            if (user != null)
+                await AssignRoles(user, roleNames);
+        }
+
+        public async Task<IdentityResult> DeleteUser(string userName)
+        {
+            var user = await UserManager.FindByNameAsync(userName);
+            if (user != null)
+                return await UserManager.DeleteAsync(user);
+            return IdentityResult.Failed();
+        }
+
+        public async Task<IdentityResult> ChangePassword(User user, string currentPassword, string newPassword)
+        {
+            return await UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        // Unsafe: Only to be used for administration tasks
+        public async Task<IdentityResult> ChangePasswordUnsafe(User user, string newPassword)
+        {
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            return await UserManager.ResetPasswordAsync(user, token, newPassword);
+        }
+
+        public async Task<User> getUser(ClaimsPrincipal principal)
+        {
+            return await UserManager.GetUserAsync(principal);
         }
     }
 }
