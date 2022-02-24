@@ -68,8 +68,26 @@ else
 {
     // For production scenarios, it may make more sense to use a reverse-proxy instead of Kestrel-based HTTPS
     // See the comments in file `docker-compose.prod.yml` for details
-    app.UseHttpsRedirection();
     // Although, is this needed even in development where the edge server is CRA's live Express server?
+    app.UseHttpsRedirection();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        // Register an admin user for development-only
+        var authService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+        var adminUsername = "0000";
+
+        authService.DeleteUser(adminUsername).Wait();
+        authService.Register(new()
+        {
+            UserName = adminUsername,
+            Password = "admin123",
+            Email = "tempmail@example.com",
+            FirstName = "John",
+            LastName = "Smith"
+        }).Wait();
+        authService.AssignRole(adminUsername, UserRoles.Admin).Wait();
+    }
 }
 
 app.UseStaticFiles();
