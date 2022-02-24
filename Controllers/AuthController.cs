@@ -33,7 +33,7 @@ namespace BilHealth.Controllers
         {
             var result = await AuthenticationService.LogIn(login);
 
-            return result.Succeeded ? Ok(result) : BadRequest(result);
+            return result.Succeeded ? Ok(result) : Unauthorized(result);
         }
 
         [HttpPost]
@@ -50,7 +50,7 @@ namespace BilHealth.Controllers
             var user = await AuthenticationService.getUser(User);
             var result = await AuthenticationService.ChangePassword(user, currentPassword, newPassword);
 
-            return result.Succeeded ? Ok(result) : BadRequest(result);
+            return result.Succeeded ? Ok(result) : Unauthorized(result);
         }
     }
 }
