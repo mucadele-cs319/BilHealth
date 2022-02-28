@@ -1,6 +1,6 @@
 using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
-using BilHealth.Utility;
+using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoleType.Constant.Admin)]
         public async Task<IActionResult> Register(Registration registration)
         {
             var result = await AuthenticationService.Register(registration);

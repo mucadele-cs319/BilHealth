@@ -2,6 +2,7 @@ using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
+using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -84,9 +85,10 @@ else
             Password = "admin123",
             Email = "tempmail@example.com",
             FirstName = "John",
-            LastName = "Smith"
+            LastName = "Smith",
+            UserType = UserRoleType.Admin
         }).Wait();
-        authService.AssignRole(adminUsername, UserRoles.Admin).Wait();
+        authService.AssignRole(adminUsername, UserRoleType.Admin).Wait();
     }
 }
 
