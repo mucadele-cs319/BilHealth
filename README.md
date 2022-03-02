@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 -->
 # BilHealth - *CS 319 Project*
 
 *BilHealth* is a health center management system built as a web application.
@@ -14,19 +15,73 @@
 
 ## Project Details
 
+### User Types
+
+There are 4 roles of distinct authorization levels, with each user falling into a single one of them.
+
+- **Admin:** Manages the system but is not necessarily part of the health center staff.
+  This is a role for developers/maintainers to do housekeeping, such as registering new users.
+- **Doctor:** Part of the medical staff that can undertake cases opened by patients.
+- **Staff:** Part of the health center staff but not for medical tasks and as such cannot accept cases.
+  Mostly able to perform a subset of doctor and patient features on their behalf.
+- **Patient:** Able to open cases and receive medical attention
+
 ### Features
+
+<details>
+  <summary>Click to expand brief list of features</summary>
 
 - Open a case with the ability to specify your concern and proceed to schedule appointments
 - Post-appointment follow-up with patients through the opened case
 - Send email notifications to patients regarding updates to their cases
 - Services include those given by the psychology center, where applicable
 - User profiles for patients (past cases, physical measurements, etc.) and doctors (specialization, etc.)
-- Specialized dashboards for patients and health center employees where cases can be opened or browsed.
 - Get medical test results online (Blood, urine, etc.)
 - Prescriptions are added to cases, and [printable documents] are generated for pharmacies
-- An announcements page for any news such as seminars or first-aid courses
+- Announcements for any news such as seminars or first-aid courses
 - Convert individual or campus-wide patient data to inclusive report (HTML format, but PDF compatible)
 - Do basic calculations such as BMI measurements
+
+</details>
+
+#### Patients
+
+- Open cases to seek medical attention by specifying concerns
+- Request appointments through the opened case
+- Follow-up with cases by adding messages onto the open case
+- Share test results and past cases with a doctor while a case is open with them
+- Have a profile with medical history and relevant information such as past cases,
+  physical measurements, etc.
+- View medical test results online
+- View announcements by the health center
+- Receive on-site and/or email notifications about updates to cases
+- Request a report of personal medical history (in HTML format, but PDF/print compatible)
+- Get basic calculations such as BMI measurements
+
+#### Doctors
+
+- Pick up open cases and provide medical attention online then on premise through appointments
+- Open cases on behalf of patients
+- Close cases when necessary
+- Follow-up online on patients through the cases they have opened
+- Have a profile with relevant information such as area of medical expertise
+- Add prescriptions to cases and generate [printable documents] for pharmacies
+- Approve appointment requests in cases, or cancel approved appointments
+- Make site-wide announcements
+- Request inclusive anonymous report of campus-wide patient data (in HTML format, but PDF/print compatible)
+
+#### Staff
+
+- View cases but without the ability to provide medical assistance
+- Open cases on behalf of patients, close when necessary
+- Enter test results into the system
+- Make site-wide announcements
+- Request inclusive anonymous report of campus-wide patient data (in HTML format, but PDF/print compatible)
+
+#### Admins
+
+- Register new users
+- Monitor system
 
 [printable documents]: https://developer.mozilla.org/en-US/docs/Web/Guide/Printing#print_an_external_page_without_opening_it
 
@@ -38,7 +93,23 @@
 - **Tailwind CSS** for front-end styling
 - **Docker (docker-compose)** can be used to make development/deployment/testing easier
 - Hosting could be a **VPS** or a cloud service such as **Azure**
-- If testing is viable, **Moq** or **Playwright** may be used for unit tests and integration tests respectively
+- **Nginx** can be used as a reverse proxy to configure HTTPS
+- If feasible, simple integration tests should be done on the service layer (not in-memory DB)
+
+### Architecture
+
+The project follows a typical SPA web app design. These are some notes on it.
+
+- Front-end code is kept strictly in the React app
+- The back-end serves React static files, which make requests to the API endpoints
+- Business logic is kept in the service layer where most code should typically go (namespace `Services`)
+- In alignment with separation of concerns, API controllers should be very concise (a few lines)
+  and make calls to the service layer for actions
+- Models should avoid having methods within, and leave such actions to the service layer
+- DTOs are used for HTTP requests/responses, and for some service layer methods.
+  Passing around full models is not always ideal for data protection and such
+- The repository pattern is not used since (arguably) EF Core is a sufficiently similar implementation of repositories. The benefit of implementing repositories on top is not worth the effort in this case.
+- Mundane utility types and methods should go under the `Utility` namespace
 
 ## Useful Links
 
@@ -163,6 +234,8 @@ These commands are simplified and may need to be run from specific folders in re
 - `dotnet BilHealth.dll`: Runs the project binary *locally* (your CWD must be where the `wwwroot` folder is)
 - `dotnet ef migrations add <commitname>`: Commits the current DB model into the `Migrations` folder
 - `dotnet ef database update`: Update the database with the latest migration committed
+- `dotnet format --verify-no-changes`: Check if C# is formatted correctly
+- `dotnet format`: Format C# correctly
 
 <!-- Separate lists -->
 - `docker-compose build`: Build Docker images based on a `docker-compose.yml` file
@@ -172,6 +245,6 @@ These commands are simplified and may need to be run from specific folders in re
 <!-- Separate lists -->
 - `npm install`: Install Node.js dependencies into the `node_modules` folder
 - `npm install <package>`: Install a package and add it to `package.json`
-- `npx prettier --check src/`: Check if everything is formatted correctly
-- `npx prettier --write src/`: Format everything correctly
+- `npx prettier --check src/`: Check if client code is formatted correctly
+- `npx prettier --write src/`: Format client code correctly
 - `npx eslint src/*.tsx`: Lint all TypeScript files (does not correct errors)
