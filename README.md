@@ -23,6 +23,7 @@ There are 4 roles of distinct authorization levels, with each user falling into 
   This is a role for developers/maintainers to do housekeeping, such as registering new users.
 - **Doctor:** Part of the medical staff that can undertake cases opened by patients.
 - **Staff:** Part of the health center staff but not for medical tasks and as such cannot accept cases.
+  Mostly able to perform a subset of doctor and patient features on their behalf.
 - **Patient:** Able to open cases and receive medical attention
 
 ### Features
@@ -48,7 +49,7 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - Open cases to seek medical attention by specifying concerns
 - Request appointments through the opened case
 - Follow-up with cases by adding messages onto the open case
-- Share test results or past cases with a doctor by embedding them into the case
+- Share test results and past cases with a doctor while a case is open with them
 - Have a profile with medical history and relevant information such as past cases,
   physical measurements, etc.
 - View medical test results online
