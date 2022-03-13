@@ -22,9 +22,10 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - **Admin:** Manages the system but is not necessarily part of the health center staff.
   This is a role for developers/maintainers to do housekeeping, such as registering new users.
 - **Doctor:** Part of the medical staff that can undertake cases opened by patients.
+- **Nurse:** Part of the medical staff that can record patient data and forward patients to doctors.
 - **Staff:** Part of the health center staff but not for medical tasks and as such cannot accept cases.
   Mostly able to perform a subset of doctor and patient features on their behalf.
-- **Patient:** Able to open cases and receive medical attention
+- **Patient:** Able to open cases and receive medical attention.
 
 ### Features
 
@@ -47,12 +48,13 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 #### Patients
 
 - Open cases to seek medical attention by specifying concerns
-- Request appointments through the opened case
+- Request appointments through the opened case (Not showing up to an appointment will eventually get you blacklisted)
+- Each appointment contains a visit that holds information such as heart rate, body temperature, blood pressure, etc.
 - Follow-up with cases by adding messages onto the open case
 - Share test results and past cases with a doctor while a case is open with them
 - Have a profile with medical history and relevant information such as past cases,
-  physical measurements, etc.
-- View medical test results online
+  physical measurements, vaccination history, etc.
+- View medical test results online as PDFs
 - View announcements by the health center
 - Receive on-site and/or email notifications about updates to cases
 - Request a report of personal medical history (in HTML format, but PDF/print compatible)
@@ -60,9 +62,11 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 
 #### Doctors
 
-- Pick up open cases and provide medical attention online then on premise through appointments
+- Receive open cases and provide medical attention online then on premise through appointments
 - Open cases on behalf of patients
 - Close cases when necessary
+- Record notes about a patient's visit, which other doctors can see on request
+  (Not the same as sensitive case and patient details, which are specifically visible to certain doctors)
 - Follow-up online on patients through the cases they have opened
 - Have a profile with relevant information such as area of medical expertise
 - Add prescriptions to cases and generate [printable documents] for pharmacies
@@ -70,11 +74,18 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - Make site-wide announcements
 - Request inclusive anonymous report of campus-wide patient data (in HTML format, but PDF/print compatible)
 
+#### Nurse
+
+- Forward/triage open cases to specific doctors on the initial visit
+- Record patient details during the visit, such as BPM/blood pressure/body temperature
+- Update patient profiles
+
 #### Staff
 
 - View cases but without the ability to provide medical assistance
 - Open cases on behalf of patients, close when necessary
-- Enter test results into the system
+- Update patient profiles
+- Upload test result PDFs into the system
 - Make site-wide announcements
 - Request inclusive anonymous report of campus-wide patient data (in HTML format, but PDF/print compatible)
 
