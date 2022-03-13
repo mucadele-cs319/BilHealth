@@ -22,9 +22,10 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - **Admin:** Manages the system but is not necessarily part of the health center staff.
   This is a role for developers/maintainers to do housekeeping, such as registering new users.
 - **Doctor:** Part of the medical staff that can undertake cases opened by patients.
+- **Nurse:** Part of the medical staff that can record patient data and forward patients to doctors.
 - **Staff:** Part of the health center staff but not for medical tasks and as such cannot accept cases.
   Mostly able to perform a subset of doctor and patient features on their behalf.
-- **Patient:** Able to open cases and receive medical attention
+- **Patient:** Able to open cases and receive medical attention.
 
 ### Features
 
@@ -47,12 +48,13 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 #### Patients
 
 - Open cases to seek medical attention by specifying concerns
-- Request appointments through the opened case
+- Request appointments through the opened case (Not showing up to an appointment will eventually get you blacklisted)
+- Each appointment contains a visit that holds information such as heart rate, body temperature, blood pressure, etc.
 - Follow-up with cases by adding messages onto the open case
 - Share test results and past cases with a doctor while a case is open with them
 - Have a profile with medical history and relevant information such as past cases,
-  physical measurements, etc.
-- View medical test results online
+  physical measurements, vaccination history, etc.
+- View medical test results online as PDFs
 - View announcements by the health center
 - Receive on-site and/or email notifications about updates to cases
 - Request a report of personal medical history (in HTML format, but PDF/print compatible)
@@ -60,9 +62,11 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 
 #### Doctors
 
-- Pick up open cases and provide medical attention online then on premise through appointments
+- Receive open cases and provide medical attention online then on premise through appointments
 - Open cases on behalf of patients
 - Close cases when necessary
+- Record notes about a patient's visit, which other doctors can see on request
+  (Not the same as sensitive case and patient details, which are specifically visible to certain doctors)
 - Follow-up online on patients through the cases they have opened
 - Have a profile with relevant information such as area of medical expertise
 - Add prescriptions to cases and generate [printable documents] for pharmacies
@@ -70,11 +74,19 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - Make site-wide announcements
 - Request inclusive anonymous report of campus-wide patient data (in HTML format, but PDF/print compatible)
 
+#### Nurse
+
+- Forward/triage open cases to specific doctors on the initial visit (Will need to be approved by a staff member)
+- Record patient details during the visit, such as BPM/blood pressure/body temperature
+- Update patient profiles
+
 #### Staff
 
 - View cases but without the ability to provide medical assistance
 - Open cases on behalf of patients, close when necessary
-- Enter test results into the system
+- Approve triaging requests from nurses
+- Update patient profiles
+- Upload test result PDFs into the system
 - Make site-wide announcements
 - Request inclusive anonymous report of campus-wide patient data (in HTML format, but PDF/print compatible)
 
@@ -84,6 +96,18 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - Monitor system
 
 [printable documents]: https://developer.mozilla.org/en-US/docs/Web/Guide/Printing#print_an_external_page_without_opening_it
+
+---
+
+#### Average Appointment Experience
+
+1. The patient opens a case
+2. They schedule their first appointment (no doctor assigned yet)
+3. A nurse performs an initial examination, then, if necessary, requests to forward the case to a doctor
+4. A staff member approves the nurse's triaging request, and a doctor is assigned to the case
+5. The appointments are now made directly to the doctor
+
+So in summary, the appointments are first handled by **nurse/staff**, and later by **doctor/staff**.
 
 ### Tech Stack
 
