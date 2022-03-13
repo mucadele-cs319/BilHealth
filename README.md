@@ -76,7 +76,7 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 
 #### Nurse
 
-- Forward/triage open cases to specific doctors on the initial visit
+- Forward/triage open cases to specific doctors on the initial visit (Will need to be approved by a staff member)
 - Record patient details during the visit, such as BPM/blood pressure/body temperature
 - Update patient profiles
 
@@ -84,6 +84,7 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 
 - View cases but without the ability to provide medical assistance
 - Open cases on behalf of patients, close when necessary
+- Approve triaging requests from nurses
 - Update patient profiles
 - Upload test result PDFs into the system
 - Make site-wide announcements
@@ -95,6 +96,18 @@ There are 4 roles of distinct authorization levels, with each user falling into 
 - Monitor system
 
 [printable documents]: https://developer.mozilla.org/en-US/docs/Web/Guide/Printing#print_an_external_page_without_opening_it
+
+---
+
+#### Average Appointment Experience
+
+1. The patient opens a case
+2. They schedule their first appointment (no doctor assigned yet)
+3. A nurse performs an initial examination, then, if necessary, requests to forward the case to a doctor
+4. A staff member approves the nurse's triaging request, and a doctor is assigned to the case
+5. The appointments are now made directly to the doctor
+
+So in summary, the appointments are first handled by **nurse/staff**, and later by **doctor/staff**.
 
 ### Tech Stack
 
