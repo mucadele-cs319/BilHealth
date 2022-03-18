@@ -1,0 +1,63 @@
+\documentclass[a4paper, 12pt, titlepage]{article}
+
+% Document quality things
+\usepackage[utf8]{inputenc}
+\usepackage{microtype, xcolor}
+\usepackage{csquotes}
+\usepackage{url, hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+% Image-related packages
+\usepackage{graphicx}
+%\usepackage{float}
+\graphicspath{{./gfx/}}
+%\usepackage[font=small,skip=5pt]{caption}
+
+% Setting margins
+\usepackage[a4paper,bottom=2cm,top=2cm,left=2.5cm,right=2.5cm, includefoot]{geometry}
+
+% Table helper packages
+%\usepackage{multirow, multicol}
+%\usepackage{makecell}
+%\usepackage{array}
+%\usepackage{tabularx} % Not needed currently, but has a few nice options
+%\usepackage{wrapfig} % Floating figures/tables
+\usepackage{booktabs}
+\usepackage{longtable}
+
+% Prevents spamming tedious newlines everywhere, also disables auto indentation, etc.
+\usepackage[skip=0.75\baselineskip plus 2pt]{parskip}
+
+% Self-explanatory
+%\usepackage{titlesec}
+%\titleformat{\section}[block]{\normalfont\scshape\Large}{\thesection}{1em}{}
+%\titleformat{\subsection}{\normalfont\large}{\thesubsection}{1em}{}
+
+\title{
+    {CS 319 - Object Oriented Software Engineering}\\
+    {\large Section 01}\\
+    {\large Analysis Report}\\
+    {\vspace{10mm}\includegraphics[width=0.3\linewidth]{bilkentlogo}}
+}
+\author{Vedat Eren Arıcan\\ (22002643)}
+\date{\today}
+
+% \usepackage{tikz}
+% \usetikzlibrary{automata, positioning, arrows}
+
+\usepackage{pdflscape, pdfpages}
+
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \pagebreak
+
+  \includepdf{gfx/use_case_diag.pdf}
+  
+  % Example of pdf inclusion
+  % \begin{landscape}
+  %   \thispagestyle{empty}
+  %   \includepdf[scale=.85, landscape=true, pagecommand=\subsection{FSM Schematic}]{gfx/schematic.pdf}
+  % \end{landscape}
+
+\end{document}
