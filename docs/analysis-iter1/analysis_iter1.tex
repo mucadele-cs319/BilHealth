@@ -35,9 +35,10 @@
 
 \title{
     {CS 319 - Object Oriented Software Engineering}\\
-    {\large BilHealth: A Health Center Management System}\\
-    {\vspace{10mm}\Large \textbf{Analysis Report}}\\
-    {\large Iteration 1}\\
+    {\small Instructor: Eray Tüzün, TA: Muhammad Umair Ahmed}\\
+    {\vspace{10mm}BilHealth}\\
+    {\Large \textbf{Analysis Report}}\\
+    {\small Iteration 1}\\
     {\vspace{10mm}\includegraphics[width=0.3\linewidth]{bilkentlogo}}
 }
 \author{
@@ -62,36 +63,158 @@
   \maketitle
   \tableofcontents
   \pagebreak
-  
+
   \section{Introduction}
-  
+
+  BilHealth is a health center management software, built in the form a web application.
+  The main goal is to provide online, remote attention to patients to increase productivity for all parties involved.
+  The primary method of interaction is through \textit{case}s, which contain all relevant information for a given medical situation.
+  Patients use the system to open cases and request appointments, and the health center staff acts on these requests
+  to provide medical services.
+
+  Note that all diagrams on this document are in vector format, meaning that you can zoom in without any decrease in quality.
+
   \section{Current System}
-  
+
+  Our team has visited the Bilkent University health center to inquire about the application domain,
+  along with the existing system they have in place.
+  Our initial assumptions were then altered to respect their practical requirements.
+
+  The people interviewed were a staff member of the secretary,
+  the head nurse, and the director of the health center.
+  Consequently, below is a concise list of our findings.
+
+  \begin{itemize}
+    \item New patients are first examined by a nurse, after which the patient may be triaged to a medical specialist.
+    \item During triaging, the nurse may measure the patient's heart rate, body temperature, blood pressure, etc.
+      These details are naturally provided to the specialist who provides medical care to the patient.
+    \item Triaging is not necessary for patients whose concerns fall into the psychological and dental domains.
+    \item Appointments by phone are not available to students, as many do not show up to their appointments.
+    \item Anyone who enters the health center for an examination has their records created in the system.
+    \item Their system is in no way connected to the state's health system, named \textit{E-Nabız}.
+    \item Medical test results are stored in the system. The system is directly integrated with the devices carrying out the tests.
+    \item The planning of the materials, budget, and such, takes into account the data stored in their patient record system.
+    \item Personal medical records are kept in detail, including vaccination cards.
+    \item Personal medical records are visible solely to the medical staff member who is responsible for the patient.
+    \item The primary patient base is comprised of students.
+      Those who stay in the university's housing, or are a part of the university personnel, are secondary.
+      Needless to say, health care is given to anyone in a moment of emergency.
+    \item As opposed to a patient's personal medical records,
+      the medical staff is able to share notes about a particular visit,
+      viewable by other medical staff.
+    \item Patients reserve the right to choose their own caregivers.
+      In any other case, the nurse is responsible for the triaging.
+  \end{itemize}
+
   \section{Proposed System}
-  
+
+  Our design was created with the context of Bilkent University in mind, as made clear by the project name.
+  Some of our assumptions include the system maintained by the Bilkent Computer Center (BCC).
+  For instance, we have assumed that majority of the patient base could be created through the general student records
+  kept by the institute, and as such have forgone a public registration endpoint.
+
+  \subsection{Actors}
+
+  Health system management is a complex domain with many actors involved.
+  Based on the current systems used, we have created five actor types to interact with the system in various capacities.
+
+  \begin{itemize}
+    \item \textbf{Nurse:} Part of the medical staff that can record patient data and forward patients to doctors.
+    \item \textbf{Doctor:} Part of the medical staff that can undertake cases opened by patients.
+    \item \textbf{Staff:} Part of the health center staff, but not for medical tasks, and as such cannot accept cases.
+      They are mostly able to perform a subset of doctor and patient features on their behalf, so as to manage the process.
+    \item \textbf{Patient:} Able to open cases and receive medical attention as a result of their interaction with the system.
+    \item \textbf{Admin:} Manages the system but is not necessarily a part of the health center staff.
+      This is a role for developers/maintainers of the system to do housekeeping, such as mass registering new users.
+  \end{itemize}
+
   \subsection{Functional Requirements}
-  
+
+  We have split up our functional requirements into actor types, to ease interpretation.
+
+  \textbf{Nurse:}
+  \begin{itemize}
+    \item A nurse, upon the initial visit to an open case, should be able to request a forward/triage to a specific doctor
+    \item A nurse should be able to record patient details during the visit, such as heart rate, blood pressure, and body temperature
+    \item A nurse should be able to update patient profile details
+  \end{itemize}
+
+  \textbf{Doctor:}
+  \begin{itemize}
+    \item A doctor should be able to receive open cases and provide medical attention online then on premise through appointments
+    \item A doctor should be able to close cases when there is no longer a medical situation needing attention
+    \item A doctor should be able to record notes about a patient's visit, viewable by other doctors
+    \item A doctor should be able to follow up online on patients through the cases they have opened
+    \item A doctor should have a profile with relevant information such as area of medical expertise
+    \item A doctor should be able to add prescriptions to cases and generate printable documents for pharmacies
+    \item A doctor should be able to approve appointment requests in cases, or cancel approved appointments
+    \item A doctor should be able to make site-wide announcements
+    \item A doctor should be able to request an inclusive anonymous report of campus-wide patient data
+  \end{itemize}
+
+  \textbf{Staff:}
+  \begin{itemize}
+    \item A staff member should be able to view cases, but without the ability to provide any medical assistance
+    \item A staff member should be able to open cases on behalf of patients, and close them when necessary
+    \item A staff member should be able to approve triaging requests made by nurses
+    \item A staff member should be able to update patient profile details
+    \item A staff member should be able to upload test result PDFs onto the system
+    \item A staff member should be able to make site-wide announcements
+    \item A staff member should be able to request an inclusive anonymous report of campus-wide patient data
+  \end{itemize}
+
+  \textbf{Patient:}
+  \begin{itemize}
+    \item A patient should be able to open a case to seek medical attention by specifying concerns
+    \item A patient should be able to request appointments through the case they've opened
+    \item A patient should be blacklisted from requesting an online appointment, if they repeatedly do not show up to their appointments
+    \item Each appointment should contain a visit that holds information such as heart rate, body temperature, blood pressure, etc.
+    \item A patient should be able to follow up with cases by adding messages onto the open case
+    \item A patient should have a medical profile with medical history and relevant information such as past cases, physical measurements, vaccination history, etc.
+    \item A patient should automatically have their medical profile made visible to the medical staff member responsible for their case
+    \item A patient should be able to view their medical test results online
+    \item A patient should be able to view announcements made by the health center
+    \item A patient should receive notifications about updates to their cases, through the website or email
+    \item A patient should be able to request a machine-generated report of personal medical history
+    \item A patient should be able to use the service to do basic medical calculations such as BMI measurements
+  \end{itemize}
+
+  \textbf{Admin:}
+  \begin{itemize}
+    \item An admin should be able to register new users, including mass registering them
+    \item An admin should be able to monitor the system by having access to most parts of the system views
+  \end{itemize}
+
   \subsection{Non-functional Requirements}
-  
+
   \subsection{Pseudo Requirements} % Maybe remove this if we can?
-  
+
   \subsection{Scenarios}
-  
+
   \subsection{System Models}
-  
+
   \pagebreak
   \subsubsection{Use Case Diagram}
-  
+
   \includegraphics[width=\linewidth]{use_case_diag}
-  
+
   \subsubsection{Activity Diagrams}
-  
+
   \subsubsection{State Diagrams}
-  
+
   \subsubsection{Sequence Diagrams}
-  
+
   \subsubsection{Class Diagrams}
-  
+
   \subsubsection{User Interface}
-  
+
+  \section{Glossary}
+
+  \begin{itemize}
+    \item \textbf{Case:} The main point of interaction between a patient and health center staff.
+      A case contains all the relevant information on a particular medical situation,
+      such as appointments and prescriptions.
+
+  \end{itemize}
+
 \end{document}
