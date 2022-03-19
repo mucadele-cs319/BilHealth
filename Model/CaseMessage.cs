@@ -7,6 +7,9 @@ namespace BilHealth.Model
         [Required] public Guid Id { get; private set; }
         [Required] public Guid UserId { get; set; }
         [Required] public DateTime DateTime { get; set; }
-        [Required] public string Content { get; set; } = null!;
+        [Required] public string Content { get; set; } = String.Empty;
+
+        [Required] public Guid CaseId { get; set; }
+        public Case? Case { get; set; }
     }
 }

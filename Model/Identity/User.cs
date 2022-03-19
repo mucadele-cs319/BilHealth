@@ -21,14 +21,5 @@ namespace BilHealth.Model
         [Required] public string LastName { get; set; } = null!;
         public Gender Gender { get; set; } = Gender.Unspecified;
         public DateTime? DateOfBirth { get; set; }
-
-        public Guid? DoctorInfoId { get; set; }
-        public DoctorInfo? DoctorInfo { get; set; }
-
-        public Guid? PatientInfoId { get; set; }
-        public PatientInfo? PatientInfo { get; set; }
-
-        public Guid? StaffInfoId { get; set; }
-        public StaffInfo? StaffInfo { get; set; }
     }
 }

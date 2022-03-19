@@ -1,7 +1,11 @@
 namespace BilHealth.Utility.Enum
 {
-    public class CaseSystemMessageType
+    public enum CaseSystemMessageType
     {
-        // TODO
+        CaseClosed,
+        AppointmentUpdated,
+        AppointmentApproved,
+        AppointmentRejected,
+        TriageApproved
     }
 }

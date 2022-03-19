@@ -59,7 +59,7 @@ namespace BilHealth.Services.Users
         {
             foreach (var roleName in UserRoleType.Names)
                 if (!await RoleManager.RoleExistsAsync(roleName))
-            await RoleManager.CreateAsync(new Role { Name = roleName });
+                    await RoleManager.CreateAsync(new Role { Name = roleName });
         }
 
         public async Task<IdentityResult> AssignRole(User user, UserRoleType roleType)
