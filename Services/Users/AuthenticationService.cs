@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
-using BilHealth.Utility;
+using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
 
 namespace BilHealth.Services.Users
@@ -27,9 +27,13 @@ namespace BilHealth.Services.Users
 
         public async Task<IdentityResult> Register(Registration registration)
         {
+            var roleType = UserRoleType.Names.First(roleType => roleType == registration.UserType);
+            if (roleType is null) return IdentityResult.Failed(new IdentityError { Description = "Invalid role" });
+
             var user = new User(registration);
 
-            return await UserManager.CreateAsync(user, registration.Password);
+            var creationResult = await UserManager.CreateAsync(user, registration.Password);
+            return creationResult.Succeeded ? await AssignRole(user, roleType) : creationResult;
         }
 
         public async Task RegisterMany(IList<Registration> registrations)
@@ -41,8 +45,7 @@ namespace BilHealth.Services.Users
         public async Task<SignInResult> LogIn(Login login)
         {
             var user = await UserManager.FindByNameAsync(login.UserName);
-            if (user == null)
-                return SignInResult.Failed;
+            if (user is null) return SignInResult.Failed;
 
             return await SignInManager.PasswordSignInAsync(user, login.Password, login.RememberMe, lockoutOnFailure: false);
         }
@@ -54,47 +57,28 @@ namespace BilHealth.Services.Users
 
         public async Task CreateRoles()
         {
-            foreach (var roleName in UserRoles.Names)
+            foreach (var roleName in UserRoleType.Names)
                 if (!await RoleManager.RoleExistsAsync(roleName))
                     await RoleManager.CreateAsync(new Role { Name = roleName });
         }
 
-        public async Task<IdentityResult> AssignRole(User user, string roleName)
+        public async Task<IdentityResult> AssignRole(User user, UserRoleType roleType)
         {
-            if (!UserRoles.Names.Contains(roleName))
-                throw new ArgumentException("Assigning invalid role name", "roleName");
-
-            return await UserManager.AddToRoleAsync(user, roleName);
+            return await UserManager.AddToRoleAsync(user, roleType);
         }
 
-        public async Task<IdentityResult> AssignRole(string userName, string roleName)
+        public async Task<IdentityResult> AssignRole(string userName, UserRoleType roleType)
         {
             var user = await UserManager.FindByNameAsync(userName);
-            if (user == null)
-                return IdentityResult.Failed();
+            if (user is null) return IdentityResult.Failed();
 
-            return await AssignRole(user, roleName);
-        }
-
-        public async Task AssignRoles(User user, IEnumerable<string> roleNames)
-        {
-            foreach (var roleName in roleNames)
-                await AssignRole(user, roleName);
-        }
-
-        public async Task AssignRoles(string userName, IEnumerable<string> roleNames)
-        {
-            var user = await UserManager.FindByNameAsync(userName);
-            if (user != null)
-                await AssignRoles(user, roleNames);
+            return await AssignRole(user, roleType);
         }
 
         public async Task<IdentityResult> DeleteUser(string userName)
         {
             var user = await UserManager.FindByNameAsync(userName);
-            if (user != null)
-                return await UserManager.DeleteAsync(user);
-            return IdentityResult.Failed();
+            return user is null ? IdentityResult.Failed() : await UserManager.DeleteAsync(user);
         }
 
         public async Task<IdentityResult> ChangePassword(User user, string currentPassword, string newPassword)
@@ -102,7 +86,9 @@ namespace BilHealth.Services.Users
             return await UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
 
-        // Unsafe: Only to be used for administration tasks
+        /// <summary>
+        /// Unsafe: Only to be used for administration tasks
+        /// </summary>
         public async Task<IdentityResult> ChangePasswordUnsafe(User user, string newPassword)
         {
             var token = await UserManager.GeneratePasswordResetTokenAsync(user);

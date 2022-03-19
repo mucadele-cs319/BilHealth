@@ -1,5 +1,4 @@
 using BilHealth.Model;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +10,15 @@ namespace BilHealth.Data
         {
         }
 
-        // `DbSet`s will be added as fields
+        public DbSet<Patient> PatientUsers { get; set; } = null!;
+        public DbSet<Doctor> DoctorUsers { get; set; } = null!;
+        public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<Case> Cases { get; set; } = null!;
+        public DbSet<Prescription> Prescriptions { get; set; } = null!;
+        public DbSet<Vaccination> Vaccinations { get; set; } = null!;
+        public DbSet<TestResult> TestResults { get; set; } = null!;
+        public DbSet<Appointment> Appointments { get; set; } = null!;
+        public DbSet<TriageRequest> TriageRequests { get; set; } = null!;
+        public DbSet<Announcement> Announcements { get; set; } = null!;
     }
 }
