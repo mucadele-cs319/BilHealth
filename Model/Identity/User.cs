@@ -21,5 +21,7 @@ namespace BilHealth.Model
         [Required] public string LastName { get; set; } = null!;
         public Gender Gender { get; set; } = Gender.Unspecified;
         public DateTime? DateOfBirth { get; set; }
+
+        public List<Notification>? Notifications { get; set; }
     }
 }
