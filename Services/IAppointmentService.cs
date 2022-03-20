@@ -14,5 +14,7 @@ namespace BilHealth.Services
         public Task SetBPM();
         public Task SetBloodPressure();
         public Task SetBloodTemperature();
+
+        public Task<bool> IsPatientBlacklisted();
     }
 }
