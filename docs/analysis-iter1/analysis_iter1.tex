@@ -212,6 +212,21 @@
 
   \subsection{Scenarios}
 
+  The average user experience on BilHealth should be similar to the following scenario.
+
+  \begin{enumerate}
+    \item The patient logs into the system with their institute-provided credentials
+    \item The patient opens a case and specifies their concerns
+    \item The patient schedules their first appointment
+    \item The patient visits the health center at the time of the appointment
+    \begin{itemize}
+      \item A nurse performs an initial examination, and if necessary, requests to forward the case to a specialist
+      \item The triage request may be approved by a staff member
+    \end{itemize}
+    \item A doctor is assigned to the case as a result of triaging
+    \item The patient schedules another appointment \textit{(Repeat from step 4)}
+  \end{enumerate}
+
   \subsection{System Models}
 
   \pagebreak
@@ -219,17 +234,37 @@
 
   \includegraphics[width=\linewidth]{use_case_diag}
 
-  \subsubsection{Activity Diagrams}
+  \subsubsection{Activity Diagram}
 
-  \subsubsection{State Diagrams}
-  
+  \includegraphics[width=\linewidth]{activity_diag_appointment} % TODO: Crop this pdf
+
+  \subsubsection{State Diagram}
+
   \includegraphics[width=\linewidth]{state_diag_patient.pdf}
 
-  \subsubsection{Class Diagrams}
+  \pagebreak
+  \subsubsection{Class Diagram}
 
-  \subsubsection{Sequence Diagrams}
+  There are a few things of note regarding the following class diagram.
+  Since BilHealth is a web application, the class structure follows the Model/Service/Controller layer paradigm.
+  You can see that most of the interaction is carried out through models and services, with the rest of the objects
+  providing small utilities or making concise use of existing services.
+  Also note that interfaces are heavily used to improve separation and allow dependency injection.
+
+  \includegraphics[width=\linewidth]{class_diag} % TODO: Crop this pdf
+
+  \subsubsection{Sequence Diagram}
 
   \subsubsection{User Interface}
+
+  The core \textit{case} functionality of BilHealth bears a strong resemblence to that of GitHub's issue tracker.
+  Of course, the format GitHub uses is not unique, but we think it is a good example nonetheless.
+  Commits can be seen as appointment requests, visits, prescriptions, and such.
+  Messages act as communication between the patient and the medical staff.
+  System messages are used to alert users of any changes to the events.
+  A sidebar can be used to display the case information.
+
+  \includegraphics[width=\linewidth]{github_ui}
 
   \section{Glossary}
 
