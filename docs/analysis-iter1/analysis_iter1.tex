@@ -128,6 +128,7 @@
       This is a role for developers/maintainers of the system to do housekeeping, such as mass registering new users.
   \end{itemize}
 
+  \pagebreak
   \subsection{Functional Requirements}
 
   We have split up our functional requirements into actor types, to ease interpretation.
@@ -185,6 +186,7 @@
     \item An admin should be able to monitor the system by having access to most parts of the system views
   \end{itemize}
 
+  \pagebreak
   \subsection{Non-functional Requirements}
 
   Our non-functional requirements are as follows:
@@ -210,6 +212,7 @@
     \item The system should use PostgreSQL as its data persistence solution
   \end{itemize}
 
+  \pagebreak
   \subsection{Scenarios}
 
   The average user experience on BilHealth should be similar to the following scenario.
@@ -227,9 +230,9 @@
     \item The patient schedules another appointment \textit{(Repeat from step 4)}
   \end{enumerate}
 
+  \pagebreak
   \subsection{System Models}
 
-  \pagebreak
   \subsubsection{Use Case Diagram}
 
   \includegraphics[width=\linewidth]{use_case_diag}
@@ -251,7 +254,10 @@
   \includegraphics[width=\linewidth]{class_diag}
 
   \subsubsection{Sequence Diagram}
+  
+  \includegraphics[width=\linewidth]{sequence_diag}
 
+  \pagebreak
   \subsubsection{User Interface}
 
   The core \textit{case} functionality of BilHealth bears a strong resemblence to that of GitHub's issue tracker.
@@ -260,6 +266,7 @@
   Messages act as communication between the patient and the medical staff.
   System messages are used to alert users of any changes to the events.
   A sidebar can be used to display the case information.
+  As such, our final user interface is likely to look similar to the following design.
 
   \includegraphics[width=\linewidth]{github_ui}
 
