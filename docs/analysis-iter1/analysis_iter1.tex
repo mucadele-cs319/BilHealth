@@ -236,7 +236,7 @@
 
   \subsubsection{Activity Diagram}
 
-  \includegraphics[width=\linewidth]{activity_diag_appointment} % TODO: Crop this pdf
+  \includegraphics[width=\linewidth]{activity_diag_appointment}
 
   \subsubsection{State Diagram}
 
@@ -244,14 +244,11 @@
 
   \pagebreak
   \subsubsection{Class Diagram}
+  
+  As BilHealth is a web application, its structure follows the model/service/controller layer paradigm.
+  The most consequential classes are services.
 
-  There are a few things of note regarding the following class diagram.
-  Since BilHealth is a web application, the class structure follows the Model/Service/Controller layer paradigm.
-  You can see that most of the interaction is carried out through models and services, with the rest of the objects
-  providing small utilities or making concise use of existing services.
-  Also note that interfaces are heavily used to improve separation and allow dependency injection.
-
-  \includegraphics[width=\linewidth]{class_diag} % TODO: Crop this pdf
+  \includegraphics[width=\linewidth]{class_diag}
 
   \subsubsection{Sequence Diagram}
 
