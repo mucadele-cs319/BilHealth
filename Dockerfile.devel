@@ -1,11 +1,16 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS sdk
-WORKDIR /app
 
 # Install node.js v16.x
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - ; apt-get install -y nodejs
 
+# Switch to non-root user due to problems with uid 1000
+RUN useradd --create-home --shell /bin/bash bhuser
+USER bhuser
+
+WORKDIR /app
+
 # Install dotnet-ef for migrations
-ENV PATH="$PATH:/root/.dotnet/tools"
+ENV PATH="$PATH:/home/bhuser/.dotnet/tools"
 RUN dotnet tool install --global dotnet-ef
 
 # Restore packages as a cached layer
