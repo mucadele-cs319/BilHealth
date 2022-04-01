@@ -198,6 +198,12 @@ The purpose of these is briefly shown in the *Tools* section below.
 
 ### Development
 
+> **Note for Windows:** You must place the project within the WSL filesystem.
+> Make the entrypoint script executable with the command
+> `chmod +x ./scripts/entrypoint-migrate.sh`.
+> Also, WSL on Windows may eat up unnecessary memory when using Docker,
+> so you might want to [limit it](https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261).
+
 The suggested workflow for development is to use docker-compose.
 
 To run the project in development mode, first build the Docker image:
