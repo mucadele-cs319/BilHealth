@@ -1,5 +1,6 @@
 using BilHealth.Data;
 using BilHealth.Model;
+using BilHealth.Services;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -51,6 +52,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 }); // May want to use a server-side ticket instead: https://mikerussellnz.github.io/.NET-Core-Auth-Ticket-Redis/
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<ICaseService, CaseService>();
+builder.Services.AddScoped<ITestResultService, TestResultService>();
 
 var app = builder.Build();
 
