@@ -4,12 +4,11 @@ namespace BilHealth.Utility.Enum
     {
         CaseNewAppointment, // CaseId, AppointmentId
         CaseAppointmentTimeChanged, // CaseId, AppointmentId
-        CaseNew, // CaseId
+        CaseAppointmentCanceled, // CaseId, AppointmentId
         CaseNewMessage, // CaseId, CaseMessageId
         CaseClosed, // CaseId
+        CaseTriaged, // CaseId
         CaseDoctorChanged, // CaseId
         CaseNewPrescription, // CaseId, PrescriptionId
-        CaseNewTestEmbed, // CaseId, EmbedId
-        CaseNewCaseEmbed // CaseId, EmbedId
     }
 }
