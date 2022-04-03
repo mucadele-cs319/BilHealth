@@ -10,15 +10,15 @@ namespace BilHealth.Data
         {
         }
 
-        public DbSet<Patient> PatientUsers { get; set; } = null!;
-        public DbSet<Doctor> DoctorUsers { get; set; } = null!;
-        public DbSet<Notification> Notifications { get; set; } = null!;
-        public DbSet<Case> Cases { get; set; } = null!;
-        public DbSet<Prescription> Prescriptions { get; set; } = null!;
-        public DbSet<Vaccination> Vaccinations { get; set; } = null!;
-        public DbSet<TestResult> TestResults { get; set; } = null!;
-        public DbSet<Appointment> Appointments { get; set; } = null!;
-        public DbSet<TriageRequest> TriageRequests { get; set; } = null!;
-        public DbSet<Announcement> Announcements { get; set; } = null!;
+        public DbSet<Patient> PatientUsers => Set<Patient>();
+        public DbSet<Doctor> DoctorUsers => Set<Doctor>();
+        public DbSet<Notification> Notifications => Set<Notification>();
+        public DbSet<Case> Cases => Set<Case>();
+        public DbSet<Prescription> Prescriptions => Set<Prescription>();
+        public DbSet<Vaccination> Vaccinations => Set<Vaccination>();
+        public DbSet<TestResult> TestResults => Set<TestResult>();
+        public DbSet<Appointment> Appointments => Set<Appointment>();
+        public DbSet<TriageRequest> TriageRequests => Set<TriageRequest>();
+        public DbSet<Announcement> Announcements => Set<Announcement>();
     }
 }
