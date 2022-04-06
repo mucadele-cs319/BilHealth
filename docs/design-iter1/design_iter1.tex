@@ -80,6 +80,33 @@
 
   \subsection{Design Goals}
 
+  \subsubsection{Security}
+
+  Since health care is a highly sensitive service domain, it follows that the system should be designed
+  to accomplish adequate security for patient information and internal health center details.
+
+  \subsubsection{Scalability}
+
+  The system aims to support up to 20 thousand users, which means the design should enable concurrency and high throughput.
+
+  \subsubsection{Deployment}
+
+  In order to facilitate the development of the project in a fast paced environment,
+  the design takes into consideration concepts such as portability and replicability.
+  The sought result is that developers can easily run a local version of the system while
+  keeping things simple when the time comes to deploy to production.
+
+  \subsubsection{Testability}
+
+  Almost any respectable web service of today strives to achieve test driven development of some magnitude.
+  Our project is no different and the design attempts to make it possible to incorporate unit or integration tests
+  for the business logic, by means such as dependency injection.
+
+  \subsubsection{Extensibility and Maintainability}
+
+  The fast paced development environment can quickly turn the project into a nightmare of spaghetti code and architecture.
+  To counteract such a possibility, the design aims to keep components maintainable and extensible through proven OOP structs.
+
   \section{High-Level Software Architecture}
 
   \subsection{Subsystem Decomposition}
