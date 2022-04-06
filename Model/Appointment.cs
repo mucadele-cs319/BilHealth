@@ -15,6 +15,6 @@ namespace BilHealth.Model
         [Required] public Guid CaseId { get; set; }
         public Case? Case { get; set; }
 
-        public List<AppointmentVisit>? Visits { get; set; }
+        public AppointmentVisit? Visit { get; set; }
     }
 }

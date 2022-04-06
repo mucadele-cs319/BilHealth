@@ -6,11 +6,11 @@ namespace BilHealth.Model
     {
         [Required] public Guid Id { get; private set; }
         [Required] public DateTime DateTime { get; set; }
-        [Required] public string Notes { get; set; } = null!;
+        public string Notes { get; set; } = String.Empty;
 
-        public string? BPM { get; set; }
-        public string? BloodPressure { get; set; }
-        public string? BodyTemperature { get; set; }
+        public double? BPM { get; set; }
+        public double? BloodPressure { get; set; }
+        public double? BodyTemperature { get; set; }
 
         [Required] public Guid AppointmentId { get; set; }
         public Appointment? Appointment { get; set; }
