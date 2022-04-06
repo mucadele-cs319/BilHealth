@@ -6,7 +6,8 @@ namespace BilHealth.Services
 {
     public interface ITestResultService
     {
-        public Task CreateTestResult();
-        public Task UpdateTestResult();
+        Task CreateTestResult(TestResultDto details, IFormFile? testResultFile);
+        Task UpdateTestResult(TestResultDto details, IFormFile? testResultFile);
+        Task RemoveTestResult(Guid testResultId);
     }
 }

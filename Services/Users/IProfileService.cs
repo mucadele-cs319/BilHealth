@@ -6,15 +6,10 @@ namespace BilHealth.Services.Users
 {
     public interface IProfileService
     {
-        public Task SetSpecialization();
-        public Task SetCampus();
+        Task<List<Case>> GetPastCases(User user);
+        Task<List<Case>> GetOpenCases(User user);
 
-        public Task AddVaccination();
-        public Task UpdateVaccination();
-        public Task<List<Case>> GetPastCases();
-        public Task<List<Case>> GetOpenCases();
-        public Task SetBodyWeight();
-        public Task SetBodyHeight();
-        public Task SetBloodType();
+        Task UpdateProfile(Patient patientUser, PatientProfileEdit newProfile);
+        Task UpdateProfile(Doctor doctorUser, DoctorProfileEdit newProfile);
     }
 }

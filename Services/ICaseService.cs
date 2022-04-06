@@ -6,19 +6,18 @@ namespace BilHealth.Services
 {
     public interface ICaseService
     {
-        public Task CreateCase();
-        public Task ReopenCase();
-        public Task CloseCase();
-        public Task SetCaseState();
+        Task CreateCase(CaseDto details);
+        Task ReopenCase(Guid caseId);
+        Task CloseCase(Guid caseId);
+        Task SetCaseState(Guid caseId, CaseState newState);
 
-        public Task CreateMessage();
-        public Task CreateSystemMessage();
+        Task CreateMessage(CaseMessageDto details);
+        Task CreateSystemMessage(CaseSystemMessageDto details);
 
-        public Task CreatePrescription();
-        public Task UpdatePrescription();
+        Task CreatePrescription(PrescriptionDto details);
+        Task UpdatePrescription(PrescriptionDto details);
 
-        public Task CreateTriageRequest();
-        public Task ApproveTriageRequest();
-        public Task RejectTriageRequest();
+        Task CreateTriageRequest(TriageRequestDto details);
+        Task SetTriageRequestApproval(TriageRequestDto details, ApprovalStatus approval);
     }
 }
