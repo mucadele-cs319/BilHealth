@@ -105,6 +105,20 @@
 
   \subsection{Access Control and Security}
 
+  The project is secured by a typical authentication and authorization flow,
+  supported by our identity provider of choice, ASP.NET Core Identity.
+  Authentication is conducted over HTTPS with a user's username and password.
+  The controller endpoints of the project are exposed to users within specific role types,
+  which constitutes our authorization process.
+  The authentication is persisted on the user's device in the form of browser cookies, enabling user session capability.
+
+  The project is mostly exclusive to authenticated users, meaning that there are not many substantial actions a guest user can take.
+  Moreover, since users are divided across roughly 5 roles,
+  most HTTP endpoints concerning management of the system are forbidden to access by non-staff users.
+
+  Lastly, user details are stored in a database with their passwords having been hashed by the \textit{bcrypt} algorithm,
+  which is among the top choices in secure password storage techniques at this time.
+
   \subsection{Boundary Conditions}
 
   \section{Low-Level Design}
@@ -127,7 +141,7 @@
     \item \texttt{Microsoft.AspNetCore.Identity.EntityFrameworkCore}\textbf{:}\\
       This package provides authentication and authorization of users through integration with EF Core.
     \item \texttt{BCrypt.Net-Next}\textbf{:}\\
-      This package provides the BCrypt algorithms which are currently among the best in securing user passwords.
+      This package provides the \textit{bcrypt} algorithm which is currently among the best in securely hashing user passwords.
     \item \texttt{Microsoft.AspNetCore.Mvc.NewtonsoftJson}\textbf{:}\\
       This package is the most popular JSON library for .NET, used as the default solution in most cases.
     \item \texttt{Microsoft.AspNetCore.SpaProxy}\textbf{:}\\
