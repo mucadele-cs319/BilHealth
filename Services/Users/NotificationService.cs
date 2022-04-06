@@ -1,20 +1,14 @@
-using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
-using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BilHealth.Services.Users
 {
-    public class NotificationService : INotificationService
+    public class NotificationService : DbServiceBase, INotificationService
     {
-        private readonly AppDbContext DbCtx;
-
-        public NotificationService(AppDbContext dbCtx)
+        public NotificationService(AppDbContext dbCtx) : base(dbCtx)
         {
-            DbCtx = dbCtx;
         }
 
         public void AddNewAppointmentNotification(Guid userId, Appointment appointment)
@@ -71,7 +65,9 @@ namespace BilHealth.Services.Users
 
         public async Task AddNewCaseMessageNotification(CaseMessage message)
         {
-            var user = await DbCtx.Users.SingleAsync(user => user.Id == message.UserId);
+            var user = await DbCtx.Users.SingleOrDefaultAsync(user => user.Id == message.UserId);
+            if (user is null) return;
+
             await DbCtx.Entry(message).Reference(m => m.Case).LoadAsync();
             if (message.Case is null) throw new Exception("Case is null");
 
@@ -142,7 +138,9 @@ namespace BilHealth.Services.Users
 
         public async Task MarkNotificationRead(Guid notificationId)
         {
-            var notification = await DbCtx.Notifications.SingleAsync(notification => notification.Id == notificationId);
+            var notification = await DbCtx.Notifications.SingleOrDefaultAsync(notification => notification.Id == notificationId);
+            if (notification is null) return;
+
             notification.Read = true;
             await DbCtx.SaveChangesAsync();
         }
