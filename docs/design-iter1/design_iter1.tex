@@ -76,6 +76,17 @@
 
   \subsection{Hardware-Software Mapping}
 
+  The project does not have any extraordinary hardware requirements.
+  As it is a web application, it requires the users to have a device using which they can
+  connect to the web server of the application over the internet.
+  The main target devices for a supported user experience are desktop computers, laptops, and mobile phones.
+
+  In order to run the project the intended way, the host system's hardware must support stable containerization through Docker.
+  It is possible to reconfigure certain entrypoints of the project to support bare-metal execution too, at the cost of
+  system replicability and practicality.
+  Similar to most other web services, the project is officially supported to run on a Linux environment, which
+  may be of consideration when choosing hardware.
+
   \subsection{Persistent Data Management}
 
   The project makes use of PostgreSQL as its persistent data storage solution.
