@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace BilHealth.Services.Users
 {
@@ -14,22 +14,32 @@ namespace BilHealth.Services.Users
 
         public async Task<List<Case>> GetOpenCases(User user)
         {
-            if (user is Patient patient) {
+            if (user is Patient patient)
+            {
                 return await DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State != CaseState.Closed).ToListAsync();
-            } else if (user is Doctor doctor) {
+            }
+            else if (user is Doctor doctor)
+            {
                 return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Open).ToListAsync();
-            } else {
+            }
+            else
+            {
                 throw new ArgumentException("This user type is not supported yet: " + user.GetType());
             }
         }
 
         public async Task<List<Case>> GetPastCases(User user)
         {
-            if (user is Patient patient) {
+            if (user is Patient patient)
+            {
                 return await DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State == CaseState.Closed).ToListAsync();
-            } else if (user is Doctor doctor) {
+            }
+            else if (user is Doctor doctor)
+            {
                 return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Closed).ToListAsync();
-            } else {
+            }
+            else
+            {
                 throw new ArgumentException("This user type is not supported yet: " + user.GetType());
             }
         }

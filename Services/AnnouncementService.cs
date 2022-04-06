@@ -15,7 +15,8 @@ namespace BilHealth.Services
 
         public async Task AddAnnouncement(AnnouncementDto announcement)
         {
-            var newAnnouncement = new Announcement {
+            var newAnnouncement = new Announcement
+            {
                 DateTime = DateTime.Now,
                 Title = announcement.Title,
                 Message = announcement.Message
