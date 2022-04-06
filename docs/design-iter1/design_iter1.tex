@@ -129,6 +129,35 @@
 
   \subsection{Packages}
 
+  Below is a list of our namespaces with brief descriptions.
+  Note that, to preserve the anonimity of the report, we've replaced the root namespace with a placeholder ``\texttt{Project}''.
+
+  \begin{itemize}
+    \item \texttt{Project.Utility}\textbf{:}\\
+      This namespace contains the utility functions which were able to be decoupled from the project at large.
+      In doing so, it can be used reliably across other namespaces.
+    \item \texttt{Project.Utility.Enum}\textbf{:}\\
+      This namespace contains the \textit{enum} and \textit{enum class} definitions that are used in many parts of the project.
+    \item \texttt{Project.Services}\textbf{:}\\
+      This namespace contains the main business logic interface through which boundary and entity systems are connected.
+    \item \texttt{Project.Services.Users}\textbf{:}\\
+      This namespace carries the same responsibility as its parent, but specifically for user-related entities.
+    \item \texttt{Project.Model}\textbf{:}\\
+      This namespace contains the entities that are persisted into a database. The main units of data are located here.
+    \item \texttt{Project.Model.Identity}\textbf{:}\\
+      This namespace contains entities that are specifically user information holding objects.
+    \item \texttt{Project.Model.Dto}\textbf{:}\\
+      This namespace contains \textit{record} objects that are used to transfer data to and from the front-facing controllers.
+      It is also used for some internal communication of unpersisted data.
+      In other words, these are temporary representations of the actual data entities to be persisted.
+    \item \texttt{Project.Data}\textbf{:}\\
+      This namespace contains the database context built from EF Core's repository-like architecture.
+    \item \texttt{Project.Controllers}\textbf{:}\\
+      This namespace contains the front-facing API endpoints through which external communication with clients take place.
+  \end{itemize}
+
+  \subsubsection{External Packages}
+
   \begin{itemize}
     \item \texttt{Microsoft.AspNetCore}\textbf{:}\\
       This package is the framework supporting the entire web application.
