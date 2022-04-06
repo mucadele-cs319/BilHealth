@@ -78,6 +78,20 @@
 
   \subsection{Persistent Data Management}
 
+  The project makes use of PostgreSQL as its persistent data storage solution.
+  The project does not have specific requirements that directly justify the use of PostgreSQL,
+  however, this database system is well rounded enough to save the development process from any potential drawbacks.
+  The \texttt{psql} command line tool is easy to use and supports our workflow in implementing database migrations.
+  Also, the Docker images for the database are robust and simple,
+  which has allowed the project to be supported by a containerized database.
+
+  On top of the actual database, the project uses EF Core as an object relational mapper (ORM),
+  which is Microsoft's official library for data persistence.
+  We use the recommended \textit{code-first} approach of database management, which means our PostgreSQL tables are
+  constructed by EF Core with respect to our entity definitions in C\# code.
+  The EF Core toolchain generates migrations, which it also converts to SQL scripts,
+  using which a database can be configured to host the project in moments.
+
   \subsection{Access Control and Security}
 
   \subsection{Boundary Conditions}
