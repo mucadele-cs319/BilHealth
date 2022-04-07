@@ -9,13 +9,12 @@ services:
       - "5000:5000" # ASP.NET Core (HTTP)
     depends_on:
       - dbpostgres
+      - redis
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000 # Not having an HTTPS address here seems to disable redirection
       - PGUSER=postgres
       - RUNNING_IN_CONTAINER=true
-    volumes:
-      - dataprotectionprod:/root/.aspnet/DataProtection-Keys
 
   dbpostgres:
     image: postgres
@@ -25,6 +24,9 @@ services:
     volumes:
       - postgresprod:/var/lib/postgresql/data
 
+  redis:
+    image: redis
+
 # In the future, it may make sense to set up a reverse-proxy in order to achieve SSL capability
 # See https://www.digitalocean.com/community/tutorials/how-to-secure-a-containerized-node-js-application-with-nginx-let-s-encrypt-and-docker-compose
 # Also https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-6.0#configure-nginx
@@ -32,4 +34,3 @@ services:
 
 volumes:
   postgresprod:
-  dataprotectionprod:

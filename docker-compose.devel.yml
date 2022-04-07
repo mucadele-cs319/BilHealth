@@ -10,9 +10,9 @@ services:
       - "5222:5222" # ASP.NET Core (HTTP)
     volumes:
       - .:/app # Watch source code changes from host system
-      - dataprotectiondevel:/root/.aspnet/DataProtection-Keys
     depends_on:
       - dbpostgres
+      - redis
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # The following is overridden by `launchSettings.json`. Also, `0.0.0.0` is preferred over `*` for the CRA proxy
@@ -29,6 +29,8 @@ services:
     volumes:
       - postgresdevel:/var/lib/postgresql/data
 
+  redis:
+    image: redis
+
 volumes:
   postgresdevel:
-  dataprotectiondevel:

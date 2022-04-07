@@ -4,6 +4,7 @@ using BilHealth.Services;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 });
+
+builder.Services.AddDataProtection().PersistKeysToStackExchangeRedis(
+    () => StackExchange.Redis.ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")).GetDatabase(),
+    "DataProtection-Keys");
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
