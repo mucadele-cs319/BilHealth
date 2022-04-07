@@ -1,8 +1,6 @@
-using BilHealth.Utility.Enum;
-
 namespace BilHealth.Model
 {
-    public class Nurse : User
+    public class Nurse : DomainUser
     {
         public List<TriageRequest>? TriageRequests { get; set; }
     }

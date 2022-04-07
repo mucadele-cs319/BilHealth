@@ -20,10 +20,10 @@ builder.Services.Configure<RouteOptions>(options =>
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<User, Role>()
+builder.Services.AddIdentity<AppUser, Role>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
+builder.Services.AddScoped<IPasswordHasher<AppUser>, BCryptPasswordHasher>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

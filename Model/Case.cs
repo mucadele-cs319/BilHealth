@@ -8,9 +8,9 @@ namespace BilHealth.Model
         [Required] public Guid Id { get; private set; }
         [Required] public DateTime DateTime { get; set; }
         [Required] public Guid PatientUserId { get; set; }
-        public User PatientUser { get; set; } = null!;
+        public Patient PatientUser { get; set; } = null!;
         public Guid? DoctorUserId { get; set; }
-        public User? DoctorUser { get; set; }
+        public Doctor? DoctorUser { get; set; }
         [Required] public CaseType Type { get; set; }
         [Required] public CaseState State { get; set; } = CaseState.Open;
 

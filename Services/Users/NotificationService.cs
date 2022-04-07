@@ -65,7 +65,7 @@ namespace BilHealth.Services.Users
 
         public async Task AddNewCaseMessageNotification(CaseMessage message)
         {
-            var user = await DbCtx.Users.SingleOrDefaultAsync(user => user.Id == message.UserId);
+            var user = await DbCtx.DomainUsers.SingleOrDefaultAsync(user => user.Id == message.UserId);
             if (user is null) return;
 
             await DbCtx.Entry(message).Reference(m => m.Case).LoadAsync();
@@ -145,7 +145,7 @@ namespace BilHealth.Services.Users
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task MarkAllNotificationsRead(User user)
+        public async Task MarkAllNotificationsRead(DomainUser user)
         {
             var unreads = await DbCtx.Notifications.Where(n => n.UserId == user.Id && n.Read == false).ToListAsync();
             foreach (var unread in unreads)
@@ -153,12 +153,12 @@ namespace BilHealth.Services.Users
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task<List<Notification>> GetUnreadNotifications(User user)
+        public async Task<List<Notification>> GetUnreadNotifications(DomainUser user)
         {
             return await DbCtx.Notifications.Where(n => n.UserId == user.Id && n.Read == false).OrderByDescending(n => n.DateTime).ToListAsync();
         }
 
-        public async Task<List<Notification>> GetAllNotifications(User user)
+        public async Task<List<Notification>> GetAllNotifications(DomainUser user)
         {
             return await DbCtx.Notifications.Where(n => n.UserId == user.Id).OrderByDescending(n => n.DateTime).ToListAsync();
         }

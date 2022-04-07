@@ -12,7 +12,7 @@ namespace BilHealth.Services.Users
         {
         }
 
-        public async Task<List<Case>> GetOpenCases(User user)
+        public async Task<List<Case>> GetOpenCases(DomainUser user)
         {
             if (user is Patient patient)
             {
@@ -28,7 +28,7 @@ namespace BilHealth.Services.Users
             }
         }
 
-        public async Task<List<Case>> GetPastCases(User user)
+        public async Task<List<Case>> GetPastCases(DomainUser user)
         {
             if (user is Patient patient)
             {

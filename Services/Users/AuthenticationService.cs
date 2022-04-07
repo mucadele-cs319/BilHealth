@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
@@ -6,18 +7,19 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BilHealth.Services.Users
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : DbServiceBase, IAuthenticationService
     {
-        private readonly UserManager<User> UserManager;
-        private readonly SignInManager<User> SignInManager;
+        private readonly UserManager<AppUser> UserManager;
+        private readonly SignInManager<AppUser> SignInManager;
         private readonly RoleManager<Role> RoleManager;
         private readonly HttpContext? HttpContext;
 
         public AuthenticationService(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            AppDbContext dbCtx,
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
             RoleManager<Role> roleManager,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor) : base(dbCtx)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -30,7 +32,7 @@ namespace BilHealth.Services.Users
             var roleType = UserRoleType.Names.First(roleType => roleType == registration.UserType);
             if (roleType is null) return IdentityResult.Failed(new IdentityError { Description = "Invalid role" });
 
-            var user = new User(registration);
+            AppUser user = new(registration);
 
             var creationResult = await UserManager.CreateAsync(user, registration.Password);
             return creationResult.Succeeded ? await AssignRole(user, roleType) : creationResult;
@@ -62,7 +64,7 @@ namespace BilHealth.Services.Users
                     await RoleManager.CreateAsync(new Role { Name = roleName });
         }
 
-        public async Task<IdentityResult> AssignRole(User user, UserRoleType roleType)
+        public async Task<IdentityResult> AssignRole(AppUser user, UserRoleType roleType)
         {
             return await UserManager.AddToRoleAsync(user, roleType);
         }
@@ -81,7 +83,7 @@ namespace BilHealth.Services.Users
             return user is null ? IdentityResult.Failed() : await UserManager.DeleteAsync(user);
         }
 
-        public async Task<IdentityResult> ChangePassword(User user, string currentPassword, string newPassword)
+        public async Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword)
         {
             return await UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
@@ -89,15 +91,50 @@ namespace BilHealth.Services.Users
         /// <summary>
         /// Unsafe: Only to be used for administration tasks
         /// </summary>
-        public async Task<IdentityResult> ChangePasswordUnsafe(User user, string newPassword)
+        public async Task<IdentityResult> ChangePasswordUnsafe(AppUser user, string newPassword)
         {
             var token = await UserManager.GeneratePasswordResetTokenAsync(user);
             return await UserManager.ResetPasswordAsync(user, token, newPassword);
         }
 
-        public async Task<User> getUser(ClaimsPrincipal principal)
+        public async Task<AppUser> GetUser(ClaimsPrincipal principal)
         {
-            return await UserManager.GetUserAsync(principal);
+            var user = await UserManager.GetUserAsync(principal);
+
+            await DbCtx.Entry(user).Reference(u => u.DomainUser).LoadAsync();
+            return user;
+
+            // switch (user)
+            // {
+            //     case Doctor doctor:
+            //     {
+            //         await DbCtx.Entry(doctor).Reference(d => d.Cases).LoadAsync();
+            //         return doctor;
+            //     }
+
+            //     case Nurse nurse:
+            //     {
+            //         await DbCtx.Entry(nurse).Reference(n => n.TriageRequests).LoadAsync();
+            //         return nurse;
+            //     }
+
+            //     case Patient patient:
+            //     {
+            //         await DbCtx.Entry(patient).Reference(p => p.Vaccinations).LoadAsync();
+            //         await DbCtx.Entry(patient).Reference(p => p.TestResults).LoadAsync();
+            //         await DbCtx.Entry(patient).Reference(p => p.Cases).LoadAsync();
+            //         return patient;
+            //     }
+
+            //     default:
+            //         return user;
+            // }
+        }
+
+        public async Task<UserRoleType> GetUserRole(AppUser user)
+        {
+            var roleName = (await UserManager.GetRolesAsync(user)).First();
+            return UserRoleType.Names.First(roleType => roleType == roleName);
         }
     }
 }

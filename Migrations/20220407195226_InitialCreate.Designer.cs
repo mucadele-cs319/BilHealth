@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220320031730_InterfaceCreation")]
-    partial class InterfaceCreation
+    [Migration("20220407195226_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -87,14 +87,14 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("BPM")
-                        .HasColumnType("text");
+                    b.Property<double?>("BPM")
+                        .HasColumnType("double precision");
 
-                    b.Property<string>("BloodPressure")
-                        .HasColumnType("text");
+                    b.Property<double?>("BloodPressure")
+                        .HasColumnType("double precision");
 
-                    b.Property<string>("BodyTemperature")
-                        .HasColumnType("text");
+                    b.Property<double?>("BodyTemperature")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("timestamp with time zone");
@@ -105,9 +105,75 @@ namespace BilHealth.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentId");
+                    b.HasIndex("AppointmentId")
+                        .IsUnique();
 
                     b.ToTable("AppointmentVisit");
+                });
+
+            modelBuilder.Entity("BilHealth.Model.AppUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("BilHealth.Model.Case", b =>
@@ -122,9 +188,6 @@ namespace BilHealth.Migrations
                     b.Property<Guid?>("DoctorUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("PatientId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("PatientUserId")
                         .HasColumnType("uuid");
 
@@ -137,8 +200,6 @@ namespace BilHealth.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorUserId");
-
-                    b.HasIndex("PatientId");
 
                     b.HasIndex("PatientUserId");
 
@@ -197,6 +258,43 @@ namespace BilHealth.Migrations
                     b.ToTable("CaseSystemMessage");
                 });
 
+            modelBuilder.Entity("BilHealth.Model.DomainUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique();
+
+                    b.ToTable("DomainUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("DomainUser");
+                });
+
             modelBuilder.Entity("BilHealth.Model.Notification", b =>
                 {
                     b.Property<Guid>("Id")
@@ -222,8 +320,6 @@ namespace BilHealth.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });
@@ -292,9 +388,6 @@ namespace BilHealth.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("PatientId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("PatientUserId")
                         .HasColumnType("uuid");
 
@@ -306,8 +399,6 @@ namespace BilHealth.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
 
                     b.HasIndex("PatientUserId");
 
@@ -343,91 +434,6 @@ namespace BilHealth.Migrations
                     b.ToTable("TriageRequests");
                 });
 
-            modelBuilder.Entity("BilHealth.Model.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-                });
-
             modelBuilder.Entity("BilHealth.Model.Vaccination", b =>
                 {
                     b.Property<Guid>("Id")
@@ -437,9 +443,6 @@ namespace BilHealth.Migrations
                     b.Property<DateTime?>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("PatientId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("PatientUserId")
                         .HasColumnType("uuid");
 
@@ -448,8 +451,6 @@ namespace BilHealth.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
 
                     b.HasIndex("PatientUserId");
 
@@ -559,9 +560,16 @@ namespace BilHealth.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BilHealth.Model.Admin", b =>
+                {
+                    b.HasBaseType("BilHealth.Model.DomainUser");
+
+                    b.HasDiscriminator().HasValue("Admin");
+                });
+
             modelBuilder.Entity("BilHealth.Model.Doctor", b =>
                 {
-                    b.HasBaseType("BilHealth.Model.User");
+                    b.HasBaseType("BilHealth.Model.DomainUser");
 
                     b.Property<int>("Campus")
                         .HasColumnType("integer");
@@ -573,9 +581,19 @@ namespace BilHealth.Migrations
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
+            modelBuilder.Entity("BilHealth.Model.Nurse", b =>
+                {
+                    b.HasBaseType("BilHealth.Model.DomainUser");
+
+                    b.HasDiscriminator().HasValue("Nurse");
+                });
+
             modelBuilder.Entity("BilHealth.Model.Patient", b =>
                 {
-                    b.HasBaseType("BilHealth.Model.User");
+                    b.HasBaseType("BilHealth.Model.DomainUser");
+
+                    b.Property<bool>("Blacklisted")
+                        .HasColumnType("boolean");
 
                     b.Property<int?>("BloodType")
                         .HasColumnType("integer");
@@ -587,6 +605,13 @@ namespace BilHealth.Migrations
                         .HasColumnType("double precision");
 
                     b.HasDiscriminator().HasValue("Patient");
+                });
+
+            modelBuilder.Entity("BilHealth.Model.Staff", b =>
+                {
+                    b.HasBaseType("BilHealth.Model.DomainUser");
+
+                    b.HasDiscriminator().HasValue("Staff");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Appointment", b =>
@@ -603,8 +628,8 @@ namespace BilHealth.Migrations
             modelBuilder.Entity("BilHealth.Model.AppointmentVisit", b =>
                 {
                     b.HasOne("BilHealth.Model.Appointment", "Appointment")
-                        .WithMany("Visits")
-                        .HasForeignKey("AppointmentId")
+                        .WithOne("Visit")
+                        .HasForeignKey("BilHealth.Model.AppointmentVisit", "AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -613,16 +638,12 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("BilHealth.Model.Case", b =>
                 {
-                    b.HasOne("BilHealth.Model.User", "DoctorUser")
-                        .WithMany()
+                    b.HasOne("BilHealth.Model.Doctor", "DoctorUser")
+                        .WithMany("Cases")
                         .HasForeignKey("DoctorUserId");
 
-                    b.HasOne("BilHealth.Model.Patient", null)
+                    b.HasOne("BilHealth.Model.Patient", "PatientUser")
                         .WithMany("Cases")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("BilHealth.Model.User", "PatientUser")
-                        .WithMany()
                         .HasForeignKey("PatientUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -654,13 +675,15 @@ namespace BilHealth.Migrations
                     b.Navigation("Case");
                 });
 
-            modelBuilder.Entity("BilHealth.Model.Notification", b =>
+            modelBuilder.Entity("BilHealth.Model.DomainUser", b =>
                 {
-                    b.HasOne("BilHealth.Model.User", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
+                    b.HasOne("BilHealth.Model.AppUser", "AppUser")
+                        .WithOne("DomainUser")
+                        .HasForeignKey("BilHealth.Model.DomainUser", "AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Prescription", b =>
@@ -671,7 +694,7 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.User", "DoctorUser")
+                    b.HasOne("BilHealth.Model.Doctor", "DoctorUser")
                         .WithMany()
                         .HasForeignKey("DoctorUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -684,12 +707,8 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("BilHealth.Model.TestResult", b =>
                 {
-                    b.HasOne("BilHealth.Model.Patient", null)
+                    b.HasOne("BilHealth.Model.Patient", "PatientUser")
                         .WithMany("TestResults")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("BilHealth.Model.User", "PatientUser")
-                        .WithMany()
                         .HasForeignKey("PatientUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -705,14 +724,14 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.User", "DoctorUser")
+                    b.HasOne("BilHealth.Model.Doctor", "DoctorUser")
                         .WithMany()
                         .HasForeignKey("DoctorUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.User", "NurseUser")
-                        .WithMany()
+                    b.HasOne("BilHealth.Model.Nurse", "NurseUser")
+                        .WithMany("TriageRequests")
                         .HasForeignKey("NurseUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -726,12 +745,8 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("BilHealth.Model.Vaccination", b =>
                 {
-                    b.HasOne("BilHealth.Model.Patient", null)
+                    b.HasOne("BilHealth.Model.Patient", "PatientUser")
                         .WithMany("Vaccinations")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("BilHealth.Model.User", "PatientUser")
-                        .WithMany()
                         .HasForeignKey("PatientUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -750,7 +765,7 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("BilHealth.Model.User", null)
+                    b.HasOne("BilHealth.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -759,7 +774,7 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("BilHealth.Model.User", null)
+                    b.HasOne("BilHealth.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -774,7 +789,7 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.User", null)
+                    b.HasOne("BilHealth.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -783,7 +798,7 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("BilHealth.Model.User", null)
+                    b.HasOne("BilHealth.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -792,7 +807,13 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("BilHealth.Model.Appointment", b =>
                 {
-                    b.Navigation("Visits");
+                    b.Navigation("Visit");
+                });
+
+            modelBuilder.Entity("BilHealth.Model.AppUser", b =>
+                {
+                    b.Navigation("DomainUser")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BilHealth.Model.Case", b =>
@@ -806,9 +827,14 @@ namespace BilHealth.Migrations
                     b.Navigation("SystemMessages");
                 });
 
-            modelBuilder.Entity("BilHealth.Model.User", b =>
+            modelBuilder.Entity("BilHealth.Model.Doctor", b =>
                 {
-                    b.Navigation("Notifications");
+                    b.Navigation("Cases");
+                });
+
+            modelBuilder.Entity("BilHealth.Model.Nurse", b =>
+                {
+                    b.Navigation("TriageRequests");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Patient", b =>

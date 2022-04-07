@@ -23,8 +23,8 @@ namespace BilHealth.Services.Users
         void AddNewPrescriptionNotification(Guid userId, Prescription prescription);
 
         Task MarkNotificationRead(Guid notificationId);
-        Task MarkAllNotificationsRead(User user);
-        Task<List<Notification>> GetUnreadNotifications(User user);
-        Task<List<Notification>> GetAllNotifications(User user);
+        Task MarkAllNotificationsRead(DomainUser user);
+        Task<List<Notification>> GetUnreadNotifications(DomainUser user);
+        Task<List<Notification>> GetAllNotifications(DomainUser user);
     }
 }

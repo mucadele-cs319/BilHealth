@@ -14,11 +14,12 @@ namespace BilHealth.Services.Users
         Task LogOut();
 
         Task CreateRoles();
-        Task<IdentityResult> AssignRole(User user, UserRoleType roleType);
+        Task<IdentityResult> AssignRole(AppUser user, UserRoleType roleType);
         Task<IdentityResult> AssignRole(string userName, UserRoleType roleType);
 
         Task<IdentityResult> DeleteUser(string userName);
-        Task<IdentityResult> ChangePassword(User user, string currentPassword, string newPassword);
-        Task<User> getUser(ClaimsPrincipal principal);
+        Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
+        Task<AppUser> GetUser(ClaimsPrincipal principal);
+        Task<UserRoleType> GetUserRole(AppUser user);
     }
 }

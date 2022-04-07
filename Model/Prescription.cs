@@ -9,7 +9,7 @@ namespace BilHealth.Model
         [Required] public Guid CaseId { get; set; }
         public Case Case { get; set; } = null!;
         [Required] public Guid DoctorUserId { get; set; }
-        public User DoctorUser { get; set; } = null!;
+        public Doctor DoctorUser { get; set; } = null!;
 
         [Required] public string Item { get; set; } = null!; // TODO: Need a proper way to store drugs
     }
