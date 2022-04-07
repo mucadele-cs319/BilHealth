@@ -100,7 +100,6 @@ else
             LastName = "Smith",
             UserType = UserRoleType.Admin
         }).Wait();
-        authService.AssignRole(adminUsername, UserRoleType.Admin).Wait();
     }
 }
 
