@@ -10,7 +10,7 @@ services:
       - "5222:5222" # ASP.NET Core (HTTP)
     volumes:
       - .:/app # Watch source code changes from host system
-      - dataprotection:/root/.aspnet/DataProtection-Keys
+      - dataprotectiondevel:/root/.aspnet/DataProtection-Keys
     depends_on:
       - dbpostgres
     environment:
@@ -27,8 +27,8 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust # Allow connection without password
       - POSTGRES_DB=bilhealthdevel
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgresdevel:/var/lib/postgresql/data
 
 volumes:
-  postgres:
-  dataprotection:
+  postgresdevel:
+  dataprotectiondevel:

@@ -15,7 +15,7 @@ services:
       - PGUSER=postgres
       - RUNNING_IN_CONTAINER=true
     volumes:
-      - dataprotection:/root/.aspnet/DataProtection-Keys
+      - dataprotectionprod:/root/.aspnet/DataProtection-Keys
 
   dbpostgres:
     image: postgres
@@ -23,7 +23,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust # Allow connection without password
       - POSTGRES_DB=bilhealthprod
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgresprod:/var/lib/postgresql/data
 
 # In the future, it may make sense to set up a reverse-proxy in order to achieve SSL capability
 # See https://www.digitalocean.com/community/tutorials/how-to-secure-a-containerized-node-js-application-with-nginx-let-s-encrypt-and-docker-compose
@@ -31,5 +31,5 @@ services:
 # Or any other examples really, it should be somewhat "straightforward"
 
 volumes:
-  postgres:
-  dataprotection:
+  postgresprod:
+  dataprotectionprod:
