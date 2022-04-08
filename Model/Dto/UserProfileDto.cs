@@ -10,7 +10,7 @@ namespace BilHealth.Model.Dto
         public string? Email { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public Gender Gender { get; set; } = Gender.Unspecified;
+        public Gender? Gender { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
         // Patient Fields
@@ -22,13 +22,13 @@ namespace BilHealth.Model.Dto
         public List<TestResultDto>? TestResults { get; set; }
 
         public List<CaseDto>? Cases { get; set; }
-        public bool Blacklisted { get; set; } = false;
+        public bool? Blacklisted { get; set; }
 
         // Nurse Fields
         public List<TriageRequestDto>? TriageRequests { get; set; }
 
         // Doctor Fields
-        public string Specialization { get; set; } = String.Empty;
-        public Campus Campus { get; set; }
+        public string? Specialization { get; set; }
+        public Campus? Campus { get; set; }
     }
 }

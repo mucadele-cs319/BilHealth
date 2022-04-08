@@ -46,15 +46,19 @@ namespace BilHealth.Services.Users
 
         public async Task UpdateProfile(DomainUser user, UserProfileDto newProfile)
         {
-            user.Gender = newProfile.Gender;
+            user.Gender = newProfile.Gender ?? user.Gender;
 
-            if (user is Patient patient) {
-                patient.BodyWeight = newProfile.BodyWeight;
-                patient.BodyHeight = newProfile.BodyHeight;
-                patient.BloodType = newProfile.BloodType;
-            } else if (user is Doctor doctor) {
-                doctor.Specialization = newProfile.Specialization;
-                doctor.Campus = newProfile.Campus;
+            switch (user)
+            {
+                case Patient patient:
+                    patient.BodyWeight = newProfile.BodyWeight ?? patient.BodyWeight;
+                    patient.BodyHeight = newProfile.BodyHeight ?? patient.BodyHeight;
+                    patient.BloodType = newProfile.BloodType ?? patient.BloodType;
+                    break;
+                case Doctor doctor:
+                    doctor.Specialization = newProfile.Specialization ?? doctor.Specialization;
+                    doctor.Campus = newProfile.Campus ?? doctor.Campus;
+                    break;
             }
 
             await DbCtx.SaveChangesAsync();
