@@ -32,7 +32,8 @@ namespace BilHealth.Utility.Enum
             return HashCode.Combine(Value);
         }
 
-        public static bool operator ==(UserRoleType type1, UserRoleType type2) {
+        public static bool operator ==(UserRoleType type1, UserRoleType type2)
+        {
             if (ReferenceEquals(type1, null) || ReferenceEquals(type2, null)) return false;
             return type1.Equals(type2);
         }

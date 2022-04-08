@@ -49,7 +49,7 @@ namespace BilHealth.Controllers
 
             if (notificationId is null) return BadRequest("Missing notification ID");
 
-            await NotificationService.MarkNotificationRead((Guid) notificationId);
+            await NotificationService.MarkNotificationRead((Guid)notificationId);
             return Ok();
         }
     }
