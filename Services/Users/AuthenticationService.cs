@@ -131,6 +131,13 @@ namespace BilHealth.Services.Users
             // }
         }
 
+        public async Task<AppUser> GetUser(Guid userId)
+        {
+            var user = await DbCtx.Users.FindAsync(userId);
+            if (user is null) throw new ArgumentException("No user found with id" + userId);
+            return user;
+        }
+
         public async Task<UserRoleType> GetUserRole(AppUser user)
         {
             var roleName = (await UserManager.GetRolesAsync(user)).First();
