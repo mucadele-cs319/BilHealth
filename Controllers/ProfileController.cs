@@ -30,38 +30,12 @@ namespace BilHealth.Controllers
             return DtoMapper.Map(user, role);
         }
 
-            var dto = new UserProfileDto
-            {
-                UserType = role,
-                Email = user.Email,
-                FirstName = domainUser.FirstName,
-                LastName = domainUser.LastName,
-                Gender = domainUser.Gender,
-                DateOfBirth = domainUser.DateOfBirth
-            };
-
-            if (domainUser is Patient patient)
-            {
-                dto.BodyWeight = patient.BodyWeight;
-                dto.BodyHeight = patient.BodyHeight;
-                dto.BloodType = patient.BloodType;
-                dto.Vaccinations = patient.Vaccinations;
-                dto.TestResults = patient.TestResults;
-                dto.Cases = patient.Cases;
-                dto.Blacklisted = patient.Blacklisted;
-            }
-            else if (domainUser is Nurse nurse)
-            {
-                dto.TriageRequests = nurse.TriageRequests;
-            }
-            else if (domainUser is Doctor doctor)
-            {
-                dto.Specialization = doctor.Specialization;
-                dto.Campus = doctor.Campus;
-                dto.Cases = doctor.Cases;
-            }
-
-            return dto;
+        [HttpPost]
+        public async Task<IActionResult> Update(UserProfileDto newProfile)
+        {
+            var user = await AuthenticationService.GetUser(User);
+            await ProfileService.UpdateProfile(user.DomainUser, newProfile);
+            return Ok();
         }
     }
 }

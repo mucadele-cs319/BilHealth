@@ -46,6 +46,8 @@ namespace BilHealth.Services.Users
 
         public async Task UpdateProfile(DomainUser user, UserProfileDto newProfile)
         {
+            user.Gender = newProfile.Gender;
+
             if (user is Patient patient) {
                 patient.BodyWeight = newProfile.BodyWeight;
                 patient.BodyHeight = newProfile.BodyHeight;
@@ -53,8 +55,6 @@ namespace BilHealth.Services.Users
             } else if (user is Doctor doctor) {
                 doctor.Specialization = newProfile.Specialization;
                 doctor.Campus = newProfile.Campus;
-            } else {
-                return;
             }
 
             await DbCtx.SaveChangesAsync();
