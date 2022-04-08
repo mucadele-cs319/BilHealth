@@ -5,7 +5,7 @@ namespace BilHealth.Services
 {
     public interface IAnnouncementService
     {
-        Task AddAnnouncement(AnnouncementDto announcement);
+        Task<Announcement> AddAnnouncement(AnnouncementDto announcement);
         /// <summary>
         /// Updates an announcement's message and title, if it exists.
         /// </summary>

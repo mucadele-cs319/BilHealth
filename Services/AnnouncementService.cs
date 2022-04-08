@@ -13,7 +13,7 @@ namespace BilHealth.Services
         {
         }
 
-        public async Task AddAnnouncement(AnnouncementDto announcement)
+        public async Task<Announcement> AddAnnouncement(AnnouncementDto announcement)
         {
             var newAnnouncement = new Announcement
             {
@@ -23,6 +23,7 @@ namespace BilHealth.Services
             };
             DbCtx.Announcements.Add(newAnnouncement);
             await DbCtx.SaveChangesAsync();
+            return newAnnouncement;
         }
 
         public async Task<bool> RemoveAnnouncement(Guid announcementId)
