@@ -31,12 +31,22 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public new async Task<UserProfileDto> User(Guid id)
+        public new async Task<IActionResult> User(Guid id)
         {
             // TODO: Constrain DTO fields according to the querying user's access level
-            var user = await AuthenticationService.GetUser(id);
+
+            AppUser user;
+            try
+            {
+                user = await AuthenticationService.GetUser(id);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+
             var role = await AuthenticationService.GetUserRole(user);
-            return DtoMapper.Map(user, role);
+            return Ok(DtoMapper.Map(user, role));
         }
 
         [HttpPost]
