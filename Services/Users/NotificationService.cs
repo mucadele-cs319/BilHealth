@@ -151,9 +151,7 @@ namespace BilHealth.Services.Users
 
         public async Task MarkAllNotificationsRead(DomainUser user)
         {
-            var unreads = await DbCtx.Notifications.Where(n => n.UserId == user.Id && n.Read == false).ToListAsync();
-            foreach (var unread in unreads)
-                unread.Read = true;
+            await DbCtx.Notifications.Where(n => n.UserId == user.Id && n.Read == false).ForEachAsync(n => n.Read = true);
             await DbCtx.SaveChangesAsync();
         }
 
