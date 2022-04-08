@@ -4,7 +4,7 @@ namespace BilHealth.Model.Dto
 {
     public record UserProfileDto
     {
-        public string UserType { get; set; } = null!;
+        public string? UserType { get; set; }
 
         // User Fields
         public string? Email { get; set; }
@@ -18,14 +18,14 @@ namespace BilHealth.Model.Dto
         public double? BodyHeight { get; set; }
         public BloodType? BloodType { get; set; }
 
-        public List<Vaccination>? Vaccinations { get; set; }
-        public List<TestResult>? TestResults { get; set; }
+        public List<VaccinationDto>? Vaccinations { get; set; }
+        public List<TestResultDto>? TestResults { get; set; }
 
-        public List<Case>? Cases { get; set; }
+        public List<CaseDto>? Cases { get; set; }
         public bool Blacklisted { get; set; } = false;
 
         // Nurse Fields
-        public List<TriageRequest>? TriageRequests { get; set; }
+        public List<TriageRequestDto>? TriageRequests { get; set; }
 
         // Doctor Fields
         public string Specialization { get; set; } = String.Empty;

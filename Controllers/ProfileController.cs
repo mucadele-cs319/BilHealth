@@ -1,6 +1,7 @@
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
+using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,9 @@ namespace BilHealth.Controllers
         public async Task<UserProfileDto> Me()
         {
             var user = await AuthenticationService.GetUser(User);
-            var domainUser = user.DomainUser;
             var role = await AuthenticationService.GetUserRole(user);
+            return DtoMapper.Map(user, role);
+        }
 
             var dto = new UserProfileDto
             {
