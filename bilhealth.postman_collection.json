@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "e2325dea-235a-4f5d-80c6-cbe0233f583b",
+		"name": "bilhealth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"22001223\",\n    \"password\": \"testpass1\",\n    \"firstname\": \"ved\",\n    \"lastname\": \"eren\",\n    \"email\": \"dev@vedat.xyz\",\n    \"usertype\": \"Patient\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/auth/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"0000\",\n    \"password\": \"admin123\",\n    \"rememberme\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/auth/logout",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changepassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/auth/changepassword?currentpassword=admin123&newpassword=hello123",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"auth",
+								"changepassword"
+							],
+							"query": [
+								{
+									"key": "currentpassword",
+									"value": "admin123"
+								},
+								{
+									"key": "newpassword",
+									"value": "hello123"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/profile/me",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    /*\"firstName\": \"John\",\n    \"lastName\": \"Smith\",*/\n    \"gender\": 1\n    /*\"dateOfBirth\": null,\n    \"bodyWeight\": null,\n    \"bodyHeight\": null,\n    \"bloodType\": null,\n    \"vaccinations\": null,\n    \"testResults\": null,\n    \"cases\": null,\n    \"blacklisted\": false,\n    \"triageRequests\": null,\n    \"specialization\": \"\",\n    \"campus\": 0\n    */\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/profile/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"profile",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/profile/user/67699276-b537-4d74-ab96-48f087c12ef5",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"profile",
+								"user",
+								"67699276-b537-4d74-ab96-48f087c12ef5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Announcements",
+			"item": [
+				{
+					"name": "announcements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/announcement/all",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"announcement",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Announcement 2\",\n    \"message\": \"My contents 2...\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/announcement/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"announcement",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"25513140-6e8e-45cd-93cf-0c7ca218a468\",\n    \"title\": \"Edited title\",\n    \"message\": \"Edited message.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/announcement/edit",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"announcement",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/announcement/delete?announcementid=25513140-6e8e-45cd-93cf-0c7ca218a468",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"announcement",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "announcementid",
+									"value": "25513140-6e8e-45cd-93cf-0c7ca218a468"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/notification/all",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"notification",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unread",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/notification/unread",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"notification",
+								"unread"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "markread",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/notification/markread?all=true&notificationid",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"notification",
+								"markread"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								},
+								{
+									"key": "notificationid",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
