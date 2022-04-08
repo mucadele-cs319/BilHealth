@@ -41,8 +41,6 @@ namespace BilHealth.Utility
                 dto.Cases = doctor.Cases?.Select(Map).ToList();
             }
 
-            dto.Cases = new();
-
             return dto;
         }
 
@@ -50,7 +48,10 @@ namespace BilHealth.Utility
         {
             var dto = new VaccinationDto
             {
-
+                Id = vaccination.Id,
+                PatientUserId = vaccination.PatientUserId,
+                DateTime = vaccination.DateTime,
+                Type = vaccination.Type
             };
             return dto;
         }
@@ -59,7 +60,10 @@ namespace BilHealth.Utility
         {
             var dto = new TestResultDto
             {
-
+                Id = testResult.Id,
+                PatientUserId = testResult.PatientUserId,
+                DateTime = testResult.DateTime,
+                Type = testResult.Type
             };
             return dto;
         }
@@ -68,7 +72,11 @@ namespace BilHealth.Utility
         {
             var dto = new TriageRequestDto
             {
-
+                Id = triageRequest.Id,
+                CaseId = triageRequest.CaseId,
+                ApprovalStatus = triageRequest.ApprovalStatus,
+                DoctorUserId = triageRequest.DoctorUserId,
+                NurseUserId = triageRequest.NurseUserId
             };
             return dto;
         }
@@ -77,8 +85,26 @@ namespace BilHealth.Utility
         {
             var dto = new CaseDto
             {
-
+                Id = _case.Id,
+                DateTime = _case.DateTime,
+                State = _case.State,
+                Type = _case.Type,
+                PatientUserId = _case.PatientUserId,
+                DoctorUserId = _case.DoctorUserId
             };
+
+            if (_case.Appointments is not null)
+                dto.Appointments = _case.Appointments.Select(Map).ToList();
+
+            if (_case.Messages is not null)
+                dto.Messages = _case.Messages.Select(Map).ToList();
+
+            if (_case.SystemMessages is not null)
+                dto.SystemMessages = _case.SystemMessages.Select(Map).ToList();
+
+            if (_case.Prescriptions is not null)
+                dto.Prescriptions = _case.Prescriptions.Select(Map).ToList();
+
             return dto;
         }
 
@@ -86,7 +112,9 @@ namespace BilHealth.Utility
         {
             var dto = new AnnouncementDto
             {
-
+                Id = announcement.Id,
+                Title = announcement.Title,
+                Message = announcement.Message
             };
             return dto;
         }
@@ -95,7 +123,13 @@ namespace BilHealth.Utility
         {
             var dto = new AppointmentDto
             {
-
+                Id = appointment.Id,
+                ApprovalStatus = appointment.ApprovalStatus,
+                Attended = appointment.Attended,
+                CreatedAt = appointment.CreatedAt,
+                DateTime = appointment.DateTime,
+                Description = appointment.Description,
+                Visit = appointment.Visit is not null ? Map(appointment.Visit) : null
             };
             return dto;
         }
@@ -104,7 +138,11 @@ namespace BilHealth.Utility
         {
             var dto = new AppointmentVisitDto
             {
-
+                Id = appointmentVisit.Id,
+                BloodPressure = appointmentVisit.BloodPressure,
+                BodyTemperature = appointmentVisit.BodyTemperature,
+                BPM = appointmentVisit.BPM,
+                Notes = appointmentVisit.Notes
             };
             return dto;
         }
@@ -113,7 +151,10 @@ namespace BilHealth.Utility
         {
             var dto = new CaseMessageDto
             {
-
+                Id = message.Id,
+                UserId = message.UserId,
+                DateTime = message.DateTime,
+                Content = message.Content
             };
             return dto;
         }
@@ -122,7 +163,10 @@ namespace BilHealth.Utility
         {
             var dto = new CaseSystemMessageDto
             {
-
+                Id = message.Id,
+                DateTime = message.DateTime,
+                Type = message.Type,
+                Content = message.Content
             };
             return dto;
         }
@@ -131,7 +175,13 @@ namespace BilHealth.Utility
         {
             var dto = new NotificationDto
             {
-
+                Id = notification.Id,
+                DateTime = notification.DateTime,
+                UserId = notification.UserId,
+                Type = notification.Type,
+                Read = notification.Read,
+                ReferenceId1 = notification.ReferenceId1,
+                ReferenceId2 = notification.ReferenceId2
             };
             return dto;
         }
@@ -140,7 +190,10 @@ namespace BilHealth.Utility
         {
             var dto = new PrescriptionDto
             {
-
+                Id = prescription.Id,
+                DateTime = prescription.DateTime,
+                DoctorUserId = prescription.DoctorUserId,
+                Item = prescription.Item
             };
             return dto;
         }
