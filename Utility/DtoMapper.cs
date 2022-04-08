@@ -113,6 +113,7 @@ namespace BilHealth.Utility
             var dto = new AnnouncementDto
             {
                 Id = announcement.Id,
+                DateTime = announcement.DateTime,
                 Title = announcement.Title,
                 Message = announcement.Message
             };
