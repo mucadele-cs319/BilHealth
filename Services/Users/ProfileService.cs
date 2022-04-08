@@ -3,13 +3,17 @@ using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace BilHealth.Services.Users
 {
     public class ProfileService : DbServiceBase, IProfileService
     {
-        public ProfileService(AppDbContext dbCtx) : base(dbCtx)
+        private readonly IClock Clock;
+
+        public ProfileService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
         {
+            Clock = clock;
         }
 
         public async Task<List<Case>> GetOpenCases(DomainUser user)
@@ -62,6 +66,41 @@ namespace BilHealth.Services.Users
             }
 
             await DbCtx.SaveChangesAsync();
+        }
+
+        public async Task AddVaccination(VaccinationDto details)
+        {
+            var vaccination = new Vaccination
+            {
+                DateTime = Clock.GetCurrentInstant(),
+                PatientUserId = details.PatientUserId,
+                Type = details.Type
+            };
+            DbCtx.Vaccinations.Add(vaccination);
+            await DbCtx.SaveChangesAsync();
+        }
+
+        public async Task<bool> UpdateVaccination(VaccinationDto details)
+        {
+            var vaccination = await DbCtx.Vaccinations.SingleOrDefaultAsync(v => v.Id == details.Id);
+            if (vaccination is null)
+                return false;
+
+            vaccination.DateTime = details.DateTime;
+            vaccination.Type = details.Type;
+            await DbCtx.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveVaccination(Guid vaccinationId)
+        {
+            var vaccination = await DbCtx.Vaccinations.FindAsync(vaccinationId);
+            if (vaccination is null)
+                return false;
+
+            DbCtx.Vaccinations.Remove(vaccination);
+            await DbCtx.SaveChangesAsync();
+            return true;
         }
     }
 }
