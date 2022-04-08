@@ -4,16 +4,16 @@ namespace BilHealth.Model.Dto
 {
     public record CaseDto
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
         public DateTime DateTime { get; set; }
         public Guid PatientUserId { get; set; }
-        public Guid DoctorUserId { get; set; }
+        public Guid? DoctorUserId { get; set; } = null;
         public CaseType Type { get; set; }
         public CaseState State { get; set; }
 
-        public List<CaseMessage> Messages { get; set; } = new();
-        public List<CaseSystemMessage> SystemMessages { get; set; } = new();
-        public List<Prescription> Prescriptions { get; set; } = new();
-        public List<Appointment> Appointments { get; set; } = new();
+        public List<CaseMessageDto> Messages { get; set; } = new();
+        public List<CaseSystemMessageDto> SystemMessages { get; set; } = new();
+        public List<PrescriptionDto> Prescriptions { get; set; } = new();
+        public List<AppointmentDto> Appointments { get; set; } = new();
     }
 }
