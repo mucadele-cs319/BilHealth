@@ -1,27 +1,31 @@
 using BilHealth.Data;
 using BilHealth.Model;
+using BilHealth.Services;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
+using NodaTime.Serialization.JsonNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(o => o.SerializerSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb));
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
     options.LowercaseQueryStrings = true;
 });
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext"), o => o.UseNodaTime()));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<User, Role>()
+builder.Services.AddIdentity<AppUser, Role>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
+builder.Services.AddScoped<IPasswordHasher<AppUser>, BCryptPasswordHasher>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -31,6 +35,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 });
+
+builder.Services.AddDataProtection().PersistKeysToStackExchangeRedis(
+    () => StackExchange.Redis.ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")).GetDatabase(),
+    "DataProtection-Keys");
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -50,7 +58,15 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 }); // May want to use a server-side ticket instead: https://mikerussellnz.github.io/.NET-Core-Auth-Ticket-Redis/
 
+builder.Services.AddSingleton<IClock>(SystemClock.Instance);
+
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<ICaseService, CaseService>();
+builder.Services.AddScoped<ITestResultService, TestResultService>();
 
 var app = builder.Build();
 
@@ -88,7 +104,6 @@ else
             LastName = "Smith",
             UserType = UserRoleType.Admin
         }).Wait();
-        authService.AssignRole(adminUsername, UserRoleType.Admin).Wait();
     }
 }
 

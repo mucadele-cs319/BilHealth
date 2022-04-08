@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -15,7 +16,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Message = table.Column<string>(type: "text", nullable: false)
                 },
@@ -43,16 +44,6 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    Gender = table.Column<int>(type: "integer", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Discriminator = table.Column<string>(type: "text", nullable: false),
-                    Specialization = table.Column<string>(type: "text", nullable: true),
-                    Campus = table.Column<int>(type: "integer", nullable: true),
-                    BodyWeight = table.Column<double>(type: "double precision", nullable: true),
-                    BodyHeight = table.Column<double>(type: "double precision", nullable: true),
-                    BloodType = table.Column<int>(type: "integer", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -78,7 +69,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Read = table.Column<bool>(type: "boolean", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
@@ -197,40 +188,57 @@ namespace BilHealth.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DomainUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Gender = table.Column<int>(type: "integer", nullable: false),
+                    DateOfBirth = table.Column<LocalDate>(type: "date", nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Discriminator = table.Column<string>(type: "text", nullable: false),
+                    Specialization = table.Column<string>(type: "text", nullable: true),
+                    Campus = table.Column<int>(type: "integer", nullable: true),
+                    BodyWeight = table.Column<double>(type: "double precision", nullable: true),
+                    BodyHeight = table.Column<double>(type: "double precision", nullable: true),
+                    BloodType = table.Column<int>(type: "integer", nullable: true),
+                    Blacklisted = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DomainUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DomainUsers_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cases",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    NurseUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    State = table.Column<int>(type: "integer", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: true)
+                    State = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cases_AspNetUsers_DoctorUserId",
+                        name: "FK_Cases_DomainUsers_DoctorUserId",
                         column: x => x.DoctorUserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "DomainUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Cases_AspNetUsers_NurseUserId",
-                        column: x => x.NurseUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Cases_AspNetUsers_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Cases_AspNetUsers_PatientUserId",
+                        name: "FK_Cases_DomainUsers_PatientUserId",
                         column: x => x.PatientUserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -241,23 +249,17 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    ResultFilePath = table.Column<string>(type: "text", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ResultFilePath = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TestResults", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TestResults_AspNetUsers_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TestResults_AspNetUsers_PatientUserId",
+                        name: "FK_TestResults_DomainUsers_PatientUserId",
                         column: x => x.PatientUserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,22 +270,16 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Type = table.Column<string>(type: "text", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: true)
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: true),
+                    Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vaccinations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vaccinations_AspNetUsers_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Vaccinations_AspNetUsers_PatientUserId",
+                        name: "FK_Vaccinations_DomainUsers_PatientUserId",
                         column: x => x.PatientUserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -294,7 +290,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     ApprovalStatus = table.Column<int>(type: "integer", nullable: false),
                     Attended = table.Column<bool>(type: "boolean", nullable: false),
@@ -317,7 +313,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -338,7 +334,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -358,7 +354,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Item = table.Column<string>(type: "text", nullable: false)
@@ -367,15 +363,15 @@ namespace BilHealth.Migrations
                 {
                     table.PrimaryKey("PK_Prescriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prescriptions_AspNetUsers_DoctorUserId",
-                        column: x => x.DoctorUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Prescriptions_Cases_CaseId",
                         column: x => x.CaseId,
                         principalTable: "Cases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Prescriptions_DomainUsers_DoctorUserId",
+                        column: x => x.DoctorUserId,
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -394,21 +390,21 @@ namespace BilHealth.Migrations
                 {
                     table.PrimaryKey("PK_TriageRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TriageRequests_AspNetUsers_DoctorUserId",
-                        column: x => x.DoctorUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TriageRequests_AspNetUsers_NurseUserId",
-                        column: x => x.NurseUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_TriageRequests_Cases_CaseId",
                         column: x => x.CaseId,
                         principalTable: "Cases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TriageRequests_DomainUsers_DoctorUserId",
+                        column: x => x.DoctorUserId,
+                        principalTable: "DomainUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TriageRequests_DomainUsers_NurseUserId",
+                        column: x => x.NurseUserId,
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -418,11 +414,11 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: false),
-                    BPM = table.Column<string>(type: "text", nullable: true),
-                    BloodPressure = table.Column<string>(type: "text", nullable: true),
-                    BodyTemperature = table.Column<string>(type: "text", nullable: true),
+                    BPM = table.Column<double>(type: "double precision", nullable: true),
+                    BloodPressure = table.Column<double>(type: "double precision", nullable: true),
+                    BodyTemperature = table.Column<double>(type: "double precision", nullable: true),
                     AppointmentId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -444,7 +440,8 @@ namespace BilHealth.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentVisit_AppointmentId",
                 table: "AppointmentVisit",
-                column: "AppointmentId");
+                column: "AppointmentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -494,16 +491,6 @@ namespace BilHealth.Migrations
                 column: "DoctorUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cases_NurseUserId",
-                table: "Cases",
-                column: "NurseUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cases_PatientId",
-                table: "Cases",
-                column: "PatientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Cases_PatientUserId",
                 table: "Cases",
                 column: "PatientUserId");
@@ -514,6 +501,12 @@ namespace BilHealth.Migrations
                 column: "CaseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DomainUsers_AppUserId",
+                table: "DomainUsers",
+                column: "AppUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Prescriptions_CaseId",
                 table: "Prescriptions",
                 column: "CaseId");
@@ -522,11 +515,6 @@ namespace BilHealth.Migrations
                 name: "IX_Prescriptions_DoctorUserId",
                 table: "Prescriptions",
                 column: "DoctorUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TestResults_PatientId",
-                table: "TestResults",
-                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TestResults_PatientUserId",
@@ -547,11 +535,6 @@ namespace BilHealth.Migrations
                 name: "IX_TriageRequests_NurseUserId",
                 table: "TriageRequests",
                 column: "NurseUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vaccinations_PatientId",
-                table: "Vaccinations",
-                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vaccinations_PatientUserId",
@@ -611,6 +594,9 @@ namespace BilHealth.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cases");
+
+            migrationBuilder.DropTable(
+                name: "DomainUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

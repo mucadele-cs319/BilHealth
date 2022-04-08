@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using NodaTime;
 
 namespace BilHealth.Model
 {
@@ -6,9 +7,9 @@ namespace BilHealth.Model
     {
         [Required] public Guid Id { get; private set; }
         [Required] public Guid PatientUserId { get; set; }
-        public User PatientUser { get; set; } = null!;
+        public Patient PatientUser { get; set; } = null!;
 
-        public DateTime? DateTime { get; set; }
+        public Instant? DateTime { get; set; }
         [Required] public string Type { get; set; } = null!;
     }
 }

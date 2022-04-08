@@ -6,15 +6,12 @@ namespace BilHealth.Services
 {
     public interface IAppointmentService
     {
-        public Task CreateAppointmentRequest();
-        public Task SetAppointmentApproval();
-        public Task<AppointmentVisit> CreateVisit();
+        Task CreateAppointmentRequest(Appointment appointment);
+        Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval);
+        Task<AppointmentVisit> CreateVisit(AppointmentVisitDto details);
 
-        public Task SetNotesOfVisit();
-        public Task SetBPM();
-        public Task SetBloodPressure();
-        public Task SetBloodTemperature();
+        Task<bool> UpdatePatientVisitDetails(AppointmentVisitDto details);
 
-        public Task<bool> IsPatientBlacklisted();
+        Task<bool> SetPatientBlacklistState(Guid patientUserId, bool newState);
     }
 }

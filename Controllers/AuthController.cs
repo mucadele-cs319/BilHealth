@@ -47,7 +47,7 @@ namespace BilHealth.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword)
         {
-            var user = await AuthenticationService.getUser(User);
+            var user = await AuthenticationService.GetUser(User);
             var result = await AuthenticationService.ChangePassword(user, currentPassword, newPassword);
 
             return result.Succeeded ? Ok(result) : Unauthorized(result);

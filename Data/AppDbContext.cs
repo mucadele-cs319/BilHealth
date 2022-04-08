@@ -4,21 +4,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BilHealth.Data
 {
-    public class AppDbContext : IdentityDbContext<User, Role, Guid>
+    public class AppDbContext : IdentityDbContext<AppUser, Role, Guid>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Patient> PatientUsers { get; set; } = null!;
-        public DbSet<Doctor> DoctorUsers { get; set; } = null!;
-        public DbSet<Notification> Notifications { get; set; } = null!;
-        public DbSet<Case> Cases { get; set; } = null!;
-        public DbSet<Prescription> Prescriptions { get; set; } = null!;
-        public DbSet<Vaccination> Vaccinations { get; set; } = null!;
-        public DbSet<TestResult> TestResults { get; set; } = null!;
-        public DbSet<Appointment> Appointments { get; set; } = null!;
-        public DbSet<TriageRequest> TriageRequests { get; set; } = null!;
-        public DbSet<Announcement> Announcements { get; set; } = null!;
+        public DbSet<DomainUser> DomainUsers => Set<DomainUser>();
+        public DbSet<Admin> AdminUsers => Set<Admin>();
+        public DbSet<Doctor> DoctorUsers => Set<Doctor>();
+        public DbSet<Nurse> NurseUsers => Set<Nurse>();
+        public DbSet<Staff> StaffUsers => Set<Staff>();
+        public DbSet<Patient> PatientUsers => Set<Patient>();
+
+        public DbSet<Notification> Notifications => Set<Notification>();
+        public DbSet<Case> Cases => Set<Case>();
+        public DbSet<Prescription> Prescriptions => Set<Prescription>();
+        public DbSet<Vaccination> Vaccinations => Set<Vaccination>();
+        public DbSet<TestResult> TestResults => Set<TestResult>();
+        public DbSet<Appointment> Appointments => Set<Appointment>();
+        public DbSet<TriageRequest> TriageRequests => Set<TriageRequest>();
+        public DbSet<Announcement> Announcements => Set<Announcement>();
     }
 }

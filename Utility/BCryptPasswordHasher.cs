@@ -5,14 +5,14 @@ namespace BilHealth.Utility
 {
     using BCrypt.Net;
 
-    public class BCryptPasswordHasher : IPasswordHasher<User>
+    public class BCryptPasswordHasher : IPasswordHasher<AppUser>
     {
-        public string HashPassword(User user, string password)
+        public string HashPassword(AppUser user, string password)
         {
             return BCrypt.HashPassword(password, 12);
         }
 
-        public PasswordVerificationResult VerifyHashedPassword(User user, string hashedPassword, string givenPassword)
+        public PasswordVerificationResult VerifyHashedPassword(AppUser user, string hashedPassword, string givenPassword)
         {
             return BCrypt.Verify(givenPassword, hashedPassword) ?
                 PasswordVerificationResult.Success :
