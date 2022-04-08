@@ -10,5 +10,9 @@ namespace BilHealth.Services.Users
         Task<List<Case>> GetOpenCases(DomainUser user);
 
         Task UpdateProfile(DomainUser patientUser, UserProfileDto newProfile);
+
+        Task AddVaccination(VaccinationDto details);
+        Task<bool> UpdateVaccination(VaccinationDto details);
+        Task<bool> RemoveVaccination(Guid vaccinationId);
     }
 }

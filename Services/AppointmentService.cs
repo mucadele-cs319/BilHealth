@@ -23,17 +23,7 @@ namespace BilHealth.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsPatientBlacklisted(Patient patientUser)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SetAppointmentApproval(Appointment appointment, ApprovalStatus approval)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> SetNotesOfVisit(AppointmentVisitDto details)
+        public Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval)
         {
             throw new NotImplementedException();
         }

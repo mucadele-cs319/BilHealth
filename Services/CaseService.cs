@@ -13,17 +13,12 @@ namespace BilHealth.Services
         {
         }
 
-        public Task CloseCase(Guid caseId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task CreateCase(CaseDto details)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateMessage(CaseMessageDto details)
+        public Task<CaseMessage> CreateMessage(CaseMessageDto details)
         {
             throw new NotImplementedException();
         }
@@ -43,7 +38,17 @@ namespace BilHealth.Services
             throw new NotImplementedException();
         }
 
-        public Task ReopenCase(Guid caseId)
+        public Task EditMessage(CaseMessageDto details)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveMessage(Guid messageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemovePrescription(Guid prescriptionId)
         {
             throw new NotImplementedException();
         }
