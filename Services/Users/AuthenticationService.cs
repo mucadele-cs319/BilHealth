@@ -97,44 +97,38 @@ namespace BilHealth.Services.Users
             return await UserManager.ResetPasswordAsync(user, token, newPassword);
         }
 
+        private async Task LoadUser(AppUser user)
+        {
+            await DbCtx.Entry(user).Reference(u => u.DomainUser).LoadAsync();
+
+            switch (user.DomainUser)
+            {
+                case Doctor doctor:
+                    await DbCtx.Entry(doctor).Reference(d => d.Cases).LoadAsync();
+                    break;
+                case Nurse nurse:
+                    await DbCtx.Entry(nurse).Reference(n => n.TriageRequests).LoadAsync();
+                    break;
+                case Patient patient:
+                    await DbCtx.Entry(patient).Reference(p => p.Vaccinations).LoadAsync();
+                    await DbCtx.Entry(patient).Reference(p => p.TestResults).LoadAsync();
+                    await DbCtx.Entry(patient).Reference(p => p.Cases).LoadAsync();
+                    break;
+            }
+        }
+
         public async Task<AppUser> GetUser(ClaimsPrincipal principal)
         {
             var user = await UserManager.GetUserAsync(principal);
-
-            await DbCtx.Entry(user).Reference(u => u.DomainUser).LoadAsync();
+            await LoadUser(user);
             return user;
-
-            // switch (user)
-            // {
-            //     case Doctor doctor:
-            //     {
-            //         await DbCtx.Entry(doctor).Reference(d => d.Cases).LoadAsync();
-            //         return doctor;
-            //     }
-
-            //     case Nurse nurse:
-            //     {
-            //         await DbCtx.Entry(nurse).Reference(n => n.TriageRequests).LoadAsync();
-            //         return nurse;
-            //     }
-
-            //     case Patient patient:
-            //     {
-            //         await DbCtx.Entry(patient).Reference(p => p.Vaccinations).LoadAsync();
-            //         await DbCtx.Entry(patient).Reference(p => p.TestResults).LoadAsync();
-            //         await DbCtx.Entry(patient).Reference(p => p.Cases).LoadAsync();
-            //         return patient;
-            //     }
-
-            //     default:
-            //         return user;
-            // }
         }
 
         public async Task<AppUser> GetUser(Guid userId)
         {
             var user = await DbCtx.Users.FindAsync(userId);
             if (user is null) throw new ArgumentException("No user found with id" + userId);
+            await LoadUser(user);
             return user;
         }
 
