@@ -4,20 +4,23 @@ using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace BilHealth.Services
 {
     public class AnnouncementService : DbServiceBase, IAnnouncementService
     {
-        public AnnouncementService(AppDbContext dbCtx) : base(dbCtx)
+        private readonly IClock Clock;
+        public AnnouncementService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
         {
+            Clock = clock;
         }
 
         public async Task<Announcement> AddAnnouncement(AnnouncementDto announcement)
         {
             var newAnnouncement = new Announcement
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 Title = announcement.Title,
                 Message = announcement.Message
             };

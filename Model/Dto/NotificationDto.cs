@@ -1,11 +1,12 @@
 using BilHealth.Utility.Enum;
+using NodaTime;
 
 namespace BilHealth.Model.Dto
 {
     public record NotificationDto
     {
         public Guid Id { get; set; }
-        public DateTime DateTime { get; set; }
+        public Instant DateTime { get; set; }
         public Guid UserId { get; set; }
         public bool Read { get; set; } = false;
         public NotificationType Type { get; set; }

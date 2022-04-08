@@ -2,20 +2,24 @@ using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace BilHealth.Services.Users
 {
     public class NotificationService : DbServiceBase, INotificationService
     {
-        public NotificationService(AppDbContext dbCtx) : base(dbCtx)
+        private readonly IClock Clock;
+
+        public NotificationService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
         {
+            Clock = clock;
         }
 
         public void AddNewAppointmentNotification(Guid userId, Appointment appointment)
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseNewAppointment,
                 ReferenceId1 = appointment.CaseId,
@@ -28,7 +32,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseAppointmentTimeChanged,
                 ReferenceId1 = appointment.CaseId,
@@ -41,7 +45,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseAppointmentCanceled,
                 ReferenceId1 = appointment.CaseId,
@@ -54,7 +58,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseNewMessage,
                 ReferenceId1 = message.CaseId,
@@ -91,7 +95,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseClosed,
                 ReferenceId1 = _case.Id
@@ -103,7 +107,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseTriaged,
                 ReferenceId1 = _case.Id
@@ -115,7 +119,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseDoctorChanged,
                 ReferenceId1 = _case.Id
@@ -127,7 +131,7 @@ namespace BilHealth.Services.Users
         {
             var notification = new Notification
             {
-                DateTime = DateTime.Now,
+                DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
                 Type = NotificationType.CaseNewPrescription,
                 ReferenceId1 = prescription.CaseId,

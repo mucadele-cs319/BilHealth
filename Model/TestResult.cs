@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using BilHealth.Utility.Enum;
+using NodaTime;
 
 namespace BilHealth.Model
 {
@@ -9,7 +10,7 @@ namespace BilHealth.Model
         [Required] public Guid PatientUserId { get; set; }
         public Patient PatientUser { get; set; } = null!;
 
-        [Required] public DateTime DateTime { get; set; }
+        [Required] public Instant DateTime { get; set; }
         [Required] public MedicalTestType Type { get; set; }
         [Required] public string ResultFilePath { get; set; } = null!;
     }

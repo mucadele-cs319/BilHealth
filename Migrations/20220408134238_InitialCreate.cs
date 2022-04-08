@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -15,7 +16,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Message = table.Column<string>(type: "text", nullable: false)
                 },
@@ -68,7 +69,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Read = table.Column<bool>(type: "boolean", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
@@ -220,7 +221,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
@@ -248,7 +249,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     ResultFilePath = table.Column<string>(type: "text", nullable: false)
                 },
@@ -289,7 +290,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     ApprovalStatus = table.Column<int>(type: "integer", nullable: false),
                     Attended = table.Column<bool>(type: "boolean", nullable: false),
@@ -312,7 +313,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -333,7 +334,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -353,7 +354,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Item = table.Column<string>(type: "text", nullable: false)
@@ -413,7 +414,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: false),
                     BPM = table.Column<double>(type: "double precision", nullable: true),
                     BloodPressure = table.Column<double>(type: "double precision", nullable: true),

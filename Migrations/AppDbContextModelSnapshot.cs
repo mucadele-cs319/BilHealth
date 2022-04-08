@@ -4,6 +4,7 @@ using BilHealth.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -28,7 +29,7 @@ namespace BilHealth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Message")
@@ -62,7 +63,7 @@ namespace BilHealth.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -94,7 +95,7 @@ namespace BilHealth.Migrations
                     b.Property<double?>("BodyTemperature")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Notes")
@@ -180,7 +181,7 @@ namespace BilHealth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("DoctorUserId")
@@ -217,7 +218,7 @@ namespace BilHealth.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
@@ -243,7 +244,7 @@ namespace BilHealth.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Type")
@@ -299,7 +300,7 @@ namespace BilHealth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Read")
@@ -331,7 +332,7 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("CaseId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("DoctorUserId")
@@ -383,7 +384,7 @@ namespace BilHealth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PatientUserId")

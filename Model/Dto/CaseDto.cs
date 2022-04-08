@@ -1,11 +1,12 @@
 using BilHealth.Utility.Enum;
+using NodaTime;
 
 namespace BilHealth.Model.Dto
 {
     public record CaseDto
     {
         public Guid Id { get; set; }
-        public DateTime DateTime { get; set; }
+        public Instant DateTime { get; set; }
         public Guid PatientUserId { get; set; }
         public Guid? DoctorUserId { get; set; } = null;
         public CaseType Type { get; set; }

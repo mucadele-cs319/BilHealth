@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using NodaTime;
 
 namespace BilHealth.Model
 {
     public class AppointmentVisit
     {
         [Required] public Guid Id { get; private set; }
-        [Required] public DateTime DateTime { get; set; }
+        [Required] public Instant DateTime { get; set; }
         public string Notes { get; set; } = String.Empty;
 
         public double? BPM { get; set; }

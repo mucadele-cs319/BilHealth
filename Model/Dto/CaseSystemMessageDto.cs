@@ -1,4 +1,5 @@
 using BilHealth.Utility.Enum;
+using NodaTime;
 
 namespace BilHealth.Model.Dto
 {
@@ -6,7 +7,7 @@ namespace BilHealth.Model.Dto
     {
         public Guid Id { get; set; }
         public CaseSystemMessageType Type { get; set; }
-        public DateTime DateTime { get; set; }
+        public Instant DateTime { get; set; }
         public string Content { get; set; } = String.Empty;
     }
 }
