@@ -25,7 +25,16 @@ namespace BilHealth.Controllers
         [HttpGet]
         public async Task<UserProfileDto> Me()
         {
-            var user = await AuthenticationService.GetUser(User);
+            var user = await AuthenticationService.GetUser(base.User);
+            var role = await AuthenticationService.GetUserRole(user);
+            return DtoMapper.Map(user, role);
+        }
+
+        [HttpGet("{id:guid}")]
+        public new async Task<UserProfileDto> User(Guid id)
+        {
+            // TODO: Constrain DTO fields according to the querying user's access level
+            var user = await AuthenticationService.GetUser(id);
             var role = await AuthenticationService.GetUserRole(user);
             return DtoMapper.Map(user, role);
         }
@@ -33,7 +42,7 @@ namespace BilHealth.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UserProfileDto newProfile)
         {
-            var user = await AuthenticationService.GetUser(User);
+            var user = await AuthenticationService.GetUser(base.User);
             await ProfileService.UpdateProfile(user.DomainUser, newProfile);
             return Ok();
         }
