@@ -266,8 +266,8 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<LocalDate?>("DateOfBirth")
+                        .HasColumnType("date");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -439,7 +439,7 @@ namespace BilHealth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("DateTime")
+                    b.Property<Instant?>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PatientUserId")

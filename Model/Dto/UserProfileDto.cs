@@ -1,4 +1,5 @@
 using BilHealth.Utility.Enum;
+using NodaTime;
 
 namespace BilHealth.Model.Dto
 {
@@ -11,7 +12,7 @@ namespace BilHealth.Model.Dto
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public Gender? Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public LocalDate? DateOfBirth { get; set; }
 
         // Patient Fields
         public double? BodyWeight { get; set; }

@@ -195,7 +195,7 @@ namespace BilHealth.Migrations
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Gender = table.Column<int>(type: "integer", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DateOfBirth = table.Column<LocalDate>(type: "date", nullable: true),
                     AppUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Discriminator = table.Column<string>(type: "text", nullable: false),
                     Specialization = table.Column<string>(type: "text", nullable: true),
@@ -270,7 +270,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: true),
                     Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
