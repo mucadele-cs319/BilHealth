@@ -104,15 +104,15 @@ namespace BilHealth.Services.Users
             switch (user.DomainUser)
             {
                 case Doctor doctor:
-                    await DbCtx.Entry(doctor).Reference(d => d.Cases).LoadAsync();
+                    await DbCtx.Entry(doctor).Collection(d => d.Cases!).LoadAsync();
                     break;
                 case Nurse nurse:
-                    await DbCtx.Entry(nurse).Reference(n => n.TriageRequests).LoadAsync();
+                    await DbCtx.Entry(nurse).Collection(n => n.TriageRequests!).LoadAsync();
                     break;
                 case Patient patient:
-                    await DbCtx.Entry(patient).Reference(p => p.Vaccinations).LoadAsync();
-                    await DbCtx.Entry(patient).Reference(p => p.TestResults).LoadAsync();
-                    await DbCtx.Entry(patient).Reference(p => p.Cases).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.Vaccinations!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.TestResults!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.Cases!).LoadAsync();
                     break;
             }
         }
