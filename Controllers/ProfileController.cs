@@ -56,6 +56,7 @@ namespace BilHealth.Controllers
             {
                 dto.Specialization = doctor.Specialization;
                 dto.Campus = doctor.Campus;
+                dto.Cases = doctor.Cases;
             }
 
             return dto;

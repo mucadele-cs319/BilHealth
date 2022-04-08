@@ -44,18 +44,19 @@ namespace BilHealth.Services.Users
             }
         }
 
-        public async Task UpdateProfile(Patient patientUser, PatientProfileEdit newProfile)
+        public async Task UpdateProfile(DomainUser user, UserProfileDto newProfile)
         {
-            patientUser.BodyWeight = newProfile.BodyWeight;
-            patientUser.BodyHeight = newProfile.BodyHeight;
-            patientUser.BloodType = newProfile.BloodType;
-            await DbCtx.SaveChangesAsync();
-        }
+            if (user is Patient patient) {
+                patient.BodyWeight = newProfile.BodyWeight;
+                patient.BodyHeight = newProfile.BodyHeight;
+                patient.BloodType = newProfile.BloodType;
+            } else if (user is Doctor doctor) {
+                doctor.Specialization = newProfile.Specialization;
+                doctor.Campus = newProfile.Campus;
+            } else {
+                return;
+            }
 
-        public async Task UpdateProfile(Doctor doctorUser, DoctorProfileEdit newProfile)
-        {
-            doctorUser.Specialization = newProfile.Specialization;
-            doctorUser.Campus = newProfile.Campus;
             await DbCtx.SaveChangesAsync();
         }
     }

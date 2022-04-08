@@ -9,7 +9,6 @@ namespace BilHealth.Services.Users
         Task<List<Case>> GetPastCases(DomainUser user);
         Task<List<Case>> GetOpenCases(DomainUser user);
 
-        Task UpdateProfile(Patient patientUser, PatientProfileEdit newProfile);
-        Task UpdateProfile(Doctor doctorUser, DoctorProfileEdit newProfile);
+        Task UpdateProfile(DomainUser patientUser, UserProfileDto newProfile);
     }
 }
