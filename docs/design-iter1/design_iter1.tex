@@ -73,17 +73,44 @@
 
   \subsection{Purpose of the System}
 
-  The main goal is to provide online, remote attention to patients to increase productivity for all parties involved.
-  The primary method of interaction is through \textit{case}s, which contain all relevant information for a given medical situation.
-  Patients use the system to open cases and request appointments, and the health center staff acts on these requests
-  to provide medical services.
+  The project is designed as a web-based application that will ease the health center management in Bilkent.
+  The main goal of the project is to provide online attention to the patients
+  and to have better communication betweeen doctors, staff and patients.
+  Our system includes features that ease the interaction betweeen patients and doctors through cases
+  which contain all relevant information for a given medical situation.
+  Patients can open cases and request for appointments through that opened cases.
+  Also, staff and doctors provide patients with medical services through cases.
 
   \subsection{Design Goals}
 
+  \subsubsection{Usability}
+
+  The system should be easily usable by all actors to achieve its goal.
+  We want to design a user interface such that a person who isn't familiar with using
+  computers can easily find their way around the website.
+  All the buttons and labels in the system will have self-explanatory titles and
+  the system includes boundary conditions which prevent the user from doing something wrong,
+  to increase the usability of the system.
+
   \subsubsection{Security}
 
-  Since health care is a highly sensitive service domain, it follows that the system should be designed
-  to accomplish adequate security for patient information and internal health center details.
+  The system will have a person's health details which are highly privacy sensitive.
+  Also, the system will have confidential information of every user such as Bilkent ID,
+  email address and password. Therefore, the system should be secure to protect
+  all of these personal information from any unauthorized activity.
+  No user would want such private data to be accessed by any unauthorized person.
+
+  \subsubsection{Maintainability}
+
+  The system will be designed following a object-oriented programming model.
+  This will ease making updates on different parts without harming to other parts.
+  It also gives the opportunity to add new parts without changing all parts of the project.
+
+  \subsubsection{Performance}
+
+  The system should give the best performance even on computers with old hardware.
+  Every user interaction should be processed and displayed in less than 1 second to provide
+  a better experience to the user.
 
   \subsubsection{Scalability}
 
@@ -183,6 +210,26 @@
   \section{Low-Level Design}
 
   \subsection{Object Design Trade-Offs}
+
+  \begin{itemize}
+    \item \textbf{Maintainability} versus \textbf{Performance:}
+      The system will have objects for almost every part of the project because it is coded using OOP.
+      This situation will cause a decrease in performance but it is good for maintainability
+      because it provides developers the option to make changes easily.
+    \item \textbf{Memory} versus \textbf{Performance:}
+      The system will be created using OOP, so there will be lots of objects and classes
+      for almost every part of the project.
+      This causes a lot of memory usage but it can be handled by AWS which lowers the memory usage.
+      It increases the memory optimization and performance.
+    \item \textbf{Security} versus \textbf{Usability:}
+      The system will not have two way authentication for accounts.
+      In other words, user can access his/her account with only password.
+      This can be cause a problem for security but it increases the usability of the system.
+    \item \textbf{Functionality} versus \textbf{Usability:}
+      The project system will be used by patients, staff, doctors and nurses.
+      This forces the project to have many functionalities which are not available for everyone.
+      This decreases the usability.
+  \end{itemize}
 
   \subsection{Final Object Design}
 
