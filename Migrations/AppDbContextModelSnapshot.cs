@@ -60,7 +60,7 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("CaseId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<Instant>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Instant>("DateTime")
@@ -107,7 +107,7 @@ namespace BilHealth.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("AppointmentVisit");
+                    b.ToTable("AppointmentVisits");
                 });
 
             modelBuilder.Entity("BilHealth.Model.AppUser", b =>

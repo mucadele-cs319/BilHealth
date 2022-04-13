@@ -23,6 +23,7 @@ namespace BilHealth.Data
         public DbSet<Vaccination> Vaccinations => Set<Vaccination>();
         public DbSet<TestResult> TestResults => Set<TestResult>();
         public DbSet<Appointment> Appointments => Set<Appointment>();
+        public DbSet<AppointmentVisit> AppointmentVisits => Set<AppointmentVisit>();
         public DbSet<TriageRequest> TriageRequests => Set<TriageRequest>();
         public DbSet<Announcement> Announcements => Set<Announcement>();
     }
