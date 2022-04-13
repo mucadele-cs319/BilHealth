@@ -387,12 +387,12 @@ namespace BilHealth.Migrations
                     b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PatientUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ResultFilePath")
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("PatientUserId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");

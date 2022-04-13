@@ -251,7 +251,7 @@ namespace BilHealth.Migrations
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    ResultFilePath = table.Column<string>(type: "text", nullable: false)
+                    FileName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

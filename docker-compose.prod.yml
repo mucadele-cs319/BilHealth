@@ -7,6 +7,8 @@ services:
     ports:
       # - "443:443" # ASP.NET Core (HTTPS)
       - "5000:5000" # ASP.NET Core (HTTP)
+    volumes:
+      - testresultsprod:/testresults
     depends_on:
       - dbpostgres
       - redis
@@ -33,4 +35,5 @@ services:
 # Or any other examples really, it should be somewhat "straightforward"
 
 volumes:
+  testresultsprod:
   postgresprod:

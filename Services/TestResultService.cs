@@ -1,31 +1,72 @@
-using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
-using BilHealth.Utility.Enum;
-using Microsoft.AspNetCore.Identity;
+using NodaTime;
 
 namespace BilHealth.Services
 {
     public class TestResultService : DbServiceBase, ITestResultService
     {
-        public TestResultService(AppDbContext dbCtx) : base(dbCtx)
+        private readonly IClock Clock;
+        private readonly string fileStorePath = Path.Combine("/", "testresults");
+
+        public TestResultService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
         {
+            Clock = clock;
         }
 
-        public Task CreateTestResult(TestResultDto details, IFormFile? testResultFile)
+        private async Task<string> SaveFile(IFormFile file, string? fileName = null)
         {
-            throw new NotImplementedException();
+            var filePath = Path.Combine(fileStorePath, fileName is null ? Guid.NewGuid().ToString() + Path.GetExtension(file.FileName) : fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+                await file.CopyToAsync(stream);
+
+            return filePath;
         }
 
-        public Task RemoveTestResult(Guid testResultId)
+        public async Task CreateTestResult(TestResultDto details, IFormFile? testResultFile)
         {
-            throw new NotImplementedException();
+            var testResult = new TestResult
+            {
+                DateTime = Clock.GetCurrentInstant(),
+                PatientUserId = details.PatientUserId,
+                Type = details.Type
+            };
+            DbCtx.TestResults.Add(testResult);
+
+            if (testResultFile is not null && testResultFile.Length > 0)
+            {
+                testResult.FileName = await SaveFile(testResultFile);
+            }
+
+            await DbCtx.SaveChangesAsync();
         }
 
-        public Task UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
+        public async Task RemoveTestResult(Guid testResultId)
         {
-            throw new NotImplementedException();
+            var testResult = await DbCtx.TestResults.FindAsync(testResultId);
+            if (testResult is null) throw new ArgumentException("No test result with ID " + testResultId);
+
+            DbCtx.TestResults.Remove(testResult);
+            if (testResult.FileName is not null)
+                File.Delete(Path.Combine(fileStorePath, testResult.FileName));
+            await DbCtx.SaveChangesAsync();
+        }
+
+        public async Task UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
+        {
+            var testResult = await DbCtx.TestResults.FindAsync(details.Id);
+            if (testResult is null) throw new ArgumentException("No test result with ID " + details.Id);
+
+            testResult.Type = details.Type;
+
+            if (testResultFile is not null && testResultFile.Length > 0)
+            {
+                testResult.FileName = await SaveFile(testResultFile, testResult.FileName);
+            }
+
+            await DbCtx.SaveChangesAsync();
         }
     }
 }
