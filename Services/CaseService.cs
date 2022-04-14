@@ -76,7 +76,7 @@ namespace BilHealth.Services
         {
             var triageRequest = new TriageRequest
             {
-                ApprovalStatus = details.ApprovalStatus,
+                ApprovalStatus = ApprovalStatus.Waiting,
                 CaseId = details.CaseId,
                 DoctorUserId = details.DoctorUserId,
                 NurseUserId = details.NurseUserId
