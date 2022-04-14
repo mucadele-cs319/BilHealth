@@ -25,7 +25,7 @@ namespace BilHealth.Services
             return filePath;
         }
 
-        public async Task CreateTestResult(TestResultDto details, IFormFile? testResultFile)
+        public async Task<TestResult> CreateTestResult(TestResultDto details, IFormFile? testResultFile)
         {
             var testResult = new TestResult
             {
@@ -41,20 +41,22 @@ namespace BilHealth.Services
             }
 
             await DbCtx.SaveChangesAsync();
+            return testResult;
         }
 
-        public async Task RemoveTestResult(Guid testResultId)
+        public async Task<bool> RemoveTestResult(Guid testResultId)
         {
             var testResult = await DbCtx.TestResults.FindAsync(testResultId);
-            if (testResult is null) throw new ArgumentException("No test result with ID " + testResultId);
+            if (testResult is null) return false;
 
             DbCtx.TestResults.Remove(testResult);
             if (testResult.FileName is not null)
                 File.Delete(Path.Combine(fileStorePath, testResult.FileName));
             await DbCtx.SaveChangesAsync();
+            return true;
         }
 
-        public async Task UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
+        public async Task<TestResult> UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
         {
             var testResult = await DbCtx.TestResults.FindAsync(details.Id);
             if (testResult is null) throw new ArgumentException("No test result with ID " + details.Id);
@@ -67,6 +69,7 @@ namespace BilHealth.Services
             }
 
             await DbCtx.SaveChangesAsync();
+            return testResult;
         }
 
         public async Task<FileStream> GetTestResultFile(Guid testResultId)
