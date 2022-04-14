@@ -5,6 +5,7 @@ namespace BilHealth.Model.Dto
     public record PrescriptionDto
     {
         public Guid Id { get; set; }
+        public Guid CaseId { get; set; }
         public Instant DateTime { get; set; }
         public Guid DoctorUserId { get; set; }
 
