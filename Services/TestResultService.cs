@@ -68,5 +68,14 @@ namespace BilHealth.Services
 
             await DbCtx.SaveChangesAsync();
         }
+
+        public async Task<FileStream> GetTestResultFile(Guid testResultId)
+        {
+            var testResult = await DbCtx.TestResults.FindAsync(testResultId);
+            if (testResult is null) throw new ArgumentException("No test result with ID " + testResultId);
+            if (testResult.FileName is null) throw new Exception("This test result does not have a file");
+
+            return new FileStream(Path.Combine(fileStorePath, testResult.FileName), FileMode.Open);
+        }
     }
 }

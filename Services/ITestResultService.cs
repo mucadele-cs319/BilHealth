@@ -9,5 +9,7 @@ namespace BilHealth.Services
         Task CreateTestResult(TestResultDto details, IFormFile? testResultFile);
         Task UpdateTestResult(TestResultDto details, IFormFile? testResultFile);
         Task RemoveTestResult(Guid testResultId);
+
+        Task<FileStream> GetTestResultFile(Guid testResultId);
     }
 }
