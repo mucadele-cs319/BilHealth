@@ -4,7 +4,7 @@ namespace BilHealth.Services.Users
 {
     public interface INotificationService
     {
-        void AddNewAppointmentNotification(Guid userId, Appointment appointment);
+        Task AddNewAppointmentNotification(Appointment appointment);
         void AddAppointmentTimeChangeNotification(Guid userId, Appointment appointment);
         void AddAppointmentCancellationNotification(Guid userId, Appointment appointment);
         /// <summary>

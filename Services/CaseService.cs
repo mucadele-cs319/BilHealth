@@ -2,6 +2,7 @@ using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
 using NodaTime;
@@ -10,10 +11,12 @@ namespace BilHealth.Services
 {
     public class CaseService : DbServiceBase, ICaseService
     {
+        private readonly INotificationService NotificationService;
         private readonly IClock Clock;
 
-        public CaseService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
+        public CaseService(AppDbContext dbCtx, INotificationService notificationService, IClock clock) : base(dbCtx)
         {
+            NotificationService = notificationService;
             Clock = clock;
         }
 
@@ -41,6 +44,7 @@ namespace BilHealth.Services
                 DateTime = Clock.GetCurrentInstant()
             };
             DbCtx.Add(message);
+            await NotificationService.AddNewCaseMessageNotification(message);
             await DbCtx.SaveChangesAsync();
             return message;
         }
@@ -55,21 +59,21 @@ namespace BilHealth.Services
                 Item = details.Item
             };
             DbCtx.Prescriptions.Add(prescription);
+            NotificationService.AddNewPrescriptionNotification(prescription.Case.PatientUser.AppUserId, prescription);
             await DbCtx.SaveChangesAsync();
             return prescription;
         }
 
-        public void CreateSystemMessage(CaseSystemMessageDto details)
+        public void CreateSystemMessage(Guid caseId, CaseSystemMessageType type, string content)
         {
             var message = new CaseSystemMessage
             {
-                CaseId = details.CaseId,
-                Content = details.Content,
                 DateTime = Clock.GetCurrentInstant(),
-                Type = details.Type
+                CaseId = caseId,
+                Type = type,
+                Content = content
             };
             DbCtx.Add(message);
-            // await DbCtx.SaveChangesAsync(); // Do not save as this should not be a front-facing method
         }
 
         public async Task<TriageRequest> CreateTriageRequest(TriageRequestDto details)
@@ -98,7 +102,7 @@ namespace BilHealth.Services
 
         public async Task<bool> RemoveMessage(Guid messageId)
         {
-            var message =  await DbCtx.FindAsync(typeof(CaseMessage), messageId) as CaseMessage;
+            var message = await DbCtx.FindAsync(typeof(CaseMessage), messageId) as CaseMessage;
             if (message is null) return false;
 
             DbCtx.Remove(message);
@@ -108,10 +112,14 @@ namespace BilHealth.Services
 
         public async Task<bool> RemovePrescription(Guid prescriptionId)
         {
-            var prescription =  await DbCtx.Prescriptions.FindAsync(prescriptionId);
+            var prescription = await DbCtx.Prescriptions.FindAsync(prescriptionId);
             if (prescription is null) return false;
 
             DbCtx.Prescriptions.Remove(prescription);
+            CreateSystemMessage(
+                prescription.CaseId,
+                CaseSystemMessageType.PrescriptionRemoved,
+                $"The prescription with ID {prescription.Id} was removed.");
             await DbCtx.SaveChangesAsync();
             return true;
         }
@@ -121,6 +129,10 @@ namespace BilHealth.Services
             var _case = await DbCtx.Cases.FindAsync(caseId);
             if (_case is null) throw new ArgumentException("No case with ID " + caseId);
 
+            CreateSystemMessage(
+                _case.Id,
+                CaseSystemMessageType.CaseStateUpdated,
+                $"{_case.State} --> {newState}");
             _case.State = newState;
             await DbCtx.SaveChangesAsync();
         }

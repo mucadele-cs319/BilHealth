@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using NodaTime;
 
@@ -8,15 +9,21 @@ namespace BilHealth.Services
 {
     public class AppointmentService : DbServiceBase, IAppointmentService
     {
+        private readonly INotificationService NotificationService;
         private readonly IClock Clock;
 
-        public AppointmentService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
+        public AppointmentService(AppDbContext dbCtx, INotificationService notificationService, IClock clock) : base(dbCtx)
         {
+            NotificationService = notificationService;
             Clock = clock;
         }
 
         public async Task<Appointment> CreateAppointmentRequest(AppointmentDto details)
         {
+            var _case = await DbCtx.Cases.FindAsync(details.CaseId);
+            if (_case is null) throw new ArgumentException("Case is null");
+            if (_case.DoctorUserId is null) throw new Exception("Case does not have a doctor yet");
+
             var appointment = new Appointment
             {
                 CaseId = details.CaseId,
@@ -27,6 +34,7 @@ namespace BilHealth.Services
                 Description = details.Description
             };
             DbCtx.Appointments.Add(appointment);
+            await NotificationService.AddNewAppointmentNotification(appointment);
             await DbCtx.SaveChangesAsync();
             return appointment;
         }
@@ -62,7 +70,7 @@ namespace BilHealth.Services
             if (patientUser is null) throw new ArgumentException("No patient user with ID " + patientUserId);
 
             if (patientUser.DomainUser is Patient patient)
-                    patient.Blacklisted = newState;
+                patient.Blacklisted = newState;
             else throw new ArgumentException($"Given ID {patientUserId} belongs to non-patient user");
 
             await DbCtx.SaveChangesAsync();

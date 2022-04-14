@@ -13,7 +13,7 @@ namespace BilHealth.Services
         Task<CaseMessage> EditMessage(CaseMessageDto details);
         Task<bool> RemoveMessage(Guid messageId);
 
-        void CreateSystemMessage(CaseSystemMessageDto details);
+        void CreateSystemMessage(Guid caseId, CaseSystemMessageType type, string content);
 
         Task<Prescription> CreatePrescription(PrescriptionDto details);
         Task<Prescription> UpdatePrescription(PrescriptionDto details);
