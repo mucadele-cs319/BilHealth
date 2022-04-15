@@ -289,6 +289,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    RequestedById = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
@@ -299,6 +300,12 @@ namespace BilHealth.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AspNetUsers_RequestedById",
+                        column: x => x.RequestedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Cases_CaseId",
                         column: x => x.CaseId,
@@ -436,6 +443,11 @@ namespace BilHealth.Migrations
                 name: "IX_Appointments_CaseId",
                 table: "Appointments",
                 column: "CaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_RequestedById",
+                table: "Appointments",
+                column: "RequestedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentVisits_AppointmentId",
