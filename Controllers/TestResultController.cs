@@ -25,7 +25,7 @@ namespace BilHealth.Controllers
 
         [HttpPost]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
-        public async Task<TestResultDto> Create(TestResultDto details, IFormFile? file)
+        public async Task<TestResultDto> Create([FromForm] TestResultDto details, IFormFile? file)
         {
             var testResult = await TestResultService.CreateTestResult(details, file);
             return DtoMapper.Map(testResult);
@@ -39,13 +39,15 @@ namespace BilHealth.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Update(TestResultDto details, IFormFile? file)
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
+        public async Task<IActionResult> Update([FromForm] TestResultDto details, IFormFile? file)
         {
             if (details.Id is null) return BadRequest();
             return Ok(DtoMapper.Map(await TestResultService.UpdateTestResult(details, file)));
         }
 
         [HttpDelete]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
         public async Task<IActionResult> Delete(Guid testResultId)
         {
             return await TestResultService.RemoveTestResult(testResultId) ? Ok() : NotFound();
