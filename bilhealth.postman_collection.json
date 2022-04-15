@@ -182,7 +182,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:44440/api/profile/user/67699276-b537-4d74-ab96-48f087c12ef5",
+							"raw": "https://localhost:44440/api/profile/user/6aa52a44-a278-4093-87b5-645b72e52a1f",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -192,7 +192,7 @@
 								"api",
 								"profile",
 								"user",
-								"67699276-b537-4d74-ab96-48f087c12ef5"
+								"6aa52a44-a278-4093-87b5-645b72e52a1f"
 							]
 						}
 					},
@@ -384,6 +384,473 @@
 									"key": "notificationid",
 									"value": null
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caseId\": \"e46009f8-2425-4c6b-a280-4ff8573dadc7\",\n    \"dateTime\": \"2022-12-18T16:04:39.180034Z\",\n    \"description\": \"An appointment!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/appointment/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"appointment",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approval",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/appointment/setapproval?appointmentId=89defb0e-0eae-4c30-acf3-ad36513a652b&approval=1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"appointment",
+								"setapproval"
+							],
+							"query": [
+								{
+									"key": "appointmentId",
+									"value": "89defb0e-0eae-4c30-acf3-ad36513a652b"
+								},
+								{
+									"key": "approval",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createvisit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"appointmentId\": \"89defb0e-0eae-4c30-acf3-ad36513a652b\",\n    \"notes\": \"Notes from employees\",\n    \"bpm\": 56.4,\n    \"bloodPressure\": 70.1,\n    \"bodyTemperature\": 36.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/appointment/createvisit",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"appointment",
+								"createvisit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cases",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/case/get/e46009f8-2425-4c6b-a280-4ff8573dadc7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"get",
+								"e46009f8-2425-4c6b-a280-4ff8573dadc7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patientUserId\": \"6aa52a44-a278-4093-87b5-645b72e52a1f\",\n    \"type\": 0\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/case/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "casestate",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/case/casestate?caseId=e46009f8-2425-4c6b-a280-4ff8573dadc7&state=1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"casestate"
+							],
+							"query": [
+								{
+									"key": "caseId",
+									"value": "e46009f8-2425-4c6b-a280-4ff8573dadc7"
+								},
+								{
+									"key": "state",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createmessage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caseId\": \"e46009f8-2425-4c6b-a280-4ff8573dadc7\",\n    \"content\": \"My first message!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/case/createmessage",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"createmessage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editmessage",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"f143b9d5-503d-477a-b27d-b77b94bea557\",\n    \"content\": \"My first edited message!\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/case/editmessage",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"editmessage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removemessage",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/case/removemessage?messageId=f143b9d5-503d-477a-b27d-b77b94bea557",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"removemessage"
+							],
+							"query": [
+								{
+									"key": "messageId",
+									"value": "f143b9d5-503d-477a-b27d-b77b94bea557"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createtriagerequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caseId\": \"e46009f8-2425-4c6b-a280-4ff8573dadc7\",\n    \"doctorUserId\": \"4c76498b-81cf-4296-b4d6-eb2e8a0c73dd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/case/createtriagerequest",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"createtriagerequest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "triagerequest",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"015db501-af6b-41ea-8445-b7b1d659c232\",\n    \"approvalStatus\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/case/triagerequest",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"case",
+								"triagerequest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TestResults",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "patientUserId",
+									"value": "6aa52a44-a278-4093-87b5-645b72e52a1f",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/ved/Downloads/vedat_resume.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/testresult/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"testresult",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1bba98ca-e733-4387-8aff-73767e39acd4",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/ved/Downloads/vedat_resume.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://localhost:44440/api/testresult/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"testresult",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/testresult/delete?testResultId=48dfe167-4d8a-422c-bd1f-7fc4f7907c42",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"testresult",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "testResultId",
+									"value": "48dfe167-4d8a-422c-bd1f-7fc4f7907c42"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getfile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44440/api/testresult/getfile/1bba98ca-e733-4387-8aff-73767e39acd4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44440",
+							"path": [
+								"api",
+								"testresult",
+								"getfile",
+								"1bba98ca-e733-4387-8aff-73767e39acd4"
 							]
 						}
 					},
