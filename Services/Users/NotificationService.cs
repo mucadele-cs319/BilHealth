@@ -30,8 +30,10 @@ namespace BilHealth.Services.Users
 
         public async Task AddNewAppointmentNotification(Appointment appointment)
         {
-            var user = (await DbCtx.Users.FindAsync(appointment.RequestedById))?.DomainUser;
-            if (user is null || appointment.Case?.DoctorUserId is null) throw new ArgumentNullException();
+            var user = (await DbCtx.DomainUsers.FindAsync(appointment.RequestedById));
+            await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
+            if (user is null) throw new ArgumentNullException(nameof(user), "No user");
+            if (appointment.Case!.DoctorUserId is null) throw new ArgumentNullException(nameof(appointment), "No case");
 
             switch (user)
             {

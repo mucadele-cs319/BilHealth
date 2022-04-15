@@ -27,6 +27,7 @@ namespace BilHealth.Controllers
         [Authorize]
         public async Task<AppointmentDto> Create(AppointmentDto details)
         {
+            details.RequestedById = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             var appointment = await AppointmentService.CreateAppointmentRequest(details);
             return DtoMapper.Map(appointment);
         }

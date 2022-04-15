@@ -27,6 +27,7 @@ namespace BilHealth.Services
             var appointment = new Appointment
             {
                 CaseId = details.CaseId,
+                RequestedById = details.RequestedById,
                 ApprovalStatus = ApprovalStatus.Waiting,
                 Attended = false,
                 CreatedAt = Clock.GetCurrentInstant(),
