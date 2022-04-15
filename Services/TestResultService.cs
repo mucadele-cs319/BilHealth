@@ -25,6 +25,14 @@ namespace BilHealth.Services
             return filePath;
         }
 
+        private void DeleteFile(TestResult testResult)
+        {
+            if (testResult.FileName is null) return;
+
+            var filePath = Path.Combine(fileStorePath, testResult.FileName);
+            File.Delete(filePath);
+        }
+
         public async Task<TestResult> CreateTestResult(TestResultDto details, IFormFile? testResultFile)
         {
             var testResult = new TestResult
@@ -40,7 +48,16 @@ namespace BilHealth.Services
                 testResult.FileName = await SaveFile(testResultFile);
             }
 
-            await DbCtx.SaveChangesAsync();
+            try
+            {
+                await DbCtx.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                DeleteFile(testResult);
+                throw;
+            }
+
             return testResult;
         }
 
@@ -49,9 +66,8 @@ namespace BilHealth.Services
             var testResult = await DbCtx.TestResults.FindAsync(testResultId);
             if (testResult is null) return false;
 
+            DeleteFile(testResult);
             DbCtx.TestResults.Remove(testResult);
-            if (testResult.FileName is not null)
-                File.Delete(Path.Combine(fileStorePath, testResult.FileName));
             await DbCtx.SaveChangesAsync();
             return true;
         }
