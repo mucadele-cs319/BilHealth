@@ -117,17 +117,31 @@ namespace BilHealth.Services.Users
             }
         }
 
-        public async Task<AppUser> GetUser(ClaimsPrincipal principal)
+        private async Task LoadUser(DomainUser user)
+        {
+            await DbCtx.Entry(user).Reference(u => u.AppUser).LoadAsync();
+            await LoadUser(user.AppUser);
+        }
+
+        public async Task<AppUser> GetAppUser(ClaimsPrincipal principal)
         {
             var user = await UserManager.GetUserAsync(principal);
             await LoadUser(user);
             return user;
         }
 
-        public async Task<AppUser> GetUser(Guid userId)
+        public async Task<AppUser> GetAppUser(Guid userId)
         {
             var user = await DbCtx.Users.FindAsync(userId);
             if (user is null) throw new ArgumentException("No user found with id" + userId);
+            await LoadUser(user);
+            return user;
+        }
+
+        public async Task<DomainUser> GetDomainUser(Guid userId)
+        {
+            var user = await DbCtx.DomainUsers.FindAsync(userId);
+            if (user is null) throw new ArgumentException("No domain user found with id" + userId);
             await LoadUser(user);
             return user;
         }

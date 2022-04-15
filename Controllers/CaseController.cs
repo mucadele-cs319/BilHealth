@@ -39,7 +39,7 @@ namespace BilHealth.Controllers
         [HttpPost]
         public async Task<CaseMessageDto> CreateMessage(CaseMessageDto details)
         {
-            details.UserId = (await AuthenticationService.GetUser(User)).Id;
+            details.UserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             return DtoMapper.Map(await CaseService.CreateMessage(details));
         }
 
@@ -59,7 +59,7 @@ namespace BilHealth.Controllers
         [Authorize(Roles = UserRoleType.Constant.Doctor)]
         public async Task<PrescriptionDto> CreatePrescription(PrescriptionDto details)
         {
-            details.DoctorUserId = (await AuthenticationService.GetUser(User)).Id;
+            details.DoctorUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             var prescription = await CaseService.CreatePrescription(details);
             return DtoMapper.Map(prescription);
         }
