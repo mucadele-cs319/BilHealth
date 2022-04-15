@@ -20,12 +20,13 @@ namespace BilHealth.Services
 
         private async Task<string> SaveFile(IFormFile file, string? fileName = null)
         {
-            var filePath = Path.Combine(fileStorePath, fileName is null ? Guid.NewGuid().ToString() + Path.GetExtension(file.FileName) : fileName);
+            var actualFileName = fileName is null ? Guid.NewGuid().ToString() + Path.GetExtension(file.FileName) : fileName;
+            var filePath = Path.Combine(fileStorePath, actualFileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
                 await file.CopyToAsync(stream);
 
-            return filePath;
+            return actualFileName;
         }
 
         private void DeleteFile(TestResult testResult)
