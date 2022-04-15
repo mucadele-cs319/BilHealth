@@ -626,7 +626,7 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.AppUser", "RequestedBy")
+                    b.HasOne("BilHealth.Model.DomainUser", "RequestedBy")
                         .WithMany()
                         .HasForeignKey("RequestedById")
                         .OnDelete(DeleteBehavior.Cascade)
