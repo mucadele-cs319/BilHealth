@@ -22,6 +22,12 @@ namespace BilHealth.Controllers
             CaseService = caseService;
         }
 
+        [HttpGet("{id:guid}")]
+        public async Task<CaseDto> Get(Guid id)
+        {
+            return DtoMapper.Map(await CaseService.GetCase(id));
+        }
+
         [HttpPost]
         public async Task<CaseDto> Create(CaseDto details)
         {

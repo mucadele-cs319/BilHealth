@@ -20,6 +20,23 @@ namespace BilHealth.Services
             Clock = clock;
         }
 
+        public async Task<Case> GetCase(Guid caseId)
+        {
+            var _case = await DbCtx.Cases.FindAsync(caseId);
+            if (_case is null) throw new ArgumentException("No case with ID " + caseId);
+
+            await DbCtx.Entry(_case).Collection(c => c.Messages!).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.SystemMessages!).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Appointments!).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Prescriptions!).LoadAsync();
+
+            if (_case.Appointments is not null)
+                foreach (var appointment in _case.Appointments)
+                    await DbCtx.Entry(appointment).Reference(a => a.Visit).LoadAsync();
+
+            return _case;
+        }
+
         public async Task<Case> CreateCase(CaseDto details)
         {
             var _case = new Case

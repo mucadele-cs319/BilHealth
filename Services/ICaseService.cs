@@ -6,6 +6,7 @@ namespace BilHealth.Services
 {
     public interface ICaseService
     {
+        Task<Case> GetCase(Guid caseId);
         Task<Case> CreateCase(CaseDto details);
         Task SetCaseState(Guid caseId, CaseState newState);
 
