@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS sdk
+WORKDIR /testresults
 WORKDIR /app
 
 # Install node.js v16.x

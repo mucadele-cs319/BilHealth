@@ -125,6 +125,8 @@ namespace BilHealth.Utility
             var dto = new AppointmentDto
             {
                 Id = appointment.Id,
+                RequestedById = appointment.RequestedById,
+                CaseId = appointment.CaseId,
                 ApprovalStatus = appointment.ApprovalStatus,
                 Attended = appointment.Attended,
                 CreatedAt = appointment.CreatedAt,
@@ -140,6 +142,7 @@ namespace BilHealth.Utility
             var dto = new AppointmentVisitDto
             {
                 Id = appointmentVisit.Id,
+                AppointmentId = appointmentVisit.AppointmentId,
                 BloodPressure = appointmentVisit.BloodPressure,
                 BodyTemperature = appointmentVisit.BodyTemperature,
                 BPM = appointmentVisit.BPM,
@@ -153,6 +156,7 @@ namespace BilHealth.Utility
             var dto = new CaseMessageDto
             {
                 Id = message.Id,
+                CaseId = message.CaseId,
                 UserId = message.UserId,
                 DateTime = message.DateTime,
                 Content = message.Content
@@ -165,6 +169,7 @@ namespace BilHealth.Utility
             var dto = new CaseSystemMessageDto
             {
                 Id = message.Id,
+                CaseId = message.CaseId,
                 DateTime = message.DateTime,
                 Type = message.Type,
                 Content = message.Content
@@ -192,6 +197,7 @@ namespace BilHealth.Utility
             var dto = new PrescriptionDto
             {
                 Id = prescription.Id,
+                CaseId = prescription.CaseId,
                 DateTime = prescription.DateTime,
                 DoctorUserId = prescription.DoctorUserId,
                 Item = prescription.Item

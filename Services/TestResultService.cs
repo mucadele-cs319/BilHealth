@@ -1,31 +1,106 @@
-using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
-using BilHealth.Utility.Enum;
-using Microsoft.AspNetCore.Identity;
+using BilHealth.Services.Users;
+using NodaTime;
 
 namespace BilHealth.Services
 {
     public class TestResultService : DbServiceBase, ITestResultService
     {
-        public TestResultService(AppDbContext dbCtx) : base(dbCtx)
+        private readonly INotificationService NotificationService;
+        private readonly IClock Clock;
+        private readonly string fileStorePath = Path.Combine("/", "testresults");
+
+        public TestResultService(AppDbContext dbCtx, INotificationService notificationService, IClock clock) : base(dbCtx)
         {
+            NotificationService = notificationService;
+            Clock = clock;
         }
 
-        public Task CreateTestResult(TestResultDto details, IFormFile? testResultFile)
+        private async Task<string> SaveFile(IFormFile file, string? fileName = null)
         {
-            throw new NotImplementedException();
+            var actualFileName = fileName is null ? Guid.NewGuid().ToString() + Path.GetExtension(file.FileName) : fileName;
+            var filePath = Path.Combine(fileStorePath, actualFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+                await file.CopyToAsync(stream);
+
+            return actualFileName;
         }
 
-        public Task RemoveTestResult(Guid testResultId)
+        private void DeleteFile(TestResult testResult)
         {
-            throw new NotImplementedException();
+            if (testResult.FileName is null) return;
+
+            var filePath = Path.Combine(fileStorePath, testResult.FileName);
+            File.Delete(filePath);
         }
 
-        public Task UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
+        public async Task<TestResult> CreateTestResult(TestResultDto details, IFormFile? testResultFile)
         {
-            throw new NotImplementedException();
+            var testResult = new TestResult
+            {
+                DateTime = Clock.GetCurrentInstant(),
+                PatientUserId = details.PatientUserId,
+                Type = details.Type
+            };
+            DbCtx.TestResults.Add(testResult);
+
+            if (testResultFile is not null && testResultFile.Length > 0)
+            {
+                testResult.FileName = await SaveFile(testResultFile);
+            }
+
+            NotificationService.AddNewTestResultNotification(details.PatientUserId, testResult);
+
+            try
+            {
+                await DbCtx.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                DeleteFile(testResult);
+                throw;
+            }
+
+            return testResult;
+        }
+
+        public async Task<bool> RemoveTestResult(Guid testResultId)
+        {
+            var testResult = await DbCtx.TestResults.FindAsync(testResultId);
+            if (testResult is null) return false;
+
+            DeleteFile(testResult);
+            DbCtx.TestResults.Remove(testResult);
+            await DbCtx.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<TestResult> UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
+        {
+            var testResult = await DbCtx.TestResults.FindAsync(details.Id);
+            if (testResult is null) throw new ArgumentException("No test result with ID " + details.Id);
+
+            testResult.Type = details.Type;
+
+            if (testResultFile is not null && testResultFile.Length > 0)
+            {
+                testResult.FileName = await SaveFile(testResultFile, testResult.FileName);
+            }
+
+            await DbCtx.SaveChangesAsync();
+            return testResult;
+        }
+
+        public async Task<FileStream> GetTestResultFile(Guid testResultId)
+        {
+            var testResult = await DbCtx.TestResults.FindAsync(testResultId);
+            if (testResult is null) throw new ArgumentException("No test result with ID " + testResultId);
+            if (testResult.FileName is null) throw new Exception("This test result does not have a file");
+
+            return new FileStream(Path.Combine(fileStorePath, testResult.FileName), FileMode.Open);
         }
     }
 }

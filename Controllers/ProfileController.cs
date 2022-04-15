@@ -25,7 +25,7 @@ namespace BilHealth.Controllers
         [HttpGet]
         public async Task<UserProfileDto> Me()
         {
-            var user = await AuthenticationService.GetUser(base.User);
+            var user = await AuthenticationService.GetAppUser(base.User);
             var role = await AuthenticationService.GetUserRole(user);
             return DtoMapper.Map(user, role);
         }
@@ -38,7 +38,7 @@ namespace BilHealth.Controllers
             AppUser user;
             try
             {
-                user = await AuthenticationService.GetUser(id);
+                user = (await AuthenticationService.GetDomainUser(id)).AppUser;
             }
             catch (ArgumentException)
             {
@@ -52,7 +52,7 @@ namespace BilHealth.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UserProfileDto newProfile)
         {
-            var user = await AuthenticationService.GetUser(base.User);
+            var user = await AuthenticationService.GetAppUser(base.User);
             await ProfileService.UpdateProfile(user.DomainUser, newProfile);
             return Ok();
         }

@@ -12,6 +12,6 @@ namespace BilHealth.Model
 
         [Required] public Instant DateTime { get; set; }
         [Required] public MedicalTestType Type { get; set; }
-        [Required] public string ResultFilePath { get; set; } = null!;
+        [Required] public string? FileName { get; set; }
     }
 }

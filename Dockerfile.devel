@@ -7,6 +7,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - ; apt-get install 
 RUN useradd --create-home --shell /bin/bash bhuser
 USER bhuser
 
+WORKDIR /testresults
 WORKDIR /app
 
 # Install dotnet-ef for migrations

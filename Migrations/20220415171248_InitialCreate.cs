@@ -251,7 +251,7 @@ namespace BilHealth.Migrations
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    ResultFilePath = table.Column<string>(type: "text", nullable: false)
+                    FileName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -289,7 +289,8 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RequestedById = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     ApprovalStatus = table.Column<int>(type: "integer", nullable: false),
@@ -303,6 +304,12 @@ namespace BilHealth.Migrations
                         name: "FK_Appointments_Cases_CaseId",
                         column: x => x.CaseId,
                         principalTable: "Cases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Appointments_DomainUsers_RequestedById",
+                        column: x => x.RequestedById,
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -410,7 +417,7 @@ namespace BilHealth.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppointmentVisit",
+                name: "AppointmentVisits",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -423,9 +430,9 @@ namespace BilHealth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppointmentVisit", x => x.Id);
+                    table.PrimaryKey("PK_AppointmentVisits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppointmentVisit_Appointments_AppointmentId",
+                        name: "FK_AppointmentVisits_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
                         principalColumn: "Id",
@@ -438,8 +445,13 @@ namespace BilHealth.Migrations
                 column: "CaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppointmentVisit_AppointmentId",
-                table: "AppointmentVisit",
+                name: "IX_Appointments_RequestedById",
+                table: "Appointments",
+                column: "RequestedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentVisits_AppointmentId",
+                table: "AppointmentVisits",
                 column: "AppointmentId",
                 unique: true);
 
@@ -548,7 +560,7 @@ namespace BilHealth.Migrations
                 name: "Announcements");
 
             migrationBuilder.DropTable(
-                name: "AppointmentVisit");
+                name: "AppointmentVisits");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

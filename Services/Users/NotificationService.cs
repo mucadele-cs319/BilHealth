@@ -15,7 +15,7 @@ namespace BilHealth.Services.Users
             Clock = clock;
         }
 
-        public void AddNewAppointmentNotification(Guid userId, Appointment appointment)
+        private void AddNewAppointmentNotification(Guid userId, Appointment appointment)
         {
             var notification = new Notification
             {
@@ -26,6 +26,28 @@ namespace BilHealth.Services.Users
                 ReferenceId2 = appointment.Id
             };
             DbCtx.Notifications.Add(notification);
+        }
+
+        public async Task AddNewAppointmentNotification(Appointment appointment)
+        {
+            var user = (await DbCtx.DomainUsers.FindAsync(appointment.RequestedById));
+            await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
+            if (user is null) throw new ArgumentNullException(nameof(user), "No user");
+            if (appointment.Case!.DoctorUserId is null) throw new ArgumentNullException(nameof(appointment), "No case");
+
+            switch (user)
+            {
+                case Patient:
+                    AddNewAppointmentNotification(appointment.Case.DoctorUserId.Value, appointment);
+                    break;
+                case Doctor:
+                    AddNewAppointmentNotification(appointment.Case.PatientUserId, appointment);
+                    break;
+                default:
+                    AddNewAppointmentNotification(appointment.Case.DoctorUserId.Value, appointment);
+                    AddNewAppointmentNotification(appointment.Case.PatientUserId, appointment);
+                    break;
+            }
         }
 
         public void AddAppointmentTimeChangeNotification(Guid userId, Appointment appointment)
@@ -69,7 +91,7 @@ namespace BilHealth.Services.Users
 
         public async Task AddNewCaseMessageNotification(CaseMessage message)
         {
-            var user = await DbCtx.DomainUsers.SingleOrDefaultAsync(user => user.Id == message.UserId);
+            var user = await DbCtx.DomainUsers.SingleOrDefaultAsync(user => user.AppUser.Id == message.UserId);
             if (user is null) return;
 
             await DbCtx.Entry(message).Reference(m => m.Case).LoadAsync();
@@ -136,6 +158,18 @@ namespace BilHealth.Services.Users
                 Type = NotificationType.CaseNewPrescription,
                 ReferenceId1 = prescription.CaseId,
                 ReferenceId2 = prescription.Id
+            };
+            DbCtx.Notifications.Add(notification);
+        }
+
+        public void AddNewTestResultNotification(Guid userId, TestResult testResult)
+        {
+            var notification = new Notification
+            {
+                DateTime = Clock.GetCurrentInstant(),
+                UserId = userId,
+                Type = NotificationType.TestResultNew,
+                ReferenceId1 = testResult.Id
             };
             DbCtx.Notifications.Add(notification);
         }

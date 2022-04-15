@@ -10,5 +10,6 @@ namespace BilHealth.Utility.Enum
         CaseTriaged, // CaseId
         CaseDoctorChanged, // CaseId
         CaseNewPrescription, // CaseId, PrescriptionId
+        TestResultNew // TestResultId
     }
 }

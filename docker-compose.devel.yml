@@ -9,6 +9,7 @@ services:
       - "7257:7257" # ASP.NET Core (HTTPS)
       - "5222:5222" # ASP.NET Core (HTTP)
     volumes:
+      - testresultsdevel:/testresults
       - .:/app # Watch source code changes from host system
     depends_on:
       - dbpostgres
@@ -33,4 +34,5 @@ services:
     image: redis
 
 volumes:
+  testresultsdevel:
   postgresdevel:

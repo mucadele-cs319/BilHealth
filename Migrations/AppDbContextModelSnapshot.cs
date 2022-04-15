@@ -60,7 +60,7 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("CaseId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<Instant>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Instant>("DateTime")
@@ -70,9 +70,14 @@ namespace BilHealth.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("RequestedById")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CaseId");
+
+                    b.HasIndex("RequestedById");
 
                     b.ToTable("Appointments");
                 });
@@ -107,7 +112,7 @@ namespace BilHealth.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("AppointmentVisit");
+                    b.ToTable("AppointmentVisits");
                 });
 
             modelBuilder.Entity("BilHealth.Model.AppUser", b =>
@@ -387,12 +392,12 @@ namespace BilHealth.Migrations
                     b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PatientUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ResultFilePath")
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("PatientUserId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -621,7 +626,15 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BilHealth.Model.DomainUser", "RequestedBy")
+                        .WithMany()
+                        .HasForeignKey("RequestedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Case");
+
+                    b.Navigation("RequestedBy");
                 });
 
             modelBuilder.Entity("BilHealth.Model.AppointmentVisit", b =>
