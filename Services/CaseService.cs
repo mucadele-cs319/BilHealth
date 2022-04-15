@@ -158,8 +158,13 @@ namespace BilHealth.Services
         {
             var triageRequest = await DbCtx.TriageRequests.FindAsync(details.Id);
             if (triageRequest is null) throw new ArgumentException("No triage request with ID " + details.Id);
+            await DbCtx.Entry(triageRequest).Reference(t => t.Case).LoadAsync();
 
             triageRequest.ApprovalStatus = details.ApprovalStatus;
+
+            if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
+                triageRequest.Case!.DoctorUserId = triageRequest.DoctorUserId;
+
             await DbCtx.SaveChangesAsync();
         }
 
