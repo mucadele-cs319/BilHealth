@@ -85,13 +85,16 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoleType.Constant.Nurse)]
         public async Task<TriageRequestDto> CreateTriageRequest(TriageRequestDto details)
         {
+            details.NurseUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             var triageRequest = await CaseService.CreateTriageRequest(details);
             return DtoMapper.Map(triageRequest);
         }
 
         [HttpPatch]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor},{UserRoleType.Constant.Staff}")]
         public async Task<IActionResult> TriageRequest(TriageRequestDto details)
         {
             await CaseService.SetTriageRequestApproval(details);

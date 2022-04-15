@@ -11,7 +11,7 @@ namespace BilHealth.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+    [Authorize]
     public class AppointmentController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
@@ -24,7 +24,6 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<AppointmentDto> Create(AppointmentDto details)
         {
             details.RequestedById = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
@@ -33,6 +32,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
         public async Task<AppointmentVisitDto> CreateVisit(AppointmentVisitDto details)
         {
             var visit = await AppointmentService.CreateVisit(details);
@@ -40,18 +40,21 @@ namespace BilHealth.Controllers
         }
 
         [HttpPatch]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
         public async Task SetApproval(Guid appointmentId, ApprovalStatus approval)
         {
             await AppointmentService.SetAppointmentApproval(appointmentId, approval);
         }
 
         [HttpPatch]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
         public async Task UpdateVisit(AppointmentVisitDto details)
         {
             await AppointmentService.UpdatePatientVisitDetails(details);
         }
 
         [HttpPatch]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
         public async Task SetBlacklist(Guid patientUserId, bool newState)
         {
             await AppointmentService.SetPatientBlacklistState(patientUserId, newState);
