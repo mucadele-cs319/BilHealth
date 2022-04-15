@@ -162,6 +162,18 @@ namespace BilHealth.Services.Users
             DbCtx.Notifications.Add(notification);
         }
 
+        public void AddNewTestResultNotification(Guid userId, TestResult testResult)
+        {
+            var notification = new Notification
+            {
+                DateTime = Clock.GetCurrentInstant(),
+                UserId = userId,
+                Type = NotificationType.TestResultNew,
+                ReferenceId1 = testResult.Id
+            };
+            DbCtx.Notifications.Add(notification);
+        }
+
         public async Task MarkNotificationRead(Guid notificationId)
         {
             var notification = await DbCtx.Notifications.SingleOrDefaultAsync(notification => notification.Id == notificationId);

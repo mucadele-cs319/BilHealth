@@ -21,6 +21,7 @@ namespace BilHealth.Services.Users
         void AddCaseTriagedNotification(Guid userId, Case _case);
         void AddCaseDoctorChangedNotification(Guid userId, Case _case);
         void AddNewPrescriptionNotification(Guid userId, Prescription prescription);
+        void AddNewTestResultNotification(Guid userId, TestResult testResult);
 
         Task MarkNotificationRead(Guid notificationId);
         Task MarkAllNotificationsRead(DomainUser user);

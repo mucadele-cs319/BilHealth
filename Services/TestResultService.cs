@@ -1,17 +1,20 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Services.Users;
 using NodaTime;
 
 namespace BilHealth.Services
 {
     public class TestResultService : DbServiceBase, ITestResultService
     {
+        private readonly INotificationService NotificationService;
         private readonly IClock Clock;
         private readonly string fileStorePath = Path.Combine("/", "testresults");
 
-        public TestResultService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
+        public TestResultService(AppDbContext dbCtx, INotificationService notificationService, IClock clock) : base(dbCtx)
         {
+            NotificationService = notificationService;
             Clock = clock;
         }
 
@@ -47,6 +50,8 @@ namespace BilHealth.Services
             {
                 testResult.FileName = await SaveFile(testResultFile);
             }
+
+            NotificationService.AddNewTestResultNotification(details.PatientUserId, testResult);
 
             try
             {
