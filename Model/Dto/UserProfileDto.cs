@@ -5,6 +5,7 @@ namespace BilHealth.Model.Dto
 {
     public record UserProfileDto
     {
+        public Guid? Id { get; set; }
         public string? UserType { get; set; }
 
         // User Fields
