@@ -7,6 +7,7 @@ using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using NodaTime;
 using NodaTime.Serialization.JsonNet;
 
@@ -68,6 +69,10 @@ builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<ICaseService, CaseService>();
 builder.Services.AddScoped<ITestResultService, TestResultService>();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "BilHealth API", Version = "v1" }); });
+builder.Services.AddSwaggerGenNewtonsoftSupport();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -105,6 +110,12 @@ else
             UserType = UserRoleType.Admin
         }).Wait();
     }
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("v1/swagger.json", "BilHealth API v1");
+    });
 }
 
 app.UseStaticFiles();

@@ -17,7 +17,7 @@
 
 ### User Types
 
-There are 4 roles of distinct authorization levels, with each user falling into a single one of them.
+There are 5 roles of distinct authorization levels, with each user falling into a single one of them.
 
 - **Admin:** Manages the system but is not necessarily part of the health center staff.
   This is a role for developers/maintainers to do housekeeping, such as registering new users.
@@ -219,6 +219,7 @@ docker-compose -f docker-compose.devel.yml up
 ```
 
 Once the containers are fully up, the project should be visible at `https://localhost:7257/`.
+At `https://localhost:7257/swagger`, you can find the SwaggerUI documentation and test the API.
 
 This development image mounts the project folder into the container, allowing changes to the code
 to be seen in real-time.

@@ -65,18 +65,6 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task SetPatientBlacklistState(Guid patientUserId, bool newState)
-        {
-            var patientUser = await DbCtx.Users.FindAsync(patientUserId);
-            if (patientUser is null) throw new ArgumentException("No patient user with ID " + patientUserId);
-
-            if (patientUser.DomainUser is Patient patient)
-                patient.Blacklisted = newState;
-            else throw new ArgumentException($"Given ID {patientUserId} belongs to non-patient user");
-
-            await DbCtx.SaveChangesAsync();
-        }
-
         public async Task<AppointmentVisit> UpdatePatientVisitDetails(AppointmentVisitDto details)
         {
             var visit = await DbCtx.AppointmentVisits.FindAsync(details.Id);

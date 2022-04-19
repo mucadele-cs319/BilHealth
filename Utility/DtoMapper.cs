@@ -12,6 +12,7 @@ namespace BilHealth.Utility
 
             var dto = new UserProfileDto
             {
+                Id = user.DomainUser.Id,
                 UserType = role,
                 Email = user.Email,
                 FirstName = domainUser.FirstName,

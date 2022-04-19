@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BilHealth.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]s")]
     [Authorize]
+    [Produces("application/json")]
     public class NotificationController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
@@ -21,35 +22,25 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet]
-        public async Task<List<NotificationDto>> All()
+        public async Task<List<NotificationDto>> Get(bool unread = false)
         {
             var user = await AuthenticationService.GetAppUser(User);
-            var notifications = await NotificationService.GetAllNotifications(user.DomainUser);
+            var notifications = await NotificationService.GetNotifications(user.DomainUser, unread);
             return notifications.Select(DtoMapper.Map).ToList();
         }
 
-        [HttpGet]
-        public async Task<List<NotificationDto>> Unread()
+        [HttpPatch("{notificationId:guid}")]
+        public async Task<IActionResult> MarkRead(Guid notificationId, bool all = false)
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            var notifications = await NotificationService.GetUnreadNotifications(user.DomainUser);
-            return notifications.Select(DtoMapper.Map).ToList();
-        }
-
-        [HttpPatch]
-        public async Task<IActionResult> MarkRead(Guid? notificationId, bool all = false)
-        {
-            var user = await AuthenticationService.GetAppUser(User);
-
-            if (all)
-            {
-                await NotificationService.MarkAllNotificationsRead(user.DomainUser);
-                return Ok();
-            }
-
-            if (notificationId is null) return BadRequest("Missing notification ID");
-
             await NotificationService.MarkNotificationRead((Guid)notificationId);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAllRead()
+        {
+            var user = await AuthenticationService.GetAppUser(User);
+            await NotificationService.MarkAllNotificationsRead(user.DomainUser);
             return Ok();
         }
     }
