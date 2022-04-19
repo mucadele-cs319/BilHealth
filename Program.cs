@@ -110,7 +110,7 @@ else
             UserType = UserRoleType.Admin
         }).Wait();
     }
-    
+
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
