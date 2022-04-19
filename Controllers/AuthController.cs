@@ -9,6 +9,7 @@ namespace BilHealth.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize]
+    [Produces("application/json")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;

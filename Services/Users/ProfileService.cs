@@ -68,6 +68,25 @@ namespace BilHealth.Services.Users
             await DbCtx.SaveChangesAsync();
         }
 
+        public async Task UpdateProfile(Guid userId, UserProfileDto newProfile)
+        {
+            var user = await DbCtx.DomainUsers.FindAsync(userId);
+            if (user is null) throw new ArgumentException("No user with ID " + userId);
+            await UpdateProfile(user, newProfile);
+        }
+
+        public async Task SetPatientBlacklistState(Guid patientUserId, bool newState)
+        {
+            var patientUser = await DbCtx.DomainUsers.FindAsync(patientUserId);
+            if (patientUser is null) throw new ArgumentException("No patient user with ID " + patientUserId);
+
+            if (patientUser is Patient patient)
+                patient.Blacklisted = newState;
+            else throw new ArgumentException($"Given ID {patientUserId} belongs to non-patient user");
+
+            await DbCtx.SaveChangesAsync();
+        }
+
         public async Task AddVaccination(VaccinationDto details)
         {
             var vaccination = new Vaccination

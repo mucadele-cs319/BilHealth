@@ -10,8 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BilHealth.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]s")]
     [Authorize]
+    [Produces("application/json")]
     public class TestResultController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
@@ -31,22 +32,23 @@ namespace BilHealth.Controllers
             return DtoMapper.Map(testResult);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetFile(Guid id)
+        [HttpGet("{testResultId:guid}/file")]
+        [Produces("application/pdf")]
+        public async Task<IActionResult> GetFile(Guid testResultId)
         {
-            var fileStream = await TestResultService.GetTestResultFile(id);
+            var fileStream = await TestResultService.GetTestResultFile(testResultId);
             return File(fileStream, "application/pdf");
         }
 
-        [HttpPatch]
+        [HttpPatch("{testResultId:guid}")]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
-        public async Task<IActionResult> Update([FromForm] TestResultDto details, IFormFile? file)
+        public async Task<IActionResult> Update(Guid testResultId, [FromForm] TestResultDto details, IFormFile? file)
         {
-            if (details.Id is null) return BadRequest();
+            details.Id = testResultId;
             return Ok(DtoMapper.Map(await TestResultService.UpdateTestResult(details, file)));
         }
 
-        [HttpDelete]
+        [HttpDelete("{testResultId:guid}")]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
         public async Task<IActionResult> Delete(Guid testResultId)
         {

@@ -11,7 +11,5 @@ namespace BilHealth.Services
         Task<AppointmentVisit> CreateVisit(AppointmentVisitDto details);
 
         Task<AppointmentVisit> UpdatePatientVisitDetails(AppointmentVisitDto details);
-
-        Task SetPatientBlacklistState(Guid patientUserId, bool newState);
     }
 }

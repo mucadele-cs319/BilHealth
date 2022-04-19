@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BilHealth.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]s")]
     [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Doctor}")]
+    [Produces("application/json")]
     public class AnnouncementController : ControllerBase
     {
         private readonly IAnnouncementService AnnouncementService;
@@ -33,14 +34,14 @@ namespace BilHealth.Controllers
             return DtoMapper.Map(await AnnouncementService.AddAnnouncement(announcement));
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> Edit(AnnouncementDto announcement)
+        [HttpPut("{announcementId:guid}")]
+        public async Task<IActionResult> Update(Guid announcementId, AnnouncementDto announcement)
         {
-            if (announcement.Id is null) return BadRequest();
+            announcement.Id = announcementId;
             return await AnnouncementService.UpdateAnnouncement(announcement) ? Ok() : NotFound();
         }
 
-        [HttpDelete]
+        [HttpDelete("{announcementId:guid}")]
         public async Task<IActionResult> Delete(Guid announcementId)
         {
             return await AnnouncementService.RemoveAnnouncement(announcementId) ? Ok() : NotFound();

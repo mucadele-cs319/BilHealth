@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BilHealth.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]s")]
     [Authorize]
+    [Produces("application/json")]
     public class ProfileController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
@@ -22,23 +23,23 @@ namespace BilHealth.Controllers
             ProfileService = profileService;
         }
 
-        [HttpGet]
-        public async Task<UserProfileDto> Me()
+        [HttpGet("me")]
+        public async Task<UserProfileDto> GetCurrentUser()
         {
             var user = await AuthenticationService.GetAppUser(base.User);
             var role = await AuthenticationService.GetUserRole(user);
             return DtoMapper.Map(user, role);
         }
 
-        [HttpGet("{id:guid}")]
-        public new async Task<IActionResult> User(Guid id)
+        [HttpGet("{userId:guid}")]
+        public async Task<IActionResult> GetUser(Guid userId)
         {
             // TODO: Constrain DTO fields according to the querying user's access level
 
             AppUser user;
             try
             {
-                user = (await AuthenticationService.GetDomainUser(id)).AppUser;
+                user = (await AuthenticationService.GetDomainUser(userId)).AppUser;
             }
             catch (ArgumentException)
             {
@@ -49,12 +50,18 @@ namespace BilHealth.Controllers
             return Ok(DtoMapper.Map(user, role));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update(UserProfileDto newProfile)
+        [HttpPatch("{userId:guid}")]
+        public async Task<IActionResult> Update(Guid userId, UserProfileDto newProfile)
         {
-            var user = await AuthenticationService.GetAppUser(base.User);
-            await ProfileService.UpdateProfile(user.DomainUser, newProfile);
+            await ProfileService.UpdateProfile(userId, newProfile);
             return Ok();
+        }
+
+        [HttpPut("{patientUserId:guid}/blacklist")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task SetBlacklist(Guid patientUserId, bool newState)
+        {
+            await ProfileService.SetPatientBlacklistState(patientUserId, newState);
         }
     }
 }

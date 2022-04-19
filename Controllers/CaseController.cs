@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BilHealth.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]s")]
     [Authorize]
+    [Produces("application/json")]
     public class CaseController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
@@ -22,10 +23,10 @@ namespace BilHealth.Controllers
             CaseService = caseService;
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<CaseDto> Get(Guid id)
+        [HttpGet("{caseId:guid}")]
+        public async Task<CaseDto> Get(Guid caseId)
         {
-            return DtoMapper.Map(await CaseService.GetCase(id));
+            return DtoMapper.Map(await CaseService.GetCase(caseId));
         }
 
         [HttpPost]
@@ -35,68 +36,73 @@ namespace BilHealth.Controllers
             return DtoMapper.Map(_case);
         }
 
-        [HttpPatch]
+        [HttpPatch("{caseId:guid}")]
         public async Task<IActionResult> CaseState(Guid caseId, CaseState state)
         {
             await CaseService.SetCaseState(caseId, state);
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("{caseId:guid}/messages")]
         public async Task<CaseMessageDto> CreateMessage(CaseMessageDto details)
         {
             details.UserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             return DtoMapper.Map(await CaseService.CreateMessage(details));
         }
 
-        [HttpPatch]
-        public async Task<CaseMessageDto> EditMessage(CaseMessageDto details)
+        [HttpPut("messages/{messageId:guid}")]
+        public async Task<CaseMessageDto> UpdateMessage(Guid messageId, CaseMessageDto details)
         {
+            details.Id = messageId;
             return DtoMapper.Map(await CaseService.EditMessage(details));
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> RemoveMessage(Guid messageId)
+        [HttpDelete("messages/{messageId:guid}")]
+        public async Task<IActionResult> DeleteMessage(Guid messageId)
         {
             return await CaseService.RemoveMessage(messageId) ? Ok() : NotFound();
         }
 
-        [HttpPost]
+        [HttpPost("{caseId:guid}/prescriptions")]
         [Authorize(Roles = UserRoleType.Constant.Doctor)]
-        public async Task<PrescriptionDto> CreatePrescription(PrescriptionDto details)
+        public async Task<PrescriptionDto> CreatePrescription(Guid caseId, PrescriptionDto details)
         {
+            details.CaseId = caseId;
             details.DoctorUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             var prescription = await CaseService.CreatePrescription(details);
             return DtoMapper.Map(prescription);
         }
 
-        [HttpPatch]
+        [HttpPut("prescriptions/{prescriptionId:guid}")]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor}")]
-        public async Task<PrescriptionDto> UpdatePrescription(PrescriptionDto details)
+        public async Task<PrescriptionDto> UpdatePrescription(Guid prescriptionId, PrescriptionDto details)
         {
+            details.Id = prescriptionId;
             return DtoMapper.Map(await CaseService.UpdatePrescription(details));
         }
 
-        [HttpDelete]
+        [HttpDelete("prescriptions/{prescriptionId:guid}")]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor}")]
         public async Task<IActionResult> RemovePrescription(Guid prescriptionId)
         {
             return await CaseService.RemovePrescription(prescriptionId) ? Ok() : NotFound();
         }
 
-        [HttpPost]
+        [HttpPost("{caseId:guid}/triagerequest")]
         [Authorize(Roles = UserRoleType.Constant.Nurse)]
-        public async Task<TriageRequestDto> CreateTriageRequest(TriageRequestDto details)
+        public async Task<TriageRequestDto> CreateTriageRequest(Guid caseId, TriageRequestDto details)
         {
+            details.CaseId = caseId;
             details.NurseUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             var triageRequest = await CaseService.CreateTriageRequest(details);
             return DtoMapper.Map(triageRequest);
         }
 
-        [HttpPatch]
+        [HttpPatch("{caseId:guid}/triagerequest")]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor},{UserRoleType.Constant.Staff}")]
-        public async Task<IActionResult> TriageRequest(TriageRequestDto details)
+        public async Task<IActionResult> SetTriageRequestApproval(Guid caseId, TriageRequestDto details)
         {
+            details.CaseId = caseId;
             await CaseService.SetTriageRequestApproval(details);
             return Ok();
         }

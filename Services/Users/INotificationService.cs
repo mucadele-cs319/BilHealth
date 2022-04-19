@@ -25,7 +25,6 @@ namespace BilHealth.Services.Users
 
         Task MarkNotificationRead(Guid notificationId);
         Task MarkAllNotificationsRead(DomainUser user);
-        Task<List<Notification>> GetUnreadNotifications(DomainUser user);
-        Task<List<Notification>> GetAllNotifications(DomainUser user);
+        Task<List<Notification>> GetNotifications(DomainUser user, bool unread = false);
     }
 }
