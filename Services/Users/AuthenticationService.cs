@@ -140,7 +140,7 @@ namespace BilHealth.Services.Users
 
         public async Task<List<AppUser>> GetAllAppUsers()
         {
-            var users = await DbCtx.Users.ToListAsync();
+            var users = await DbCtx.Users.Include(u => u.DomainUser).ToListAsync();
             return users;
         }
 
