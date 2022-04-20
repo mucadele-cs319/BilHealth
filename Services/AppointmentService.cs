@@ -2,6 +2,7 @@ using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
+using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using NodaTime;
 
@@ -20,9 +21,8 @@ namespace BilHealth.Services
 
         public async Task<Appointment> CreateAppointmentRequest(AppointmentDto details)
         {
-            var _case = await DbCtx.Cases.FindAsync(details.CaseId);
-            if (_case is null) throw new ArgumentException("Case is null");
-            if (_case.DoctorUserId is null) throw new Exception("Case does not have a doctor yet");
+            var _case = await DbCtx.Cases.FindOrThrowAsync(details.CaseId);
+            if (_case.DoctorUserId is null) throw new InvalidOperationException($"Case ({details.CaseId}) does not have a doctor");
 
             var appointment = new Appointment
             {
@@ -58,8 +58,7 @@ namespace BilHealth.Services
 
         public async Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval)
         {
-            var appointment = await DbCtx.Appointments.FindAsync(appointmentId);
-            if (appointment is null) throw new ArgumentException("No appointment with ID " + appointmentId);
+            var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
 
             appointment.ApprovalStatus = approval;
             await DbCtx.SaveChangesAsync();
@@ -67,8 +66,7 @@ namespace BilHealth.Services
 
         public async Task<AppointmentVisit> UpdatePatientVisitDetails(AppointmentVisitDto details)
         {
-            var visit = await DbCtx.AppointmentVisits.FindAsync(details.Id);
-            if (visit is null) throw new ArgumentException("No visit with ID " + details.Id);
+            var visit = await DbCtx.AppointmentVisits.FindOrThrowAsync(details.Id);
 
             visit.Notes = details.Notes ?? visit.Notes;
             visit.BloodPressure = details.BloodPressure ?? visit.BloodPressure;

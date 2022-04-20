@@ -132,16 +132,14 @@ namespace BilHealth.Services.Users
 
         public async Task<AppUser> GetAppUser(Guid userId)
         {
-            var user = await DbCtx.Users.FindAsync(userId);
-            if (user is null) throw new ArgumentException("No user found with id" + userId);
+            var user = await DbCtx.Users.FindOrThrowAsync(userId);
             await LoadUser(user);
             return user;
         }
 
         public async Task<DomainUser> GetDomainUser(Guid userId)
         {
-            var user = await DbCtx.DomainUsers.FindAsync(userId);
-            if (user is null) throw new ArgumentException("No domain user found with id" + userId);
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
             await LoadUser(user);
             return user;
         }

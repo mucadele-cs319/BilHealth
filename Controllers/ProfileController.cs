@@ -41,7 +41,7 @@ namespace BilHealth.Controllers
             {
                 user = (await AuthenticationService.GetDomainUser(userId)).AppUser;
             }
-            catch (ArgumentException)
+            catch (IdNotFoundException)
             {
                 return NotFound();
             }

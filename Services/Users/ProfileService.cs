@@ -70,15 +70,13 @@ namespace BilHealth.Services.Users
 
         public async Task UpdateProfile(Guid userId, UserProfileDto newProfile)
         {
-            var user = await DbCtx.DomainUsers.FindAsync(userId);
-            if (user is null) throw new ArgumentException("No user with ID " + userId);
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
             await UpdateProfile(user, newProfile);
         }
 
         public async Task SetPatientBlacklistState(Guid patientUserId, bool newState)
         {
-            var patientUser = await DbCtx.DomainUsers.FindAsync(patientUserId);
-            if (patientUser is null) throw new ArgumentException("No patient user with ID " + patientUserId);
+            var patientUser = await DbCtx.DomainUsers.FindOrThrowAsync(patientUserId);
 
             if (patientUser is Patient patient)
                 patient.Blacklisted = newState;
