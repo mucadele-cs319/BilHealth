@@ -44,8 +44,9 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/messages")]
-        public async Task<CaseMessageDto> CreateMessage(CaseMessageDto details)
+        public async Task<CaseMessageDto> CreateMessage(Guid caseId, CaseMessageDto details)
         {
+            details.CaseId = caseId;
             details.UserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             return DtoMapper.Map(await CaseService.CreateMessage(details));
         }
