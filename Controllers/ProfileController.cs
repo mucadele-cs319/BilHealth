@@ -23,6 +23,14 @@ namespace BilHealth.Controllers
             ProfileService = profileService;
         }
 
+        [HttpGet]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
+        public async Task<List<SimpleUserDto>> GetAll()
+        {
+            var users = await AuthenticationService.GetAllAppUsers();
+            return users.Select(u => DtoMapper.MapSimpleUser(u, AuthenticationService.GetUserRole(u.DomainUser))).ToList();
+        }
+
         [HttpGet("me")]
         public async Task<UserProfileDto> GetCurrentUser()
         {

@@ -4,6 +4,7 @@ using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BilHealth.Services.Users
 {
@@ -137,6 +138,12 @@ namespace BilHealth.Services.Users
             return user;
         }
 
+        public async Task<List<AppUser>> GetAllAppUsers()
+        {
+            var users = await DbCtx.Users.ToListAsync();
+            return users;
+        }
+
         public async Task<DomainUser> GetDomainUser(Guid userId)
         {
             var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
@@ -147,6 +154,12 @@ namespace BilHealth.Services.Users
         public async Task<UserRoleType> GetUserRole(AppUser user)
         {
             var roleName = (await UserManager.GetRolesAsync(user)).First();
+            return UserRoleType.Names.First(roleType => roleType == roleName);
+        }
+
+        public UserRoleType GetUserRole(DomainUser user)
+        {
+            var roleName = user.Discriminator;
             return UserRoleType.Names.First(roleType => roleType == roleName);
         }
     }

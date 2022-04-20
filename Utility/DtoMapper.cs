@@ -45,6 +45,20 @@ namespace BilHealth.Utility
             return dto;
         }
 
+        public static SimpleUserDto MapSimpleUser(AppUser user, UserRoleType role)
+        {
+            var dto = new SimpleUserDto
+            {
+                Id = user.DomainUser.Id,
+                UserType = role,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.DomainUser.FirstName,
+                LastName = user.DomainUser.LastName,
+            };
+            return dto;
+        }
+
         public static VaccinationDto Map(Vaccination vaccination)
         {
             var dto = new VaccinationDto

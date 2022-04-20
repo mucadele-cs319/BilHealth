@@ -15,5 +15,7 @@ namespace BilHealth.Model
 
         [Required] public Guid AppUserId { get; private set; }
         public AppUser AppUser { get; set; } = null!;
+
+        public string Discriminator { get; private set; } = null!;
     }
 }

@@ -21,7 +21,9 @@ namespace BilHealth.Services.Users
         Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
         Task<AppUser> GetAppUser(ClaimsPrincipal principal);
         Task<AppUser> GetAppUser(Guid userId);
+        Task<List<AppUser>> GetAllAppUsers();
         Task<DomainUser> GetDomainUser(Guid userId);
         Task<UserRoleType> GetUserRole(AppUser user);
+        UserRoleType GetUserRole(DomainUser user);
     }
 }
