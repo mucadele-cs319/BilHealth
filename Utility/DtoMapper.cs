@@ -26,7 +26,7 @@ namespace BilHealth.Utility
                 dto.BloodType = patient.BloodType;
                 dto.Vaccinations = patient.Vaccinations?.Select(Map).ToList();
                 dto.TestResults = patient.TestResults?.Select(Map).ToList();
-                dto.Cases = patient.Cases?.Select(Map).ToList();
+                dto.Cases = patient.Cases?.Select(MapSimpleCase).ToList();
                 dto.Blacklisted = patient.Blacklisted;
             }
             else if (user is Nurse nurse)
@@ -37,7 +37,7 @@ namespace BilHealth.Utility
             {
                 dto.Specialization = doctor.Specialization;
                 dto.Campus = doctor.Campus;
-                dto.Cases = doctor.Cases?.Select(Map).ToList();
+                dto.Cases = doctor.Cases?.Select(MapSimpleCase).ToList();
             }
 
             return dto;
@@ -118,6 +118,23 @@ namespace BilHealth.Utility
 
             if (_case.Prescriptions is not null)
                 dto.Prescriptions = _case.Prescriptions.Select(Map).ToList();
+
+            return dto;
+        }
+
+        public static SimpleCaseDto MapSimpleCase(Case _case)
+        {
+            var dto = new SimpleCaseDto
+            {
+                Id = _case.Id,
+                DateTime = _case.DateTime,
+                State = _case.State,
+                PatientUserId = _case.PatientUserId,
+                DoctorUserId = _case.DoctorUserId
+            };
+
+            if (_case.Messages is not null)
+                dto.MessageCount = _case.Messages.Count;
 
             return dto;
         }
