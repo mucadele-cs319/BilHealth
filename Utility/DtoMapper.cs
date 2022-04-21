@@ -144,6 +144,7 @@ namespace BilHealth.Utility
                 CaseId = appointment.CaseId,
                 ApprovalStatus = appointment.ApprovalStatus,
                 Attended = appointment.Attended,
+                Cancelled = appointment.Cancelled,
                 CreatedAt = appointment.CreatedAt,
                 DateTime = appointment.DateTime,
                 Description = appointment.Description,

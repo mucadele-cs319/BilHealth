@@ -57,6 +57,9 @@ namespace BilHealth.Migrations
                     b.Property<bool>("Attended")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid>("CaseId")
                         .HasColumnType("uuid");
 

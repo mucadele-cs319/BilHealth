@@ -295,6 +295,7 @@ namespace BilHealth.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     ApprovalStatus = table.Column<int>(type: "integer", nullable: false),
                     Attended = table.Column<bool>(type: "boolean", nullable: false),
+                    Cancelled = table.Column<bool>(type: "boolean", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
