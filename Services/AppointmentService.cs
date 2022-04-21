@@ -19,7 +19,7 @@ namespace BilHealth.Services
             Clock = clock;
         }
 
-        public async Task<Appointment> CreateAppointmentRequest(AppointmentDto details)
+        public async Task<Appointment> CreateAppointment(AppointmentDto details)
         {
             var _case = await DbCtx.Cases.FindOrThrowAsync(details.CaseId);
 
