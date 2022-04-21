@@ -24,6 +24,10 @@ namespace BilHealth.Services
             var _case = await DbCtx.Cases.FindOrThrowAsync(details.CaseId);
             if (_case.DoctorUserId is null) throw new InvalidOperationException($"Case ({details.CaseId}) does not have a doctor");
 
+            var requestingUser = await DbCtx.DomainUsers.FindOrThrowAsync(details.RequestedById);
+            if (requestingUser is Patient patient && patient.Blacklisted)
+                throw new InvalidOperationException($"Patient ({details.RequestedById}) is blacklisted from online appointments");
+
             var appointment = new Appointment
             {
                 CaseId = details.CaseId,
