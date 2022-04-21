@@ -24,11 +24,11 @@ namespace BilHealth.Services.Users
             }
             else if (user is Doctor doctor)
             {
-                return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Open).ToListAsync();
+                return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State != CaseState.Closed).ToListAsync();
             }
             else
             {
-                throw new ArgumentException("This user type is not supported yet: " + user.GetType());
+                throw new ArgumentException("This user type is not supported yet", nameof(user));
             }
         }
 
@@ -44,7 +44,7 @@ namespace BilHealth.Services.Users
             }
             else
             {
-                throw new ArgumentException("This user type is not supported yet: " + user.GetType());
+                throw new ArgumentException("This user type is not supported yet", nameof(user));
             }
         }
 
