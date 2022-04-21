@@ -142,6 +142,9 @@ namespace BilHealth.Services
         {
             var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
 
+            if (newState == CaseState.Closed)
+                NotificationService.AddCaseClosedNotification(_case.PatientUserId, _case);
+
             CreateSystemMessage(
                 _case.Id,
                 CaseSystemMessageType.CaseStateUpdated,
@@ -157,8 +160,10 @@ namespace BilHealth.Services
 
             triageRequest.ApprovalStatus = details.ApprovalStatus;
 
-            if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
+            if (triageRequest.ApprovalStatus == ApprovalStatus.Approved) {
                 triageRequest.Case!.DoctorUserId = triageRequest.DoctorUserId;
+                NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
+            }
 
             await DbCtx.SaveChangesAsync();
         }
