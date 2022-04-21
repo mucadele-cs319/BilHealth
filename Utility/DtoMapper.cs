@@ -1,27 +1,25 @@
 using BilHealth.Model;
 using BilHealth.Model.Dto;
-using BilHealth.Utility.Enum;
 
 namespace BilHealth.Utility
 {
     public class DtoMapper
     {
-        public static UserProfileDto Map(AppUser user, UserRoleType role)
+        public static UserProfileDto Map(DomainUser user)
         {
-            var domainUser = user.DomainUser;
 
             var dto = new UserProfileDto
             {
-                Id = user.DomainUser.Id,
-                UserType = role,
-                Email = user.Email,
-                FirstName = domainUser.FirstName,
-                LastName = domainUser.LastName,
-                Gender = domainUser.Gender,
-                DateOfBirth = domainUser.DateOfBirth
+                Id = user.AppUser.Id,
+                UserType = user.Discriminator,
+                Email = user.AppUser.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                DateOfBirth = user.DateOfBirth
             };
 
-            if (domainUser is Patient patient)
+            if (user is Patient patient)
             {
                 dto.BodyWeight = patient.BodyWeight;
                 dto.BodyHeight = patient.BodyHeight;
@@ -31,11 +29,11 @@ namespace BilHealth.Utility
                 dto.Cases = patient.Cases?.Select(Map).ToList();
                 dto.Blacklisted = patient.Blacklisted;
             }
-            else if (domainUser is Nurse nurse)
+            else if (user is Nurse nurse)
             {
                 dto.TriageRequests = nurse.TriageRequests?.Select(Map).ToList();
             }
-            else if (domainUser is Doctor doctor)
+            else if (user is Doctor doctor)
             {
                 dto.Specialization = doctor.Specialization;
                 dto.Campus = doctor.Campus;
@@ -45,16 +43,16 @@ namespace BilHealth.Utility
             return dto;
         }
 
-        public static SimpleUserDto MapSimpleUser(AppUser user, UserRoleType role)
+        public static SimpleUserDto MapSimpleUser(DomainUser user)
         {
             var dto = new SimpleUserDto
             {
-                Id = user.DomainUser.Id,
-                UserType = role,
-                UserName = user.UserName,
-                Email = user.Email,
-                FirstName = user.DomainUser.FirstName,
-                LastName = user.DomainUser.LastName,
+                Id = user.Id,
+                UserType = user.Discriminator,
+                UserName = user.AppUser.UserName,
+                Email = user.AppUser.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
             };
             return dto;
         }
