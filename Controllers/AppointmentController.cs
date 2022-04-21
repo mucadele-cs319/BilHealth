@@ -31,6 +31,21 @@ namespace BilHealth.Controllers
             return DtoMapper.Map(appointment);
         }
 
+        [HttpPatch("{appointmentId:guid}")]
+        public async Task<AppointmentDto> Update(Guid appointmentId, AppointmentDto details)
+        {
+            details.Id = appointmentId;
+            var appointment = await AppointmentService.UpdateAppointment(details);
+            return DtoMapper.Map(appointment);
+        }
+
+        [HttpPut("{appointmentId:guid}/cancel")]
+        public async Task<IActionResult> Cancel(Guid appointmentId)
+        {
+            var success = await AppointmentService.CancelAppointment(appointmentId);
+            return success ? Ok() : NotFound();
+        }
+
         [HttpPut("{appointmentId:guid}/approval")]
         [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
         public async Task SetApproval(Guid appointmentId, ApprovalStatus approval)
