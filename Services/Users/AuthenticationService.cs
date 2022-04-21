@@ -163,14 +163,43 @@ namespace BilHealth.Services.Users
             return UserRoleType.Names.First(roleType => roleType == roleName);
         }
 
-        public Task<bool> CanAccessCase(DomainUser user, Guid caseId)
+        public async Task<bool> CanAccessCase(DomainUser user, Guid caseId)
         {
-            throw new NotImplementedException();
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+
+            switch (user)
+            {
+                case Admin:
+                case Staff:
+                    return true;
+                case Doctor:
+                    return _case.DoctorUserId == user.Id;
+                case Nurse:
+                    return _case.State != CaseState.Closed;
+                case Patient:
+                    return _case.PatientUserId == user.Id;
+            }
+            return false;
         }
 
-        public Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId)
+        public async Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId)
         {
-            throw new NotImplementedException();
+            var testResult = await DbCtx.TestResults.FindOrThrowAsync(testResultId);
+
+            switch (user)
+            {
+                case Admin:
+                case Staff:
+                    return true;
+                case Doctor:
+                    var patient = (Patient)await GetDomainUser(testResult.PatientUserId);
+                    return patient.Cases!.Any(c => c.DoctorUserId == user.Id);
+                case Nurse:
+                    return false;
+                case Patient:
+                    return testResult.PatientUserId == user.Id;
+            }
+            return false;
         }
     }
 }
