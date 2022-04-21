@@ -1,4 +1,3 @@
-using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services;
 using BilHealth.Services.Users;

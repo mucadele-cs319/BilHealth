@@ -1,6 +1,3 @@
-using BilHealth.Utility.Enum;
-using NodaTime;
-
 namespace BilHealth.Model.Dto
 {
     public record SimpleUserDto

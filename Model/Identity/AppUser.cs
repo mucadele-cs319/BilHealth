@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using BilHealth.Model.Dto;
 using BilHealth.Utility;
 using Microsoft.AspNetCore.Identity;

@@ -2,7 +2,6 @@ using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
-using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using NodaTime;
 

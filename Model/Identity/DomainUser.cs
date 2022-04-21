@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
 using NodaTime;
 
