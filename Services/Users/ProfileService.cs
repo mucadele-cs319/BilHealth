@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
@@ -9,11 +10,34 @@ namespace BilHealth.Services.Users
 {
     public class ProfileService : DbServiceBase, IProfileService
     {
+        private readonly IAuthenticationService AuthenticationService;
         private readonly IClock Clock;
 
-        public ProfileService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
+        public ProfileService(AppDbContext dbCtx, IAuthenticationService authenticationService, IClock clock) : base(dbCtx)
         {
+            AuthenticationService = authenticationService;
             Clock = clock;
+        }
+
+        public async Task<UserProfileDto> GetFilteredUser(DomainUser requestingUser, Guid requestedUserId)
+        {
+            var requestedUser = await AuthenticationService.GetDomainUser(requestedUserId);
+            var dto = DtoMapper.Map(requestedUser);
+
+            switch (requestingUser)
+            {
+                case Patient:
+                    if (requestedUser is Patient && requestedUserId != requestingUser.Id)
+                        throw new InvalidOperationException("Patient cannot access other patient profiles");
+                    break;
+                case Nurse:
+                case Doctor:
+                case Staff:
+                case Admin:
+                    break;
+            }
+
+            return dto;
         }
 
         public async Task<List<Case>> GetOpenCases(DomainUser user)

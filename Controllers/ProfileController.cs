@@ -28,34 +28,36 @@ namespace BilHealth.Controllers
         public async Task<List<SimpleUserDto>> GetAll()
         {
             var users = await AuthenticationService.GetAllAppUsers();
-            return users.Select(u => DtoMapper.MapSimpleUser(u, AuthenticationService.GetUserRole(u.DomainUser))).ToList();
+            return users.Select(u => DtoMapper.MapSimpleUser(u.DomainUser)).ToList();
         }
 
         [HttpGet("me")]
         public async Task<UserProfileDto> GetCurrentUser()
         {
-            var user = await AuthenticationService.GetAppUser(base.User);
-            var role = await AuthenticationService.GetUserRole(user);
-            return DtoMapper.Map(user, role);
+            var user = await AuthenticationService.GetAppUser(User);
+            return DtoMapper.Map(user.DomainUser);
         }
 
         [HttpGet("{userId:guid}")]
         public async Task<IActionResult> GetUser(Guid userId)
         {
-            // TODO: Constrain DTO fields according to the querying user's access level
+            DomainUser requestingUser = (await AuthenticationService.GetAppUser(User)).DomainUser;
 
-            AppUser user;
+            UserProfileDto dto;
             try
             {
-                user = (await AuthenticationService.GetDomainUser(userId)).AppUser;
+                dto = await ProfileService.GetFilteredUser(requestingUser, userId);
             }
             catch (IdNotFoundException)
             {
                 return NotFound();
             }
+            catch (InvalidOperationException)
+            {
+                return Forbid();
+            }
 
-            var role = await AuthenticationService.GetUserRole(user);
-            return Ok(DtoMapper.Map(user, role));
+            return Ok(dto);
         }
 
         [HttpPatch("{userId:guid}")]
