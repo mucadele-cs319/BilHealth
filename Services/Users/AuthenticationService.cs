@@ -162,5 +162,15 @@ namespace BilHealth.Services.Users
             var roleName = user.Discriminator;
             return UserRoleType.Names.First(roleType => roleType == roleName);
         }
+
+        public Task<bool> CanAccessCase(DomainUser user, Guid caseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -25,5 +25,8 @@ namespace BilHealth.Services.Users
         Task<DomainUser> GetDomainUser(Guid userId);
         Task<UserRoleType> GetUserRole(AppUser user);
         UserRoleType GetUserRole(DomainUser user);
+
+        Task<bool> CanAccessCase(DomainUser user, Guid caseId);
+        Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId);
     }
 }
