@@ -71,5 +71,27 @@ namespace BilHealth.Controllers
         {
             await ProfileService.SetPatientBlacklistState(patientUserId, newState);
         }
+
+        [HttpPost("{patientUserId:guid}/vaccinations")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task AddVaccination(Guid patientUserId, VaccinationDto details)
+        {
+            await ProfileService.AddVaccination(details);
+        }
+
+        [HttpPut("vaccinations/{vaccinationId:guid}")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task UpdateVaccination(Guid vaccinationId, VaccinationDto details)
+        {
+            details.Id = vaccinationId;
+            await ProfileService.UpdateVaccination(details);
+        }
+
+        [HttpDelete("vaccinations/{vaccinationId:guid}")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task RemoveVaccination(Guid vaccinationId)
+        {
+            await ProfileService.RemoveVaccination(vaccinationId);
+        }
     }
 }
