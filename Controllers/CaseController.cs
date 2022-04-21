@@ -24,9 +24,13 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet("{caseId:guid}")]
-        public async Task<CaseDto> Get(Guid caseId)
+        public async Task<IActionResult> Get(Guid caseId)
         {
-            return DtoMapper.Map(await CaseService.GetCase(caseId));
+            var user = await AuthenticationService.GetAppUser(User);
+            if (!(await AuthenticationService.CanAccessCase(user.DomainUser, caseId)))
+                return Forbid();
+
+            return Ok(DtoMapper.Map(await CaseService.GetCase(caseId)));
         }
 
         [HttpPost]
