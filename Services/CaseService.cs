@@ -40,6 +40,7 @@ namespace BilHealth.Services
             {
                 PatientUserId = details.PatientUserId,
                 DateTime = Clock.GetCurrentInstant(),
+                Title = details.Title,
                 State = CaseState.WaitingTriage,
                 Type = details.Type
             };

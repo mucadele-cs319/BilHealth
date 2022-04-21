@@ -201,6 +201,10 @@ namespace BilHealth.Migrations
                     b.Property<int>("State")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 

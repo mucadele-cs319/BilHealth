@@ -102,6 +102,7 @@ namespace BilHealth.Utility
             {
                 Id = _case.Id,
                 DateTime = _case.DateTime,
+                Title = _case.Title,
                 State = _case.State,
                 Type = _case.Type,
                 PatientUserId = _case.PatientUserId,
