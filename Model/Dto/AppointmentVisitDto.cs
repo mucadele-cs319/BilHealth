@@ -1,5 +1,3 @@
-using BilHealth.Utility.Enum;
-
 namespace BilHealth.Model.Dto
 {
     public record AppointmentVisitDto

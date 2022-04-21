@@ -24,9 +24,13 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet("{caseId:guid}")]
-        public async Task<CaseDto> Get(Guid caseId)
+        public async Task<IActionResult> Get(Guid caseId)
         {
-            return DtoMapper.Map(await CaseService.GetCase(caseId));
+            var user = await AuthenticationService.GetAppUser(User);
+            if (!(await AuthenticationService.CanAccessCase(user.DomainUser, caseId)))
+                return Forbid();
+
+            return Ok(DtoMapper.Map(await CaseService.GetCase(caseId)));
         }
 
         [HttpPost]
@@ -44,8 +48,9 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/messages")]
-        public async Task<CaseMessageDto> CreateMessage(CaseMessageDto details)
+        public async Task<CaseMessageDto> CreateMessage(Guid caseId, CaseMessageDto details)
         {
+            details.CaseId = caseId;
             details.UserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             return DtoMapper.Map(await CaseService.CreateMessage(details));
         }

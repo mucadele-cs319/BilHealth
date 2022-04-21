@@ -80,8 +80,7 @@ namespace BilHealth.Services
 
         public async Task<TestResult> UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
         {
-            var testResult = await DbCtx.TestResults.FindAsync(details.Id);
-            if (testResult is null) throw new ArgumentException("No test result with ID " + details.Id);
+            var testResult = await DbCtx.TestResults.FindOrThrowAsync(details.Id ?? throw new ArgumentNullException(nameof(details.Id)));
 
             testResult.Type = details.Type;
 
@@ -96,9 +95,8 @@ namespace BilHealth.Services
 
         public async Task<FileStream> GetTestResultFile(Guid testResultId)
         {
-            var testResult = await DbCtx.TestResults.FindAsync(testResultId);
-            if (testResult is null) throw new ArgumentException("No test result with ID " + testResultId);
-            if (testResult.FileName is null) throw new Exception("This test result does not have a file");
+            var testResult = await DbCtx.TestResults.FindOrThrowAsync(testResultId);
+            if (testResult.FileName is null) throw new InvalidOperationException($"Test result ({testResultId}) does not have a file");
 
             return new FileStream(Path.Combine(fileStorePath, testResult.FileName), FileMode.Open);
         }

@@ -222,6 +222,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
@@ -295,6 +296,7 @@ namespace BilHealth.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     ApprovalStatus = table.Column<int>(type: "integer", nullable: false),
                     Attended = table.Column<bool>(type: "boolean", nullable: false),
+                    Cancelled = table.Column<bool>(type: "boolean", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

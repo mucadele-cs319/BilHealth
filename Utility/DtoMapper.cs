@@ -1,47 +1,59 @@
 using BilHealth.Model;
 using BilHealth.Model.Dto;
-using BilHealth.Utility.Enum;
 
 namespace BilHealth.Utility
 {
     public class DtoMapper
     {
-        public static UserProfileDto Map(AppUser user, UserRoleType role)
+        public static UserProfileDto Map(DomainUser user)
         {
-            var domainUser = user.DomainUser;
 
             var dto = new UserProfileDto
             {
-                Id = user.DomainUser.Id,
-                UserType = role,
-                Email = user.Email,
-                FirstName = domainUser.FirstName,
-                LastName = domainUser.LastName,
-                Gender = domainUser.Gender,
-                DateOfBirth = domainUser.DateOfBirth
+                Id = user.AppUser.Id,
+                UserType = user.Discriminator,
+                Email = user.AppUser.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                DateOfBirth = user.DateOfBirth
             };
 
-            if (domainUser is Patient patient)
+            if (user is Patient patient)
             {
                 dto.BodyWeight = patient.BodyWeight;
                 dto.BodyHeight = patient.BodyHeight;
                 dto.BloodType = patient.BloodType;
                 dto.Vaccinations = patient.Vaccinations?.Select(Map).ToList();
                 dto.TestResults = patient.TestResults?.Select(Map).ToList();
-                dto.Cases = patient.Cases?.Select(Map).ToList();
+                dto.Cases = patient.Cases?.Select(MapSimpleCase).ToList();
                 dto.Blacklisted = patient.Blacklisted;
             }
-            else if (domainUser is Nurse nurse)
+            else if (user is Nurse nurse)
             {
                 dto.TriageRequests = nurse.TriageRequests?.Select(Map).ToList();
             }
-            else if (domainUser is Doctor doctor)
+            else if (user is Doctor doctor)
             {
                 dto.Specialization = doctor.Specialization;
                 dto.Campus = doctor.Campus;
-                dto.Cases = doctor.Cases?.Select(Map).ToList();
+                dto.Cases = doctor.Cases?.Select(MapSimpleCase).ToList();
             }
 
+            return dto;
+        }
+
+        public static SimpleUserDto MapSimpleUser(DomainUser user)
+        {
+            var dto = new SimpleUserDto
+            {
+                Id = user.Id,
+                UserType = user.Discriminator,
+                UserName = user.AppUser.UserName,
+                Email = user.AppUser.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
             return dto;
         }
 
@@ -88,6 +100,7 @@ namespace BilHealth.Utility
             {
                 Id = _case.Id,
                 DateTime = _case.DateTime,
+                Title = _case.Title,
                 State = _case.State,
                 Type = _case.Type,
                 PatientUserId = _case.PatientUserId,
@@ -105,6 +118,23 @@ namespace BilHealth.Utility
 
             if (_case.Prescriptions is not null)
                 dto.Prescriptions = _case.Prescriptions.Select(Map).ToList();
+
+            return dto;
+        }
+
+        public static SimpleCaseDto MapSimpleCase(Case _case)
+        {
+            var dto = new SimpleCaseDto
+            {
+                Id = _case.Id,
+                DateTime = _case.DateTime,
+                State = _case.State,
+                PatientUserId = _case.PatientUserId,
+                DoctorUserId = _case.DoctorUserId
+            };
+
+            if (_case.Messages is not null)
+                dto.MessageCount = _case.Messages.Count;
 
             return dto;
         }
@@ -130,6 +160,7 @@ namespace BilHealth.Utility
                 CaseId = appointment.CaseId,
                 ApprovalStatus = appointment.ApprovalStatus,
                 Attended = appointment.Attended,
+                Cancelled = appointment.Cancelled,
                 CreatedAt = appointment.CreatedAt,
                 DateTime = appointment.DateTime,
                 Description = appointment.Description,

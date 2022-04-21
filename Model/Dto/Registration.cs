@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using BilHealth.Utility.Enum;
 
 namespace BilHealth.Model.Dto
 {

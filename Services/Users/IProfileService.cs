@@ -1,11 +1,12 @@
 using BilHealth.Model;
 using BilHealth.Model.Dto;
-using BilHealth.Utility.Enum;
 
 namespace BilHealth.Services.Users
 {
     public interface IProfileService
     {
+        Task<UserProfileDto> GetFilteredUser(DomainUser requestingUser, Guid requestedUserId);
+
         Task<List<Case>> GetPastCases(DomainUser user);
         Task<List<Case>> GetOpenCases(DomainUser user);
 

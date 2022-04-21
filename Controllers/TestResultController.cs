@@ -1,4 +1,3 @@
-using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services;
 using BilHealth.Services.Users;
@@ -36,6 +35,10 @@ namespace BilHealth.Controllers
         [Produces("application/pdf")]
         public async Task<IActionResult> GetFile(Guid testResultId)
         {
+            var user = await AuthenticationService.GetAppUser(User);
+            if (!(await AuthenticationService.CanAccessTestResult(user.DomainUser, testResultId)))
+                return Forbid();
+
             var fileStream = await TestResultService.GetTestResultFile(testResultId);
             return File(fileStream, "application/pdf");
         }

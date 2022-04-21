@@ -18,11 +18,13 @@ namespace BilHealth.Services
             Clock = clock;
         }
 
-        public async Task<Appointment> CreateAppointmentRequest(AppointmentDto details)
+        public async Task<Appointment> CreateAppointment(AppointmentDto details)
         {
-            var _case = await DbCtx.Cases.FindAsync(details.CaseId);
-            if (_case is null) throw new ArgumentException("Case is null");
-            if (_case.DoctorUserId is null) throw new Exception("Case does not have a doctor yet");
+            var _case = await DbCtx.Cases.FindOrThrowAsync(details.CaseId);
+
+            var requestingUser = await DbCtx.DomainUsers.FindOrThrowAsync(details.RequestedById);
+            if (requestingUser is Patient patient && patient.Blacklisted)
+                throw new InvalidOperationException($"Patient ({details.RequestedById}) is blacklisted from online appointments");
 
             var appointment = new Appointment
             {
@@ -38,6 +40,33 @@ namespace BilHealth.Services
             await NotificationService.AddNewAppointmentNotification(appointment);
             await DbCtx.SaveChangesAsync();
             return appointment;
+        }
+
+        public async Task<Appointment> UpdateAppointment(AppointmentDto details)
+        {
+            var appointment = await DbCtx.Appointments.FindOrThrowAsync(details.Id);
+            await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
+
+            if (appointment.DateTime != details.DateTime)
+                NotificationService.AddAppointmentTimeChangeNotification(appointment.Case!.PatientUserId, appointment);
+
+            appointment.DateTime = details.DateTime;
+            appointment.Description = details.Description;
+
+            await DbCtx.SaveChangesAsync();
+            return appointment;
+        }
+
+        public async Task<bool> CancelAppointment(Guid appointmentId)
+        {
+            var appointment = await DbCtx.Appointments.FindAsync(appointmentId);
+            if (appointment is null) return false;
+            await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
+
+            appointment.Cancelled = true;
+            NotificationService.AddAppointmentCancellationNotification(appointment.Case!.PatientUserId, appointment);
+
+            return true;
         }
 
         public async Task<AppointmentVisit> CreateVisit(AppointmentVisitDto details)
@@ -58,8 +87,7 @@ namespace BilHealth.Services
 
         public async Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval)
         {
-            var appointment = await DbCtx.Appointments.FindAsync(appointmentId);
-            if (appointment is null) throw new ArgumentException("No appointment with ID " + appointmentId);
+            var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
 
             appointment.ApprovalStatus = approval;
             await DbCtx.SaveChangesAsync();
@@ -67,8 +95,7 @@ namespace BilHealth.Services
 
         public async Task<AppointmentVisit> UpdatePatientVisitDetails(AppointmentVisitDto details)
         {
-            var visit = await DbCtx.AppointmentVisits.FindAsync(details.Id);
-            if (visit is null) throw new ArgumentException("No visit with ID " + details.Id);
+            var visit = await DbCtx.AppointmentVisits.FindOrThrowAsync(details.Id);
 
             visit.Notes = details.Notes ?? visit.Notes;
             visit.BloodPressure = details.BloodPressure ?? visit.BloodPressure;

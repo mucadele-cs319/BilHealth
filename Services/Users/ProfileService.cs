@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
@@ -9,11 +10,34 @@ namespace BilHealth.Services.Users
 {
     public class ProfileService : DbServiceBase, IProfileService
     {
+        private readonly IAuthenticationService AuthenticationService;
         private readonly IClock Clock;
 
-        public ProfileService(AppDbContext dbCtx, IClock clock) : base(dbCtx)
+        public ProfileService(AppDbContext dbCtx, IAuthenticationService authenticationService, IClock clock) : base(dbCtx)
         {
+            AuthenticationService = authenticationService;
             Clock = clock;
+        }
+
+        public async Task<UserProfileDto> GetFilteredUser(DomainUser requestingUser, Guid requestedUserId)
+        {
+            var requestedUser = await AuthenticationService.GetDomainUser(requestedUserId);
+            var dto = DtoMapper.Map(requestedUser);
+
+            switch (requestingUser)
+            {
+                case Patient:
+                    if (requestedUser is Patient && requestedUserId != requestingUser.Id)
+                        throw new InvalidOperationException("Patient cannot access other patient profiles");
+                    break;
+                case Nurse:
+                case Doctor:
+                case Staff:
+                case Admin:
+                    break;
+            }
+
+            return dto;
         }
 
         public async Task<List<Case>> GetOpenCases(DomainUser user)
@@ -24,11 +48,11 @@ namespace BilHealth.Services.Users
             }
             else if (user is Doctor doctor)
             {
-                return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Open).ToListAsync();
+                return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State != CaseState.Closed).ToListAsync();
             }
             else
             {
-                throw new ArgumentException("This user type is not supported yet: " + user.GetType());
+                throw new ArgumentException("This user type is not supported yet", nameof(user));
             }
         }
 
@@ -44,7 +68,7 @@ namespace BilHealth.Services.Users
             }
             else
             {
-                throw new ArgumentException("This user type is not supported yet: " + user.GetType());
+                throw new ArgumentException("This user type is not supported yet", nameof(user));
             }
         }
 
@@ -70,15 +94,13 @@ namespace BilHealth.Services.Users
 
         public async Task UpdateProfile(Guid userId, UserProfileDto newProfile)
         {
-            var user = await DbCtx.DomainUsers.FindAsync(userId);
-            if (user is null) throw new ArgumentException("No user with ID " + userId);
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
             await UpdateProfile(user, newProfile);
         }
 
         public async Task SetPatientBlacklistState(Guid patientUserId, bool newState)
         {
-            var patientUser = await DbCtx.DomainUsers.FindAsync(patientUserId);
-            if (patientUser is null) throw new ArgumentException("No patient user with ID " + patientUserId);
+            var patientUser = await DbCtx.DomainUsers.FindOrThrowAsync(patientUserId);
 
             if (patientUser is Patient patient)
                 patient.Blacklisted = newState;

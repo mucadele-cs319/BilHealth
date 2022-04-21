@@ -4,6 +4,7 @@ using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BilHealth.Services.Users
 {
@@ -132,16 +133,20 @@ namespace BilHealth.Services.Users
 
         public async Task<AppUser> GetAppUser(Guid userId)
         {
-            var user = await DbCtx.Users.FindAsync(userId);
-            if (user is null) throw new ArgumentException("No user found with id" + userId);
+            var user = await DbCtx.Users.FindOrThrowAsync(userId);
             await LoadUser(user);
             return user;
         }
 
+        public async Task<List<AppUser>> GetAllAppUsers()
+        {
+            var users = await DbCtx.Users.Include(u => u.DomainUser).ToListAsync();
+            return users;
+        }
+
         public async Task<DomainUser> GetDomainUser(Guid userId)
         {
-            var user = await DbCtx.DomainUsers.FindAsync(userId);
-            if (user is null) throw new ArgumentException("No domain user found with id" + userId);
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
             await LoadUser(user);
             return user;
         }
@@ -150,6 +155,51 @@ namespace BilHealth.Services.Users
         {
             var roleName = (await UserManager.GetRolesAsync(user)).First();
             return UserRoleType.Names.First(roleType => roleType == roleName);
+        }
+
+        public UserRoleType GetUserRole(DomainUser user)
+        {
+            var roleName = user.Discriminator;
+            return UserRoleType.Names.First(roleType => roleType == roleName);
+        }
+
+        public async Task<bool> CanAccessCase(DomainUser user, Guid caseId)
+        {
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+
+            switch (user)
+            {
+                case Admin:
+                case Staff:
+                    return true;
+                case Doctor:
+                    return _case.DoctorUserId == user.Id;
+                case Nurse:
+                    return _case.State != CaseState.Closed;
+                case Patient:
+                    return _case.PatientUserId == user.Id;
+            }
+            return false;
+        }
+
+        public async Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId)
+        {
+            var testResult = await DbCtx.TestResults.FindOrThrowAsync(testResultId);
+
+            switch (user)
+            {
+                case Admin:
+                case Staff:
+                    return true;
+                case Doctor:
+                    var patient = (Patient)await GetDomainUser(testResult.PatientUserId);
+                    return patient.Cases!.Any(c => c.DoctorUserId == user.Id);
+                case Nurse:
+                    return false;
+                case Patient:
+                    return testResult.PatientUserId == user.Id;
+            }
+            return false;
         }
     }
 }

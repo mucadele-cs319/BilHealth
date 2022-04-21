@@ -23,7 +23,7 @@ namespace BilHealth.Model.Dto
         public List<VaccinationDto>? Vaccinations { get; set; }
         public List<TestResultDto>? TestResults { get; set; }
 
-        public List<CaseDto>? Cases { get; set; }
+        public List<SimpleCaseDto>? Cases { get; set; }
         public bool? Blacklisted { get; set; }
 
         // Nurse Fields

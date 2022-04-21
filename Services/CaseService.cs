@@ -1,10 +1,8 @@
-using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
-using Microsoft.AspNetCore.Identity;
 using NodaTime;
 
 namespace BilHealth.Services
@@ -22,8 +20,7 @@ namespace BilHealth.Services
 
         public async Task<Case> GetCase(Guid caseId)
         {
-            var _case = await DbCtx.Cases.FindAsync(caseId);
-            if (_case is null) throw new ArgumentException("No case with ID " + caseId);
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
 
             await DbCtx.Entry(_case).Collection(c => c.Messages!).LoadAsync();
             await DbCtx.Entry(_case).Collection(c => c.SystemMessages!).LoadAsync();
@@ -43,6 +40,7 @@ namespace BilHealth.Services
             {
                 PatientUserId = details.PatientUserId,
                 DateTime = Clock.GetCurrentInstant(),
+                Title = details.Title,
                 State = CaseState.WaitingTriage,
                 Type = details.Type
             };
@@ -109,8 +107,7 @@ namespace BilHealth.Services
 
         public async Task<CaseMessage> EditMessage(CaseMessageDto details)
         {
-            var message = await DbCtx.FindAsync(typeof(CaseMessage), details.Id) as CaseMessage;
-            if (message is null) throw new ArgumentException("No message with ID " + details.Id);
+            var message = (CaseMessage)await DbCtx.FindOrThrowAsync(typeof(CaseMessage), details.Id);
 
             message.Content = details.Content ?? message.Content;
             await DbCtx.SaveChangesAsync();
@@ -119,8 +116,7 @@ namespace BilHealth.Services
 
         public async Task<bool> RemoveMessage(Guid messageId)
         {
-            var message = await DbCtx.FindAsync(typeof(CaseMessage), messageId) as CaseMessage;
-            if (message is null) return false;
+            var message = (CaseMessage)await DbCtx.FindOrThrowAsync(typeof(CaseMessage), messageId);
 
             DbCtx.Remove(message);
             await DbCtx.SaveChangesAsync();
@@ -129,8 +125,7 @@ namespace BilHealth.Services
 
         public async Task<bool> RemovePrescription(Guid prescriptionId)
         {
-            var prescription = await DbCtx.Prescriptions.FindAsync(prescriptionId);
-            if (prescription is null) return false;
+            var prescription = await DbCtx.Prescriptions.FindOrThrowAsync(prescriptionId);
 
             DbCtx.Prescriptions.Remove(prescription);
             CreateSystemMessage(
@@ -143,8 +138,10 @@ namespace BilHealth.Services
 
         public async Task SetCaseState(Guid caseId, CaseState newState)
         {
-            var _case = await DbCtx.Cases.FindAsync(caseId);
-            if (_case is null) throw new ArgumentException("No case with ID " + caseId);
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+
+            if (newState == CaseState.Closed)
+                NotificationService.AddCaseClosedNotification(_case.PatientUserId, _case);
 
             CreateSystemMessage(
                 _case.Id,
@@ -156,22 +153,23 @@ namespace BilHealth.Services
 
         public async Task SetTriageRequestApproval(TriageRequestDto details)
         {
-            var triageRequest = await DbCtx.TriageRequests.FindAsync(details.Id);
-            if (triageRequest is null) throw new ArgumentException("No triage request with ID " + details.Id);
+            var triageRequest = await DbCtx.TriageRequests.FindOrThrowAsync(details.Id);
             await DbCtx.Entry(triageRequest).Reference(t => t.Case).LoadAsync();
 
             triageRequest.ApprovalStatus = details.ApprovalStatus;
 
             if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
+            {
                 triageRequest.Case!.DoctorUserId = triageRequest.DoctorUserId;
+                NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
+            }
 
             await DbCtx.SaveChangesAsync();
         }
 
         public async Task<Prescription> UpdatePrescription(PrescriptionDto details)
         {
-            var prescription = await DbCtx.Prescriptions.FindAsync(details.Id);
-            if (prescription is null) throw new ArgumentException("No prescription with ID " + details.Id);
+            var prescription = await DbCtx.Prescriptions.FindOrThrowAsync(details.Id);
 
             prescription.Item = details.Item ?? prescription.Item;
             await DbCtx.SaveChangesAsync();

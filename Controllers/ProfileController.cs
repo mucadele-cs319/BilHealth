@@ -23,31 +23,41 @@ namespace BilHealth.Controllers
             ProfileService = profileService;
         }
 
+        [HttpGet]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
+        public async Task<List<SimpleUserDto>> GetAll()
+        {
+            var users = await AuthenticationService.GetAllAppUsers();
+            return users.Select(u => DtoMapper.MapSimpleUser(u.DomainUser)).ToList();
+        }
+
         [HttpGet("me")]
         public async Task<UserProfileDto> GetCurrentUser()
         {
-            var user = await AuthenticationService.GetAppUser(base.User);
-            var role = await AuthenticationService.GetUserRole(user);
-            return DtoMapper.Map(user, role);
+            var user = await AuthenticationService.GetAppUser(User);
+            return DtoMapper.Map(user.DomainUser);
         }
 
         [HttpGet("{userId:guid}")]
         public async Task<IActionResult> GetUser(Guid userId)
         {
-            // TODO: Constrain DTO fields according to the querying user's access level
+            DomainUser requestingUser = (await AuthenticationService.GetAppUser(User)).DomainUser;
 
-            AppUser user;
+            UserProfileDto dto;
             try
             {
-                user = (await AuthenticationService.GetDomainUser(userId)).AppUser;
+                dto = await ProfileService.GetFilteredUser(requestingUser, userId);
             }
-            catch (ArgumentException)
+            catch (IdNotFoundException)
             {
                 return NotFound();
             }
+            catch (InvalidOperationException)
+            {
+                return Forbid();
+            }
 
-            var role = await AuthenticationService.GetUserRole(user);
-            return Ok(DtoMapper.Map(user, role));
+            return Ok(dto);
         }
 
         [HttpPatch("{userId:guid}")]
@@ -62,6 +72,28 @@ namespace BilHealth.Controllers
         public async Task SetBlacklist(Guid patientUserId, bool newState)
         {
             await ProfileService.SetPatientBlacklistState(patientUserId, newState);
+        }
+
+        [HttpPost("{patientUserId:guid}/vaccinations")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task AddVaccination(Guid patientUserId, VaccinationDto details)
+        {
+            await ProfileService.AddVaccination(details);
+        }
+
+        [HttpPut("vaccinations/{vaccinationId:guid}")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task UpdateVaccination(Guid vaccinationId, VaccinationDto details)
+        {
+            details.Id = vaccinationId;
+            await ProfileService.UpdateVaccination(details);
+        }
+
+        [HttpDelete("vaccinations/{vaccinationId:guid}")]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        public async Task RemoveVaccination(Guid vaccinationId)
+        {
+            await ProfileService.RemoveVaccination(vaccinationId);
         }
     }
 }

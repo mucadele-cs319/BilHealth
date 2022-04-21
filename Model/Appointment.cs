@@ -14,6 +14,7 @@ namespace BilHealth.Model
         [Required] public string Description { get; set; } = null!;
         [Required] public ApprovalStatus ApprovalStatus { get; set; } = ApprovalStatus.Waiting;
         [Required] public bool Attended { get; set; } = false;
+        [Required] public bool Cancelled { get; set; } = false;
 
         [Required] public Guid CaseId { get; set; }
         public Case? Case { get; set; }

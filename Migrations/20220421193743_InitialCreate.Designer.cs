@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220415171248_InitialCreate")]
+    [Migration("20220421193743_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,9 @@ namespace BilHealth.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("Attended")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Cancelled")
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("CaseId")
@@ -199,6 +202,10 @@ namespace BilHealth.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
