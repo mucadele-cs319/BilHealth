@@ -5,14 +5,21 @@ const authentication = {
   register: async (registration: Registration) => {
     await fetch("/api/auth/register", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(registration),
     });
   },
-  login: async (login: Login) => {
-    await fetch("/api/auth/login", {
+  login: async (login: Login): Promise<boolean> => {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(login),
     });
+    return (await response.json()).succeeded;
   },
   logout: async () => {
     await fetch("/api/auth/logout", {
@@ -49,6 +56,9 @@ const announcements = {
   create: async (announcementInput: Announcement): Promise<Announcement> => {
     const response = await fetch("/api/announcements", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(announcementInput),
     });
     const announcement: Announcement = await response.json();
@@ -58,6 +68,9 @@ const announcements = {
   update: async (announcementId: string, announcementInput: Announcement): Promise<Announcement> => {
     const response = await fetch(`/api/announcements/${announcementId}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(announcementInput),
     });
     const announcement: Announcement = await response.json();
