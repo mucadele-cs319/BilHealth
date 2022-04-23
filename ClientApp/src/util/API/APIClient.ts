@@ -56,7 +56,7 @@ const announcements = {
     announcements.forEach((announcement) => {
       announcement.dateTime = dayjs(announcement.dateTime);
     });
-    announcements.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? 1 : -1));
+    announcements.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
     return announcements;
   },
   create: async (announcementInput: Announcement): Promise<Announcement> => {
