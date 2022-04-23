@@ -1,6 +1,6 @@
 import React from "react";
 
-const Profile = (): JSX.Element => {
+const Profile = () => {
   return <div id="profile-container"></div>;
 };
 

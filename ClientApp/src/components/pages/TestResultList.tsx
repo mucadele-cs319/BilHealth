@@ -1,6 +1,6 @@
 import React from "react";
 
-const TestResultList = (): JSX.Element => {
+const TestResultList = () => {
   return <div id="testresult-list-container"></div>;
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-const CasePage = (): JSX.Element => {
+const CasePage = () => {
   return <div id="case-container"></div>;
 };
 

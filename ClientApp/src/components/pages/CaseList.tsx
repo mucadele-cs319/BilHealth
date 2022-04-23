@@ -1,6 +1,6 @@
 import React from "react";
 
-const CaseList = (): JSX.Element => {
+const CaseList = () => {
   return <div id="caselist-container"></div>;
 };
 

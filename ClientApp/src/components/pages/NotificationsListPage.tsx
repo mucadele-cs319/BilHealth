@@ -1,6 +1,6 @@
 import React from "react";
 
-const NotificationsListPage = (): JSX.Element => {
+const NotificationsListPage = () => {
   return <div id="notifications-list-container"></div>;
 };
 
