@@ -1,9 +1,11 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { useUserContext } from "../UserContext";
+import { useDocumentTitle } from "../../util/CustomHooks";
 
 const Profile = () => {
   const { user } = useUserContext();
+  useDocumentTitle(`${user?.firstName}'s Profile`);
 
   return (
     <Box>

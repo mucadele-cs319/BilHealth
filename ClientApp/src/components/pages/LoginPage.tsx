@@ -11,8 +11,10 @@ import LoginIcon from "@mui/icons-material/Login";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
+import { useDocumentTitle } from "../../util/CustomHooks";
 
 const LoginPage = () => {
+  useDocumentTitle("Login");
   const navigate = useNavigate();
 
   const { login } = useUserContext();

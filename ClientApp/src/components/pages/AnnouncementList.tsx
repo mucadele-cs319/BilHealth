@@ -3,9 +3,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
 import { Announcement } from "../../util/API/APITypes";
+import { useDocumentTitle } from "../../util/CustomHooks";
 import AnnouncementItem from "../AnnouncementItem";
 
 const Announcements = () => {
+  useDocumentTitle("Announcements");
+
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
