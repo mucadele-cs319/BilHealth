@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Announcements from "./components/pages/AnnouncementList";
@@ -10,21 +9,28 @@ import NotificationsListPage from "./components/pages/NotificationsListPage";
 import Profile from "./components/pages/Profile";
 import TestResultList from "./components/pages/TestResultList";
 import TestResultPage from "./components/pages/TestResult";
+import HeaderBar from "./components/HeaderBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import LoginPage from "./components/pages/LoginPage";
 
-const SidebarLayout = () => (
-  <>
+const FullLayout = () => (
+  <Box className="flex">
+    <HeaderBar />
     <Sidebar />
-    <Outlet />
-  </>
+    <Box component="main" className="flex-grow p-5">
+      <Toolbar />
+      <Outlet />
+    </Box>
+  </Box>
 );
 
-const App = (): JSX.Element => {
+const App = () => {
   return (
-    <div id="app">
+    <>
       <Routes>
-        <Route path="/login" />
-        <Route path="/logout" />
-        <Route element={<SidebarLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route element={<FullLayout />}>
           <Route path="/" element={<Announcements />} />
           <Route path="/cases" element={<CaseList />} />
           <Route path="/cases/:caseid" element={<CasePage />} />
@@ -32,10 +38,10 @@ const App = (): JSX.Element => {
           <Route path="/profiles/:userid" element={<Profile />} />
           <Route path="/test-results" element={<TestResultList />} />
           <Route path="/test-results/:testresultid" element={<TestResultPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+    </>
   );
 };
 
