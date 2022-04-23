@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Announcement, Login, Registration } from "./APITypes";
+import { Announcement, Login, Registration, User } from "./APITypes";
 
 const authentication = {
   register: async (registration: Registration) => {
@@ -35,7 +35,13 @@ const authentication = {
 
 const notifications = {};
 
-const profiles = {};
+const profiles = {
+  me: async (): Promise<User> => {
+    const response = await fetch("/api/profiles/me");
+    if (!response.ok) throw Error("Couldn't get own profile. Am I authenticated?");
+    return await response.json();
+  },
+};
 
 const testResults = {};
 

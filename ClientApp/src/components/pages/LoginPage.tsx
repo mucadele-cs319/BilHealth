@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import AnnouncementList from "./AnnouncementList";
 import Paper from "@mui/material/Paper";
@@ -9,11 +9,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import LoginIcon from "@mui/icons-material/Login";
 import LoadingButton from "@mui/lab/LoadingButton";
-import APIClient from "../../util/API/APIClient";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../UserContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+
+  const { login } = useUserContext();
 
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,12 +26,16 @@ const LoginPage = () => {
 
   const validate = () => userName.length > 2 && password.length > 4;
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: FormEvent) => {
+    event.preventDefault();
+
     setError(false);
     setIsLoading(true);
-    if (await APIClient.authentication.login({ userName, password, rememberMe })) navigate("/");
-    else setError(true);
-    setIsLoading(false);
+    if (await login({ userName, password, rememberMe })) navigate("/");
+    else {
+      setError(true);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -45,42 +51,44 @@ const LoginPage = () => {
           <Typography variant="h5" gutterBottom>
             BilHealth - Login
           </Typography>
-          <TextField
-            id="input-username"
-            label="Username"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            onChange={(e) => setUserName(e.target.value)}
-            error={error}
-          />
-          <TextField
-            id="input-password"
-            type="password"
-            label="Password"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            onChange={(e) => setPassword(e.target.value)}
-            error={error}
-          />
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox onChange={(e) => setRememberMe(e.target.checked)} />}
-              label="Remember me"
+          <form onSubmit={handleLogin}>
+            <TextField
+              id="input-username"
+              label="Username"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              onChange={(e) => setUserName(e.target.value)}
+              error={error}
             />
-          </FormGroup>
-          <LoadingButton
-            loading={isLoading}
-            disabled={!validate()}
-            variant="contained"
-            loadingPosition="start"
-            fullWidth
-            startIcon={<LoginIcon />}
-            onClick={handleLogin}
-          >
-            Login
-          </LoadingButton>
+            <TextField
+              id="input-password"
+              type="password"
+              label="Password"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              onChange={(e) => setPassword(e.target.value)}
+              error={error}
+            />
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox onChange={(e) => setRememberMe(e.target.checked)} />}
+                label="Remember me"
+              />
+            </FormGroup>
+            <LoadingButton
+              loading={isLoading}
+              disabled={!validate()}
+              variant="contained"
+              loadingPosition="start"
+              fullWidth
+              startIcon={<LoginIcon />}
+              type="submit"
+            >
+              Login
+            </LoadingButton>
+          </form>
         </Paper>
       </Box>
     </Box>

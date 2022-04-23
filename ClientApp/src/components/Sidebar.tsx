@@ -13,13 +13,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import BiotechIcon from "@mui/icons-material/Biotech";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import LogoutIcon from "@mui/icons-material/Logout";
-import APIClient from "../util/API/APIClient";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import { useUserContext } from "./UserContext";
 
 interface ListItemLinkProps {
   nested?: boolean;
@@ -51,6 +51,8 @@ const ListItemLink = ({ nested = false, icon, primary, to }: ListItemLinkProps) 
 
 const sidebarWidth = 240;
 const Sidebar = () => {
+  const { user, logout } = useUserContext();
+
   const [logoutAttempt, setLogoutAttempt] = useState(false);
   const navigate = useNavigate();
 
@@ -59,7 +61,7 @@ const Sidebar = () => {
   };
 
   const handleLogoutActual = async () => {
-    await APIClient.authentication.logout();
+    await logout();
     navigate("/login");
   };
 
@@ -76,7 +78,7 @@ const Sidebar = () => {
       <Toolbar />
       <Box className="overflow-auto">
         <List>
-          <ListItemLink primary="Profile" to="/profiles" icon={<AccountBoxIcon />} />
+          <ListItemLink primary="Profile" to={`/profiles/${user?.id}`} icon={<AccountBoxIcon />} />
           <ListItemLink nested primary="Notifications" to="/notifications" icon={<NotificationsIcon />} />
           <ListItemLink nested primary="Test Results" to="/test-results" icon={<BiotechIcon />} />
           <ListItemLink primary="Announcements" to="/" icon={<Campaign />} />
