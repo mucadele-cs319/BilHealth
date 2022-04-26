@@ -20,6 +20,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { useUserContext } from "./UserContext";
+import { MobileDrawerState } from "./FullLayout";
 
 interface ListItemLinkProps {
   nested?: boolean;
@@ -49,8 +50,13 @@ const ListItemLink = ({ nested = false, icon, primary, to }: ListItemLinkProps) 
   );
 };
 
+interface Props {
+  mobile: boolean;
+  drawerState: MobileDrawerState;
+}
+
 const sidebarWidth = 240;
-const Sidebar = () => {
+const Sidebar = ({ mobile, drawerState }: Props) => {
   const { user, logout } = useUserContext();
 
   const [logoutAttempt, setLogoutAttempt] = useState(false);
@@ -69,12 +75,8 @@ const Sidebar = () => {
     setLogoutAttempt(false);
   };
 
-  return (
-    <Drawer
-      variant="permanent"
-      className="flex-shrink-0 flex flex-col"
-      sx={{ width: sidebarWidth, ["& .MuiDrawer-paper"]: { width: sidebarWidth, boxSizing: "border-box" } }}
-    >
+  const drawerContents = (
+    <>
       <Toolbar />
       <Box className="overflow-auto">
         <List>
@@ -103,7 +105,43 @@ const Sidebar = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      {mobile ? (
+        <Drawer
+          variant="temporary"
+          container={window.document.body}
+          open={drawerState.mobileDrawerOpen}
+          onClose={drawerState.toggleMobileDrawer}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          className="flex-shrink-0 flex flex-col"
+          sx={{
+            display: { xs: "block", md: "none" },
+            width: sidebarWidth,
+            ["& .MuiDrawer-paper"]: { width: sidebarWidth, boxSizing: "border-box" },
+          }}
+        >
+          {drawerContents}
+        </Drawer>
+      ) : (
+        <Drawer
+          variant="permanent"
+          className="flex-shrink-0 flex flex-col"
+          sx={{
+            display: { xs: "none", md: "block" },
+            width: sidebarWidth,
+            ["& .MuiDrawer-paper"]: { width: sidebarWidth, boxSizing: "border-box" },
+          }}
+        >
+          {drawerContents}
+        </Drawer>
+      )}
+    </>
   );
 };
 
