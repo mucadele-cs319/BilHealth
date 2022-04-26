@@ -1,5 +1,6 @@
-import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
 import { Announcement } from "../../util/API/APITypes";
@@ -20,19 +21,19 @@ const Announcements = () => {
   }, []);
 
   return (
-    <Box>
-      <Box className="mx-auto w-fit max-w-screen-md">
+    <Grid container justifyContent="center">
+      <Grid item lg={10} xs={11}>
         {isLoaded ? (
           announcements.length !== 0 ? (
-            announcements.map((announcement, i) => <AnnouncementItem key={i} data={announcement} className="mb-5" />)
+            announcements.map((announcement, i) => <AnnouncementItem key={i} data={announcement} className="mb-5 mx-auto" />)
           ) : (
-            <span>No announcements at this time.</span>
+            <Typography>No announcements at this time.</Typography>
           )
         ) : (
           <CircularProgress className="mt-8" />
         )}
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 
