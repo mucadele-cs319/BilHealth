@@ -71,17 +71,14 @@ const announcements = {
     announcement.dateTime = dayjs(announcement.dateTime);
     return announcement;
   },
-  update: async (announcement: Announcement): Promise<Announcement> => {
-    const response = await fetch(`/api/announcements/${announcement.id}`, {
+  update: async (announcement: Announcement): Promise<void> => {
+    await fetch(`/api/announcements/${announcement.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(announcement),
     });
-    const newAnnouncement: Announcement = await response.json();
-    newAnnouncement.dateTime = dayjs(newAnnouncement.dateTime);
-    return newAnnouncement;
   },
   delete: async (announcementId: string): Promise<boolean> => {
     const response = await fetch(`/api/announcements/${announcementId}`, {
