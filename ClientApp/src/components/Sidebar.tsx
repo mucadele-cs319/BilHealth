@@ -21,6 +21,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { useUserContext } from "./UserContext";
 import { MobileDrawerState } from "./FullLayout";
+import CalculateIcon from '@mui/icons-material/Calculate';
 
 interface ListItemLinkProps {
   nested?: boolean;
@@ -85,6 +86,7 @@ const Sidebar = ({ mobile, drawerState }: Props) => {
           <ListItemLink nested primary="Test Results" to="/test-results" icon={<BiotechIcon />} />
           <ListItemLink primary="Announcements" to="/" icon={<Campaign />} />
           <ListItemLink primary="Cases" to="/cases" icon={<MedicalServicesIcon />} />
+          <ListItemLink primary="Calculators" to="/calculators" icon={<CalculateIcon />} />
         </List>
       </Box>
       <ListItemButton sx={{ marginTop: "auto", flexGrow: 0 }} onClick={handleLogoutAttempt}>
