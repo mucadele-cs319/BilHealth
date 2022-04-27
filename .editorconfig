@@ -54,5 +54,5 @@ dotnet_style_prefer_auto_properties = true:suggestion
 dotnet_style_prefer_conditional_expression_over_assignment = true:suggestion
 dotnet_style_prefer_conditional_expression_over_return = true:suggestion
 
-[*.{tsx,js,css,sh,md,csproj,json,yml}]
+[*.{tsx,ts,js,css,sh,md,csproj,json,yml}]
 indent_size = 2
