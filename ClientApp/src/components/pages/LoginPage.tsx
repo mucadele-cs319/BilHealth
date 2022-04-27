@@ -46,7 +46,7 @@ const LoginPage = () => {
         <Typography variant="h4" gutterBottom textAlign="center">
           Announcements
         </Typography>
-        <AnnouncementList />
+        <AnnouncementList readonly />
       </Grid>
       <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center" className="h-screen bg-cyan-500 shadow-lg shadow-black">
         <Grid item xs={10} lg={5}>

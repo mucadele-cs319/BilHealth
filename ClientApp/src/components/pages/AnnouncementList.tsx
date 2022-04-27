@@ -1,36 +1,64 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
 import { Announcement } from "../../util/API/APITypes";
 import { useDocumentTitle } from "../../util/CustomHooks";
 import AnnouncementItem from "../AnnouncementItem";
+import AnnouncementItemEditable from "../AnnouncementItemEditable";
+import { useUserContext } from "../UserContext";
 
-const Announcements = () => {
+interface Props {
+  readonly?: boolean;
+}
+
+const Announcements = ({ readonly = false }: Props) => {
   useDocumentTitle("Announcements");
+
+  const { user } = useUserContext();
 
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
+  const refreshAnnouncements = () => {
     APIClient.announcements.get().then((response) => {
       setAnnouncements(response);
       setIsLoaded(true);
     });
+  };
+
+  useEffect(() => {
+    refreshAnnouncements();
   }, []);
+
+  const [changed, setChanged] = useState(false);
+  const changeHandler = () => {
+    setChanged(true);
+  };
+
+  useEffect(() => {
+    refreshAnnouncements();
+    setChanged(false);
+  }, [changed]);
 
   return (
     <Grid container justifyContent="center">
       <Grid item lg={10} xs={11}>
+        {readonly || user?.userType === "Patient" ? null : <AnnouncementItemEditable changeHandler={changeHandler} />}
         {isLoaded ? (
           announcements.length !== 0 ? (
-            announcements.map((announcement, i) => <AnnouncementItem key={i} data={announcement} className="mb-5 mx-auto" />)
+            announcements.map((announcement, i) => (
+              <AnnouncementItem key={i} data={announcement} className="mb-5 mx-auto" changeHandler={changeHandler} />
+            ))
           ) : (
-            <Typography>No announcements at this time.</Typography>
+            <Typography color="text.secondary">No announcements at this time.</Typography>
           )
         ) : (
-          <CircularProgress className="mt-8" />
+          <Stack alignItems="center" className="mt-8">
+            <CircularProgress />
+          </Stack>
         )}
       </Grid>
     </Grid>
