@@ -21,7 +21,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { useUserContext } from "./UserContext";
 import { MobileDrawerState } from "./FullLayout";
-import CalculateIcon from '@mui/icons-material/Calculate';
+import CalculateIcon from "@mui/icons-material/Calculate";
 
 interface ListItemLinkProps {
   nested?: boolean;

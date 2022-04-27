@@ -48,7 +48,15 @@ const LoginPage = () => {
         </Typography>
         <AnnouncementList readonly />
       </Grid>
-      <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center" className="h-screen bg-cyan-500 shadow-lg shadow-black">
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        container
+        justifyContent="center"
+        alignItems="center"
+        className="h-screen bg-cyan-500 shadow-lg shadow-black"
+      >
         <Grid item xs={10} lg={5}>
           <Paper elevation={8} className="p-5 h-fit max-w-sm mx-auto">
             <Typography variant="h5" gutterBottom>
