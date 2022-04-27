@@ -56,7 +56,7 @@ const announcements = {
     announcements.forEach((announcement) => {
       announcement.dateTime = dayjs(announcement.dateTime);
     });
-    announcements.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
+    announcements.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
     return announcements;
   },
   create: async (announcementInput: Announcement): Promise<Announcement> => {
@@ -71,17 +71,17 @@ const announcements = {
     announcement.dateTime = dayjs(announcement.dateTime);
     return announcement;
   },
-  update: async (announcementId: string, announcementInput: Announcement): Promise<Announcement> => {
-    const response = await fetch(`/api/announcements/${announcementId}`, {
+  update: async (announcement: Announcement): Promise<Announcement> => {
+    const response = await fetch(`/api/announcements/${announcement.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(announcementInput),
+      body: JSON.stringify(announcement),
     });
-    const announcement: Announcement = await response.json();
-    announcement.dateTime = dayjs(announcement.dateTime);
-    return announcement;
+    const newAnnouncement: Announcement = await response.json();
+    newAnnouncement.dateTime = dayjs(newAnnouncement.dateTime);
+    return newAnnouncement;
   },
   delete: async (announcementId: string): Promise<boolean> => {
     const response = await fetch(`/api/announcements/${announcementId}`, {
