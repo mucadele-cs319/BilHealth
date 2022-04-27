@@ -1,5 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
+import Fade from "@mui/material/Fade";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
@@ -33,34 +34,36 @@ const Announcements = ({ readonly = false }: Props) => {
     refreshAnnouncements();
   }, []);
 
-  const [changed, setChanged] = useState(false);
-  const changeHandler = () => {
-    setChanged(true);
-  };
-
-  useEffect(() => {
-    refreshAnnouncements();
-    setChanged(false);
-  }, [changed]);
-
   return (
     <Grid container justifyContent="center">
-      <Grid item lg={10} xs={11}>
-        {readonly || user?.userType === "Patient" ? null : <AnnouncementItemEditable changeHandler={changeHandler} />}
-        {isLoaded ? (
-          announcements.length !== 0 ? (
-            announcements.map((announcement, i) => (
-              <AnnouncementItem key={i} data={announcement} className="mb-5 mx-auto" changeHandler={changeHandler} />
-            ))
+      <Fade in={true}>
+        <Grid item lg={10} xs={11}>
+          {readonly || user?.userType === "Patient" ? null : (
+            <AnnouncementItemEditable changeHandler={refreshAnnouncements} />
+          )}
+          {isLoaded ? (
+            announcements.length !== 0 ? (
+              announcements.map((announcement, i) => (
+                <AnnouncementItem
+                  key={i}
+                  data={announcement}
+                  className="mb-5 mx-auto"
+                  readonly={readonly}
+                  changeHandler={refreshAnnouncements}
+                />
+              ))
+            ) : (
+              <Stack alignItems="center" className="mt-8">
+                <Typography color="text.secondary">No announcements at this time.</Typography>
+              </Stack>
+            )
           ) : (
-            <Typography color="text.secondary">No announcements at this time.</Typography>
-          )
-        ) : (
-          <Stack alignItems="center" className="mt-8">
-            <CircularProgress />
-          </Stack>
-        )}
-      </Grid>
+            <Stack alignItems="center" className="mt-8">
+              <CircularProgress />
+            </Stack>
+          )}
+        </Grid>
+      </Fade>
     </Grid>
   );
 };

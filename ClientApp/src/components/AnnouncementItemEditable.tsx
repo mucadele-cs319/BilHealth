@@ -12,9 +12,10 @@ import Button from "@mui/material/Button";
 interface Props {
   data?: Announcement;
   changeHandler: () => void;
+  cancelHandler?: () => void;
 }
 
-const AnnouncementItemEditable = ({ data, changeHandler }: Props) => {
+const AnnouncementItemEditable = ({ data, changeHandler, cancelHandler }: Props) => {
   const editing = data !== undefined;
 
   const [title, setTitle] = useState(data?.title || "");
@@ -40,7 +41,7 @@ const AnnouncementItemEditable = ({ data, changeHandler }: Props) => {
   const handleCancel = () => {
     setTitle("");
     setMessage("");
-    changeHandler();
+    if (cancelHandler) cancelHandler();
   };
 
   return (
@@ -81,7 +82,7 @@ const AnnouncementItemEditable = ({ data, changeHandler }: Props) => {
             disabled={!validateAnnouncement()}
             onClick={editing ? handleEditAnnouncement : handleCreateAnnouncement}
             variant="text"
-            loadingPosition="start"
+            loadingPosition="center"
           >
             {editing ? "Edit" : "Create"}
           </LoadingButton>
