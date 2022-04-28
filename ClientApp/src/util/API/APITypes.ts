@@ -1,5 +1,15 @@
 import { Dayjs } from "dayjs";
 
+export enum UserType {
+  Patient = "Patient",
+  Doctor = "Doctor",
+  Nurse = "Nurse",
+  Admin = "Admin",
+  Staff = "Staff",
+}
+
+export const getAllUserTypes = () => [UserType.Patient, UserType.Doctor, UserType.Nurse, UserType.Admin, UserType.Staff];
+
 export interface Announcement {
   id?: string;
   dateTime?: Dayjs;

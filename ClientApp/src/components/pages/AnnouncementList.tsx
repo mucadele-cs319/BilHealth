@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
-import { Announcement } from "../../util/API/APITypes";
+import { Announcement, UserType } from "../../util/API/APITypes";
 import { useDocumentTitle } from "../../util/CustomHooks";
 import AnnouncementItem from "../announcement/AnnouncementItem";
 import AnnouncementItemEditable from "../announcement/AnnouncementItemEditable";
@@ -38,7 +38,7 @@ const Announcements = ({ readonly = false }: Props) => {
     <Grid container justifyContent="center">
       <Fade in={true}>
         <Grid item lg={10} xs={11}>
-          {readonly || user?.userType === "Patient" ? null : (
+          {readonly || user?.userType === UserType.Patient ? null : (
             <AnnouncementItemEditable changeHandler={refreshAnnouncements} />
           )}
           {isLoaded ? (

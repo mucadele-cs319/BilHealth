@@ -23,6 +23,7 @@ import { useUserContext } from "./UserContext";
 import { MobileDrawerState } from "./FullLayout";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { UserType } from "../util/API/APITypes";
 
 interface ListItemLinkProps {
   nested?: boolean;
@@ -91,7 +92,7 @@ const Sidebar = ({ mobile, drawerState }: Props) => {
         </List>
       </Box>
       <Box sx={{ marginTop: "auto", flexGrow: 0 }}>
-        {["Admin", "Patient"].some((type) => user?.userType == type) ? (
+        {[UserType.Admin, UserType.Staff].some((type) => user?.userType == type) ? (
           <ListItemLink primary="Staff Panel" to="/staff-panel" icon={<AdminPanelSettingsIcon />} />
         ) : null}
         <ListItemButton onClick={handleLogoutAttempt}>

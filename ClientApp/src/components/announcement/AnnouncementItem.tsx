@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Announcement } from "../../util/API/APITypes";
+import { Announcement, UserType } from "../../util/API/APITypes";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -64,7 +64,7 @@ const AnnouncementItem = ({ readonly = false, data, className, changeHandler }: 
             </Typography>
             <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }} >{data.message}</Typography>
           </CardContent>
-          {readonly || user?.userType === "Patient" ? null : (
+          {readonly || user?.userType === UserType.Patient ? null : (
             <CardActions>
               <Stack className="w-full" direction="row" justifyContent="end">
                 <Tooltip arrow title="Edit">
