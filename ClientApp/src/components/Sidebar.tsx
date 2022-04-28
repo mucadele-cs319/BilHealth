@@ -92,7 +92,7 @@ const Sidebar = ({ mobile, drawerState }: Props) => {
       </Box>
       <Box sx={{ marginTop: "auto", flexGrow: 0 }}>
         {["Admin", "Patient"].some((type) => user?.userType == type) ? (
-          <ListItemLink primary="Staff Panel" to="/staffpanel" icon={<AdminPanelSettingsIcon />} />
+          <ListItemLink primary="Staff Panel" to="/staff-panel" icon={<AdminPanelSettingsIcon />} />
         ) : null}
         <ListItemButton onClick={handleLogoutAttempt}>
           <ListItemIcon>
