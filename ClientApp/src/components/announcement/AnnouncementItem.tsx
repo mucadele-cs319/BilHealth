@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Announcement } from "../util/API/APITypes";
+import { Announcement } from "../../util/API/APITypes";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -8,13 +8,13 @@ import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useUserContext } from "./UserContext";
+import { useUserContext } from "../UserContext";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
-import APIClient from "../util/API/APIClient";
+import APIClient from "../../util/API/APIClient";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 

@@ -7,8 +7,8 @@ import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
 import { Announcement } from "../../util/API/APITypes";
 import { useDocumentTitle } from "../../util/CustomHooks";
-import AnnouncementItem from "../AnnouncementItem";
-import AnnouncementItemEditable from "../AnnouncementItemEditable";
+import AnnouncementItem from "../announcement/AnnouncementItem";
+import AnnouncementItemEditable from "../announcement/AnnouncementItemEditable";
 import { useUserContext } from "../UserContext";
 
 interface Props {
