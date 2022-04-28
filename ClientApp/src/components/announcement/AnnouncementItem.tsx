@@ -17,6 +17,7 @@ import DialogActions from "@mui/material/DialogActions";
 import APIClient from "../../util/API/APIClient";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
   readonly?: boolean;
@@ -66,12 +67,16 @@ const AnnouncementItem = ({ readonly = false, data, className, changeHandler }: 
           {readonly || user?.userType === "Patient" ? null : (
             <CardActions>
               <Stack className="w-full" direction="row" justifyContent="end">
-                <IconButton onClick={() => setEditing(true)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => setDeleting(true)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Tooltip arrow title="Edit">
+                  <IconButton onClick={() => setEditing(true)}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow title="Delete">
+                  <IconButton onClick={() => setDeleting(true)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </Stack>
               <Dialog open={deleting} onClose={() => setDeleting(false)}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
