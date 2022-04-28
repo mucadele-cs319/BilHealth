@@ -27,6 +27,8 @@ const AnnouncementItemEditable = ({ data, changeHandler, cancelHandler }: Props)
   const handleCreateAnnouncement = async () => {
     setIsPending(true);
     await APIClient.announcements.create({ title, message });
+    setTitle("");
+    setMessage("");
     setIsPending(false);
     changeHandler();
   };
