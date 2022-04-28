@@ -3,13 +3,14 @@ import { Announcement, Login, Registration, SimpleUser, User, Vaccination } from
 
 const authentication = {
   register: async (registration: Registration) => {
-    await fetch("/api/auth/register", {
+    const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(registration),
     });
+    if (!response.ok) throw Error(`Failed to register user!: ${response.status}`);
   },
   login: async (login: Login): Promise<boolean> => {
     const response = await fetch("/api/auth/login", {
