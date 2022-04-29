@@ -111,5 +111,11 @@ namespace BilHealth.Controllers
             await CaseService.SetTriageRequestApproval(details);
             return Ok();
         }
+
+        public async Task<CaseDto> SetDiagnosis(Guid caseId, string diagnosis)
+        {
+
+            return DtoMapper.Map(await CaseService.SetDiagnosis(caseId, diagnosis));
+        }
     }
 }

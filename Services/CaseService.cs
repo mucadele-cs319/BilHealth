@@ -175,5 +175,13 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
             return prescription;
         }
+
+        public async Task<Case> SetDiagnosis(Guid caseId, string diagnosis)
+        {
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+            _case.Diagnosis = diagnosis;
+            await DbCtx.SaveChangesAsync();
+            return _case;
+        }
     }
 }
