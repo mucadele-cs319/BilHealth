@@ -112,6 +112,8 @@ namespace BilHealth.Controllers
             return Ok();
         }
 
+        [HttpPatch("{caseId:guid}/diagnosis")]
+        [Authorize(Roles = UserRoleType.Constant.Doctor)]
         public async Task<CaseDto> SetDiagnosis(Guid caseId, string diagnosis)
         {
 
