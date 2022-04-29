@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220421193743_InitialCreate")]
+    [Migration("20220429120509_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -608,7 +608,7 @@ namespace BilHealth.Migrations
                     b.Property<bool>("Blacklisted")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("BloodType")
+                    b.Property<int>("BloodType")
                         .HasColumnType("integer");
 
                     b.Property<double?>("BodyHeight")
