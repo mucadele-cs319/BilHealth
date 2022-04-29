@@ -45,7 +45,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.Name = "bilhealthsess";
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
     options.SlidingExpiration = true;
     options.Events.OnRedirectToAccessDenied = context =>
     {
