@@ -2,8 +2,8 @@ namespace BilHealth.Utility.Enum
 {
     public enum Gender
     {
+        Unspecified,
         Male,
-        Female,
-        Unspecified
+        Female
     }
 }
