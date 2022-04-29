@@ -8,7 +8,13 @@ export enum UserType {
   Staff = "Staff",
 }
 
-export const getAllUserTypes = () => [UserType.Patient, UserType.Doctor, UserType.Nurse, UserType.Admin, UserType.Staff];
+export const getAllUserTypes = () => [
+  UserType.Patient,
+  UserType.Doctor,
+  UserType.Nurse,
+  UserType.Admin,
+  UserType.Staff,
+];
 
 export interface Announcement {
   id?: string;
@@ -46,6 +52,7 @@ export interface Appointment {
 }
 
 export enum BloodType {
+  Unspecified,
   APos,
   ANeg,
   BPos,
@@ -56,10 +63,14 @@ export enum BloodType {
   ONeg,
 }
 
+export const stringifyBloodType = (bloodType: BloodType | undefined) => BloodType[bloodType || 0];
+
 export enum Campus {
   Main,
   East,
 }
+
+export const stringifyCampus = (campus: Campus | undefined) => Campus[campus || 0];
 
 export interface CaseMessage {
   id?: string;
@@ -142,6 +153,8 @@ export enum Gender {
   Female,
 }
 
+export const stringifyGender = (gender: Gender | undefined) => Gender[gender || 0];
+
 export interface Login {
   userName: string;
   password: string;
@@ -221,6 +234,7 @@ export interface SimpleUser {
 }
 
 export interface User {
+  // common
   id?: string;
   userType?: string;
   email?: string;
@@ -228,14 +242,18 @@ export interface User {
   lastName?: string;
   gender?: Gender;
   dateOfBirth?: Dayjs;
+  // patient
   bodyWeight?: number;
   bodyHeight?: number;
   bloodType?: BloodType;
+  blacklisted?: boolean;
   vaccinations?: Vaccination[];
   testResults?: TestResult[];
+  // patient and doctor
   cases?: Case[];
-  blacklisted?: boolean;
-  triageRequests?: TriageRequest[];
+  // doctor
   specialization?: string;
   campus?: Campus;
+  // nurse
+  triageRequests?: TriageRequest[];
 }
