@@ -606,7 +606,7 @@ namespace BilHealth.Migrations
                     b.Property<bool>("Blacklisted")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("BloodType")
+                    b.Property<int>("BloodType")
                         .HasColumnType("integer");
 
                     b.Property<double?>("BodyHeight")

@@ -7,7 +7,7 @@ namespace BilHealth.Model
     {
         public double? BodyWeight { get; set; }
         public double? BodyHeight { get; set; }
-        public BloodType? BloodType { get; set; }
+        public BloodType BloodType { get; set; } = BloodType.Unspecified;
 
         public List<Vaccination>? Vaccinations { get; set; }
         public List<TestResult>? TestResults { get; set; }
