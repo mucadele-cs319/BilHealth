@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220421193743_InitialCreate")]
+    [Migration("20220429160532_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,6 +193,9 @@ namespace BilHealth.Migrations
 
                     b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("DoctorUserId")
                         .HasColumnType("uuid");

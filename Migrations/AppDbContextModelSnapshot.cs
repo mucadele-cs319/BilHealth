@@ -192,6 +192,9 @@ namespace BilHealth.Migrations
                     b.Property<Instant>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("DoctorUserId")
                         .HasColumnType("uuid");
 
