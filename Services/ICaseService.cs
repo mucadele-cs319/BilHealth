@@ -22,5 +22,7 @@ namespace BilHealth.Services
 
         Task<TriageRequest> CreateTriageRequest(TriageRequestDto details);
         Task SetTriageRequestApproval(TriageRequestDto details);
+
+        Task<Case> SetDiagnosis(Guid caseId, string diagnosis);
     }
 }
