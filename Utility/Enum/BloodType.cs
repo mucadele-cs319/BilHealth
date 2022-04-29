@@ -2,6 +2,7 @@ namespace BilHealth.Utility.Enum
 {
     public enum BloodType
     {
+        Unspecified,
         APos,
         ANeg,
         BPos,
