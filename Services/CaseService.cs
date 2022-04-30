@@ -161,6 +161,7 @@ namespace BilHealth.Services
             if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
             {
                 triageRequest.Case!.DoctorUserId = triageRequest.DoctorUserId;
+                triageRequest.Case.State = CaseState.Ongoing;
                 NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
             }
 
