@@ -2,7 +2,7 @@ namespace BilHealth.Utility.Enum
 {
     public enum CaseState
     {
-        Open,
+        Ongoing,
         Closed,
         WaitingTriage,
         WaitingTriageApproval
