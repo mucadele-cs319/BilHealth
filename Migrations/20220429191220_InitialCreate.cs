@@ -226,7 +226,8 @@ namespace BilHealth.Migrations
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    State = table.Column<int>(type: "integer", nullable: false)
+                    State = table.Column<int>(type: "integer", nullable: false),
+                    Diagnosis = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

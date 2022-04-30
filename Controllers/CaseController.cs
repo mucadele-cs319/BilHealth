@@ -111,5 +111,13 @@ namespace BilHealth.Controllers
             await CaseService.SetTriageRequestApproval(details);
             return Ok();
         }
+
+        [HttpPatch("{caseId:guid}/diagnosis")]
+        [Authorize(Roles = UserRoleType.Constant.Doctor)]
+        public async Task<CaseDto> SetDiagnosis(Guid caseId, [FromBody] string diagnosis)
+        {
+
+            return DtoMapper.Map(await CaseService.SetDiagnosis(caseId, diagnosis));
+        }
     }
 }

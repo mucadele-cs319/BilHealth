@@ -20,5 +20,6 @@ namespace BilHealth.Model
         public List<CaseSystemMessage>? SystemMessages { get; set; }
         public List<Prescription>? Prescriptions { get; set; }
         public List<Appointment>? Appointments { get; set; }
+        public string? Diagnosis { get; set; }
     }
 }

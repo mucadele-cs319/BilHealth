@@ -104,7 +104,8 @@ namespace BilHealth.Utility
                 State = _case.State,
                 Type = _case.Type,
                 PatientUserId = _case.PatientUserId,
-                DoctorUserId = _case.DoctorUserId
+                DoctorUserId = _case.DoctorUserId,
+                Diagnosis = _case.Diagnosis
             };
 
             if (_case.Appointments is not null)
