@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import ProfileDetails from "../profile/ProfileDetails";
 import VaccinationDetails from "../profile/VaccinationDetails";
 import { useUserContext } from "../UserContext";
+import BlacklistCard from "../profile/BlacklistCard";
 
 const Profile = () => {
   useDocumentTitle("Profile");
@@ -42,10 +43,18 @@ const Profile = () => {
               <ProfileDetails data={queryUser as User} />
               {queryUser?.userType !== UserType.Patient ? null : (
                 <VaccinationDetails
-                  readonly={![UserType.Staff, UserType.Admin].some(type => type === user?.userType)}
+                  readonly={![UserType.Staff, UserType.Admin].some((type) => type === user?.userType)}
                   refreshHandler={refreshUser}
                   patientId={queryUser.id as string}
                   vaccinations={queryUser.vaccinations}
+                />
+              )}
+              {![UserType.Staff, UserType.Admin].some((type) => type === user?.userType) ||
+              queryUser?.userType !== UserType.Patient ? null : (
+                <BlacklistCard
+                  patientId={queryUser.id as string}
+                  blacklisted={queryUser.blacklisted as boolean}
+                  refreshHandler={refreshUser}
                 />
               )}
             </>
