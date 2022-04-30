@@ -118,11 +118,11 @@ namespace BilHealth.Services.Users
                 Type = details.Type
             };
 
-            if ( vaccination.DateTime == null)
+            if (vaccination.DateTime == null)
             {
                 vaccination.DateTime = Clock.GetCurrentInstant();
             }
-                
+
             DbCtx.Vaccinations.Add(vaccination);
             await DbCtx.SaveChangesAsync();
         }
