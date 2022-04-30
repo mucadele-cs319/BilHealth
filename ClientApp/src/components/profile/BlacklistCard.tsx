@@ -29,7 +29,7 @@ const BlacklistCard = ({ patientId, blacklisted, refreshHandler }: Props) => {
           Blacklist Details
         </Typography>
         <Typography variant="body2">
-          This patient is currently
+          This patient is currently{" "}
           <strong color={blacklisted ? "red" : "green"}>{blacklisted ? "blacklisted" : "not blacklisted"}</strong> from
           requesting appointments.
         </Typography>
