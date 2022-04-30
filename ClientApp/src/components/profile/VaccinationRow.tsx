@@ -22,6 +22,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
   readonly?: boolean;
@@ -129,16 +130,16 @@ const VaccinationRow = ({ readonly = false, patientId, vaccination, refreshHandl
           {readonly ? null : (
             <>
               <TableCell align="right">
-                <IconButton
-                  onClick={() => {
-                    setEditing(true);
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => setDeleting(true)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Tooltip arrow title="Edit">
+                  <IconButton onClick={() => setEditing(true)}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow title="Delete">
+                  <IconButton onClick={() => setDeleting(true)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
               <Dialog open={deleting} onClose={() => setDeleting(false)}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
