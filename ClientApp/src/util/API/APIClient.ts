@@ -36,6 +36,13 @@ const authentication = {
 
 const notifications = {};
 
+const sortVaccinations = (user: User) => {
+  user.vaccinations?.forEach((vaccination) => {
+    vaccination.dateTime = dayjs(vaccination.dateTime);
+  });
+  user.vaccinations?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+};
+
 const profiles = {
   all: async (): Promise<SimpleUser[]> => {
     const response = await fetch("/api/profiles");
@@ -44,11 +51,19 @@ const profiles = {
   me: async (): Promise<User> => {
     const response = await fetch("/api/profiles/me");
     if (!response.ok) throw Error("Couldn't get own profile. Am I authenticated?");
-    return await response.json();
+
+    const user: User = await response.json();
+    sortVaccinations(user);
+
+    return user;
   },
   get: async (userId: string): Promise<User> => {
     const response = await fetch(`/api/profiles/${userId}`);
-    return await response.json();
+
+    const user: User = await response.json();
+    sortVaccinations(user);
+
+    return user;
   },
   update: async (newProfile: User): Promise<void> => {
     await fetch(`/api/profiles/${newProfile.id}`, {
@@ -87,7 +102,7 @@ const profiles = {
       await fetch(`/api/profiles/vaccinations/${vaccinationId}`, {
         method: "DELETE",
       });
-    }
+    },
   },
 };
 
