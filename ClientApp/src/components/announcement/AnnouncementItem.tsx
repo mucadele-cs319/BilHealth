@@ -62,7 +62,9 @@ const AnnouncementItem = ({ readonly = false, data, className, changeHandler }: 
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
               {data.dateTime?.toString()}
             </Typography>
-            <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }} >{data.message}</Typography>
+            <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+              {data.message}
+            </Typography>
           </CardContent>
           {readonly || user?.userType === UserType.Patient ? null : (
             <CardActions>

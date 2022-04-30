@@ -57,7 +57,8 @@ const UserListCard = () => {
                   <SearchIcon />
                 </InputAdornment>
               ),
-            }} placeholder="Keyword"
+            }}
+            placeholder="Keyword"
             value={searchString}
             onChange={(e) => setSearchString(e.target.value)}
           />
