@@ -113,10 +113,16 @@ namespace BilHealth.Services.Users
         {
             var vaccination = new Vaccination
             {
-                DateTime = Clock.GetCurrentInstant(),
+                DateTime = details.DateTime,
                 PatientUserId = details.PatientUserId,
                 Type = details.Type
             };
+
+            if (vaccination.DateTime == null)
+            {
+                vaccination.DateTime = Clock.GetCurrentInstant();
+            }
+
             DbCtx.Vaccinations.Add(vaccination);
             await DbCtx.SaveChangesAsync();
         }
