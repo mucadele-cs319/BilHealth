@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 
-const useDocumentTitle = (title: string) => {
-  useEffect(() => {
-    document.title = title + " | BilHealth";
-  }, [title]);
+export const titleify = (title: string) => {
+  return title + " | BilHealth";
 };
 
-export { useDocumentTitle };
+export const useDocumentTitle = (title: string) => {
+  useEffect(() => {
+    document.title = titleify(title);
+  }, [title]);
+};
