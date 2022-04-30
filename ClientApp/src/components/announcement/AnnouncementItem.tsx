@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Announcement } from "../util/API/APITypes";
+import { Announcement, UserType } from "../../util/API/APITypes";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -8,15 +8,16 @@ import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useUserContext } from "./UserContext";
+import { useUserContext } from "../UserContext";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
-import APIClient from "../util/API/APIClient";
+import APIClient from "../../util/API/APIClient";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
   readonly?: boolean;
@@ -59,19 +60,25 @@ const AnnouncementItem = ({ readonly = false, data, className, changeHandler }: 
           <CardContent>
             <Typography variant="h5">{data.title}</Typography>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              {data.dateTime?.toString()}
+              {data.dateTime?.format("dddd, D MMM  YYYY [at] H:mm").toString()}
             </Typography>
-            <Typography variant="body1">{data.message}</Typography>
+            <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+              {data.message}
+            </Typography>
           </CardContent>
-          {readonly || user?.userType === "Patient" ? null : (
+          {readonly || user?.userType === UserType.Patient ? null : (
             <CardActions>
               <Stack className="w-full" direction="row" justifyContent="end">
-                <IconButton onClick={() => setEditing(true)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => setDeleting(true)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Tooltip arrow title="Edit">
+                  <IconButton onClick={() => setEditing(true)}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow title="Delete">
+                  <IconButton onClick={() => setDeleting(true)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </Stack>
               <Dialog open={deleting} onClose={() => setDeleting(false)}>
                 <DialogTitle>Confirm Deletion</DialogTitle>

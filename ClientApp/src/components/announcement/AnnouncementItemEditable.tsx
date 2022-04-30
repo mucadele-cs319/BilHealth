@@ -4,9 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
-import APIClient from "../util/API/APIClient";
+import APIClient from "../../util/API/APIClient";
 import Stack from "@mui/material/Stack";
-import { Announcement } from "../util/API/APITypes";
+import { Announcement } from "../../util/API/APITypes";
 import Button from "@mui/material/Button";
 
 interface Props {
@@ -27,6 +27,8 @@ const AnnouncementItemEditable = ({ data, changeHandler, cancelHandler }: Props)
   const handleCreateAnnouncement = async () => {
     setIsPending(true);
     await APIClient.announcements.create({ title, message });
+    setTitle("");
+    setMessage("");
     setIsPending(false);
     changeHandler();
   };

@@ -22,6 +22,8 @@ import Button from "@mui/material/Button";
 import { useUserContext } from "./UserContext";
 import { MobileDrawerState } from "./FullLayout";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { UserType } from "../util/API/APITypes";
 
 interface ListItemLinkProps {
   nested?: boolean;
@@ -89,12 +91,17 @@ const Sidebar = ({ mobile, drawerState }: Props) => {
           <ListItemLink primary="Calculators" to="/calculators" icon={<CalculateIcon />} />
         </List>
       </Box>
-      <ListItemButton sx={{ marginTop: "auto", flexGrow: 0 }} onClick={handleLogoutAttempt}>
-        <ListItemIcon>
-          <LogoutIcon />
-        </ListItemIcon>
-        <ListItemText primary="Log Out" />
-      </ListItemButton>
+      <Box sx={{ marginTop: "auto", flexGrow: 0 }}>
+        {[UserType.Admin, UserType.Staff].some((type) => user?.userType == type) ? (
+          <ListItemLink primary="Staff Panel" to="/staff-panel" icon={<AdminPanelSettingsIcon />} />
+        ) : null}
+        <ListItemButton onClick={handleLogoutAttempt}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Log Out" />
+        </ListItemButton>
+      </Box>
       <Dialog open={logoutAttempt} onClose={handleLogoutCancel}>
         <DialogTitle>Are you sure you want to log out?</DialogTitle>
         <DialogContent>

@@ -15,6 +15,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import { useMediaQuery, useTheme } from "@mui/material";
 import FullLayout from "./components/FullLayout";
+import StaffPanel from "./components/pages/StaffPanel";
+import CalculatorsPage from "./components/pages/CalculatorsPage";
 
 const LoadingPage = () => {
   return (
@@ -50,6 +52,8 @@ const App = () => {
             <Route path="/profiles/:userid" element={<Profile />} />
             <Route path="/test-results" element={<TestResultList />} />
             <Route path="/test-results/:testresultid" element={<TestResultPage />} />
+            <Route path="/calculators" element={<CalculatorsPage />} />
+            <Route path="/staff-panel" element={<StaffPanel />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
