@@ -114,7 +114,7 @@ namespace BilHealth.Controllers
 
         [HttpPatch("{caseId:guid}/diagnosis")]
         [Authorize(Roles = UserRoleType.Constant.Doctor)]
-        public async Task<CaseDto> SetDiagnosis(Guid caseId, string diagnosis)
+        public async Task<CaseDto> SetDiagnosis(Guid caseId, [FromBody] string diagnosis)
         {
 
             return DtoMapper.Map(await CaseService.SetDiagnosis(caseId, diagnosis));
