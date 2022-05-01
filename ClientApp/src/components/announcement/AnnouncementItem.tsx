@@ -60,7 +60,7 @@ const AnnouncementItem = ({ readonly = false, data, className, changeHandler }: 
           <CardContent>
             <Typography variant="h5">{data.title}</Typography>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              {data.dateTime?.format("dddd, D MMM  YYYY [at] H:mm").toString()}
+              {data.dateTime?.format("dddd, D MMM  YYYY [at] H:mm")}
             </Typography>
             <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
               {data.message}

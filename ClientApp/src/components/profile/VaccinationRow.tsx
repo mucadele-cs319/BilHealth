@@ -126,7 +126,7 @@ const VaccinationRow = ({ readonly = false, patientId, vaccination, refreshHandl
       ) : (
         <>
           <TableCell>{vaccination?.type}</TableCell>
-          <TableCell>{vaccination?.dateTime?.format("DD/MM/YYYY, HH:mm").toString()}</TableCell>
+          <TableCell>{vaccination?.dateTime?.format("DD/MM/YYYY, HH:mm")}</TableCell>
           {readonly ? null : (
             <>
               <TableCell align="right">

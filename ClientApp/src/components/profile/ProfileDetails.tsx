@@ -33,7 +33,7 @@ const ProfileDetails = ({ data }: Props) => {
             <ProfileDetailsItem title="Gender" content={stringifyGender(data.gender)} />
           </Grid>
           <Grid item>
-            <ProfileDetailsItem title="Date of Birth" content={failsafe(data.dateOfBirth?.toString())} />
+            <ProfileDetailsItem title="Date of Birth" content={failsafe(data.dateOfBirth?.format("DD/MM/YYYY"))} />
           </Grid>
         </Grid>
 
