@@ -72,30 +72,36 @@ namespace BilHealth.Services.Users
             }
         }
 
-        public async Task UpdateProfile(DomainUser user, UserProfileDto newProfile)
+        public async Task UpdateProfile(DomainUser user, UserProfileDto newProfile, bool fullyEdit)
         {
-            user.Gender = newProfile.Gender ?? user.Gender;
+            if (fullyEdit)
+            {
+                user.Gender = newProfile.Gender ?? Gender.Unspecified;
+                user.FirstName = newProfile.FirstName ?? user.FirstName;
+                user.LastName = newProfile.LastName ?? user.LastName;
+                user.DateOfBirth = newProfile.DateOfBirth;
+            }
 
             switch (user)
             {
                 case Patient patient:
-                    patient.BodyWeight = newProfile.BodyWeight ?? patient.BodyWeight;
-                    patient.BodyHeight = newProfile.BodyHeight ?? patient.BodyHeight;
-                    patient.BloodType = newProfile.BloodType ?? patient.BloodType;
+                    patient.BodyWeight = newProfile.BodyWeight;
+                    patient.BodyHeight = newProfile.BodyHeight;
+                    patient.BloodType = newProfile.BloodType ?? BloodType.Unspecified;
                     break;
                 case Doctor doctor:
-                    doctor.Specialization = newProfile.Specialization ?? doctor.Specialization;
-                    doctor.Campus = newProfile.Campus ?? doctor.Campus;
+                    doctor.Specialization = newProfile.Specialization ?? String.Empty;
+                    doctor.Campus = newProfile.Campus ?? Campus.Unspecified;
                     break;
             }
 
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task UpdateProfile(Guid userId, UserProfileDto newProfile)
+        public async Task UpdateProfile(Guid userId, UserProfileDto newProfile, bool fullyEdit)
         {
             var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
-            await UpdateProfile(user, newProfile);
+            await UpdateProfile(user, newProfile, fullyEdit);
         }
 
         public async Task SetPatientBlacklistState(Guid patientUserId, bool newState)
