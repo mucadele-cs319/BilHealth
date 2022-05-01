@@ -20,7 +20,7 @@
 There are 5 roles of distinct authorization levels, with each user falling into a single one of them.
 
 - **Admin:** Manages the system but is not necessarily part of the health center staff.
-  This is a role for developers/maintainers to do housekeeping, such as registering new users.
+  This is a role for developers/maintainers to do housekeeping.
 - **Doctor:** Part of the medical staff that can undertake cases opened by patients.
 - **Nurse:** Part of the medical staff that can record patient data and forward patients to doctors.
 - **Staff:** Part of the health center staff but not for medical tasks and as such cannot accept cases.
@@ -114,11 +114,11 @@ So in summary, the appointments are first handled by **nurse/staff**, and later 
 - **C# (ASP.NET Core)** as the back-end API platform language
 - **PostgreSQL** as the database solution
 - **TypeScript (ReactJS)** as the front-end SPA client language
-- **Tailwind CSS** for front-end styling
+- **Tailwind CSS** and **Material UI** for front-end styling
 - **Docker (docker-compose)** can be used to make development/deployment/testing easier
-- Hosting could be a **VPS** or a cloud service such as **Azure**
+- Hosting could be a **VPS** or a cloud container service from **Azure**, etc.
 - **Nginx** can be used as a reverse proxy to configure HTTPS
-- If feasible, simple integration tests should be done on the service layer (not in-memory DB)
+- If feasible, simple integration tests should be done (not in-memory DB)
 
 ### Architecture
 
@@ -163,8 +163,16 @@ In the future, if code for testing the project is added, the CI may include auto
 
 ## How to Run
 
-So far, the information below has only been tested on Arch Linux.
-Running on Windows should ideally not be any different though.
+The project runs best on a Linux-based environment, despite using Docker.
+Through [WSL][wsl-about] and its integration with Docker, Windows is also able to run the project reasonably well.
+
+> **Note for Windows:** You **must** place the project within the WSL filesystem.
+> If it isn't already, make the entrypoint script executable with the command
+> `chmod +x ./scripts/entrypoint-migrate.sh`.
+> Also, WSL may eat up unnecessarily high amounts of memory when using Docker,
+> so you might want to [limit it](https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261).
+
+[wsl-about]: https://docs.microsoft.com/en-us/windows/wsl/about
 
 ### Dependencies
 
@@ -177,7 +185,7 @@ For development though, you should also install locally:
 
 - [.NET Core SDK][netcore-install], version 6.0.x (includes ASP.NET Core runtime)
 - [Node.js][nodejs-install], version 16.x
-- If using VS Code, install the [C# extension][csharp-ext-vscode]. Some may prefer to use [Rider][csharp-ext-vscode] instead.
+- If using VS Code, install the [C# extension][csharp-ext-vscode]. Some may prefer to use [Rider][rider-ide] instead.
 - For your IDE of choice, install extensions for:
   - [editorconfig]
   - [ESLint]
@@ -197,12 +205,6 @@ The purpose of these is briefly shown in the *Tools* section below.
 [prettier]: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 
 ### Development
-
-> **Note for Windows:** You must place the project within the WSL filesystem.
-> Make the entrypoint script executable with the command
-> `chmod +x ./scripts/entrypoint-migrate.sh`.
-> Also, WSL on Windows may eat up unnecessary memory when using Docker,
-> so you might want to [limit it](https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261).
 
 The suggested workflow for development is to use docker-compose.
 
@@ -232,30 +234,40 @@ to be seen in real-time.
 
 docker-compose can also be used to run the project in production mode.
 
-Build and run the production Docker image:
+For the first ever time, build and run the production Docker image:
 
 ```shell
+# Build image
 docker-compose -f docker-compose.prod.yml build
-docker-compose -f docker-compose.prod.yml up
+
+# Perform database migration (do this only on first run or new migration)
+## Bring up only the database container
+docker-compose -d -f docker-compose.prod.yml up dbpostgres
+## Generate idempotent SQL script and copy into container
+dotnet ef migrations --idempotent -o migrate.sql
+docker cp migrate.sql bilhealth_db_postgres_1:/migrate.sql
+## Enter the database environment and execute migration
+docker exec -it bilhealth_dbpostgres_1 bash
+cd / && psql -U postgres -d bilhealthprod -f migrate.sql && exit
+## Bring down database
+docker-compose -f docker-compose.prod.yml down
+
+# Bring up all containers
+docker-compose -d -f docker-compose.prod.yml up
 ```
 
 Once the containers are fully up, the project should be visible at `http://localhost:5000/`.
 
 Note that unlike the development image, this one may need to be rebuilt upon every change to the project.
+The database migration process needs to be done only if the database is not up to date with the latest migration.
 
-> The production image doesn't have any way to perform EF Core database migrations at the moment.
-> This might make the PostgreSQL server connection fail, and a good solution for migrations needs to be found.
-> The best bet is to use an SQL script generated by:
-> `dotnet ef migrations script --idempotent -o migrate.sql`
-
-<!-- Separate blockquotes -->
 > There is currently no support for HTTPS in the production build.
-> It might make sense to use a reverse-proxy for that purpose, some time in the future.
+> Ideally, a reverse proxy (Nginx) should be used to support HTTPS.
 
 ### Tools
 
-This is a general list of commands that may be used throughout development.
-These commands are simplified and may need to be run from specific folders in reality.
+This is a general list of commands that may or may not be used throughout development.
+These commands are simplified and may need to be run from specific folders or with specific arguments in reality.
 
 - `dotnet restore`: Restores (installs) .NET dependencies for the project
 - `dotnet run`: Runs the project *locally* in development mode
