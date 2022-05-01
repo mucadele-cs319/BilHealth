@@ -80,6 +80,25 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetRequiredService<IAuthenticationService>().CreateRoles().Wait();
 }
 
+// TODO: A proper system initialization flow with default user creation
+using (var scope = app.Services.CreateScope())
+{
+    // Register an admin user
+    var authService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+    var adminUsername = "0000";
+
+    authService.DeleteUser(adminUsername).Wait();
+    authService.Register(new()
+    {
+        UserName = adminUsername,
+        Password = "admin123",
+        Email = "tempmail@example.com",
+        FirstName = "John",
+        LastName = "Smith",
+        UserType = UserRoleType.Admin
+    }).Wait();
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -92,24 +111,6 @@ else
     // See the comments in file `docker-compose.prod.yml` for details
     // Although, is this needed even in development where the edge server is CRA's live Express server?
     app.UseHttpsRedirection();
-
-    using (var scope = app.Services.CreateScope())
-    {
-        // Register an admin user for development-only
-        var authService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
-        var adminUsername = "0000";
-
-        authService.DeleteUser(adminUsername).Wait();
-        authService.Register(new()
-        {
-            UserName = adminUsername,
-            Password = "admin123",
-            Email = "tempmail@example.com",
-            FirstName = "John",
-            LastName = "Smith",
-            UserType = UserRoleType.Admin
-        }).Wait();
-    }
 
     app.UseSwagger();
     app.UseSwaggerUI(c =>
