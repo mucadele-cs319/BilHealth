@@ -12,9 +12,10 @@ interface Props {
   data: User;
 }
 
-const failsafe = (content: string | number | undefined) => {
-  if (typeof content === "number") return content.toString();
-  return content || "—";
+const failsafe = (content: string | number | undefined, suffix?: string) => {
+  let result = typeof content === "number" ? content.toString() : content || "—";
+  if (content && suffix) result += ` ${suffix}`;
+  return result;
 };
 
 const ProfileDetails = ({ data }: Props) => {
@@ -42,10 +43,10 @@ const ProfileDetails = ({ data }: Props) => {
             <Typography variant="subtitle1">Patient Details</Typography>
             <Grid container spacing={2}>
               <Grid item>
-                <ProfileDetailsItem title="Body Weight" content={failsafe(data.bodyWeight)} />
+                <ProfileDetailsItem title="Body Weight" content={failsafe(data.bodyWeight, "kg")} />
               </Grid>
               <Grid item>
-                <ProfileDetailsItem title="Body Height" content={failsafe(data.bodyHeight)} />
+                <ProfileDetailsItem title="Body Height" content={failsafe(data.bodyHeight, "cm")} />
               </Grid>
               <Grid item>
                 <ProfileDetailsItem title="Blood Type" content={stringifyBloodType(data.bloodType)} />
