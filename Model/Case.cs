@@ -14,7 +14,7 @@ namespace BilHealth.Model
         public Guid? DoctorUserId { get; set; }
         public Doctor? DoctorUser { get; set; }
         [Required] public CaseType Type { get; set; }
-        [Required] public CaseState State { get; set; } = CaseState.Ongoing;
+        [Required] public CaseState State { get; set; } = CaseState.WaitingTriage;
 
         public List<CaseMessage>? Messages { get; set; }
         public List<CaseSystemMessage>? SystemMessages { get; set; }
