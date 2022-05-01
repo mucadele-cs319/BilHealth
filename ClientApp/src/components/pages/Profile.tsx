@@ -13,6 +13,12 @@ import { useUserContext } from "../UserContext";
 import BlacklistCard from "../profile/BlacklistCard";
 import PasswordCard from "../profile/PasswordCard";
 
+type UserNullable = User | null | undefined;
+
+const isStaff = (user: UserNullable): user is User =>
+  user != null && [UserType.Staff, UserType.Admin].some((type) => type === user.userType);
+const isPatient = (user: UserNullable): user is User => user != null && user.userType === UserType.Patient;
+
 const Profile = () => {
   useDocumentTitle("Profile");
 
@@ -39,26 +45,25 @@ const Profile = () => {
     <Grid container justifyContent="center">
       <Fade in={true}>
         <Grid item lg={10} xs={11}>
-          {isLoaded ? (
+          {isLoaded && queryUser ? (
             <>
-              <ProfileDetails data={queryUser as User} />
-              {queryUser?.userType !== UserType.Patient ? null : (
+              <ProfileDetails data={queryUser as User} editable={user?.id === queryUser.id || isStaff(user)} />
+              {!isPatient(queryUser) ? null : (
                 <VaccinationDetails
-                  readonly={![UserType.Staff, UserType.Admin].some((type) => type === user?.userType)}
+                  readonly={!isStaff(user)}
                   refreshHandler={refreshUser}
                   patientId={queryUser.id as string}
                   vaccinations={queryUser.vaccinations}
                 />
               )}
-              {![UserType.Staff, UserType.Admin].some((type) => type === user?.userType) ||
-              queryUser?.userType !== UserType.Patient ? null : (
+              {!isStaff(user) || !isPatient(queryUser) ? null : (
                 <BlacklistCard
                   patientId={queryUser.id as string}
                   blacklisted={queryUser.blacklisted as boolean}
                   refreshHandler={refreshUser}
                 />
               )}
-              {user?.id === queryUser?.id ? <PasswordCard /> : null}
+              {user?.id === queryUser.id ? <PasswordCard /> : null}
             </>
           ) : (
             <Stack alignItems="center" className="mt-8">

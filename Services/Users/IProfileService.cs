@@ -10,8 +10,10 @@ namespace BilHealth.Services.Users
         Task<List<Case>> GetPastCases(DomainUser user);
         Task<List<Case>> GetOpenCases(DomainUser user);
 
-        Task UpdateProfile(DomainUser user, UserProfileDto newProfile);
-        Task UpdateProfile(Guid userId, UserProfileDto newProfile);
+        /// <param name="fullyEdit">Set to true if the sensitive details of the profile should be updated also</param>
+        Task UpdateProfile(DomainUser user, UserProfileDto newProfile, bool fullyEdit = false);
+        /// <param name="fullyEdit">Set to true if the sensitive details of the profile should be updated also</param>
+        Task UpdateProfile(Guid userId, UserProfileDto newProfile, bool fullyEdit = false);
         Task SetPatientBlacklistState(Guid patientUserId, bool newState);
 
         Task AddVaccination(VaccinationDto details);

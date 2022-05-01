@@ -43,6 +43,10 @@ const sortVaccinations = (user: User) => {
   user.vaccinations?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
 };
 
+const processDateOfBirth = (user: User) => {
+  if (user.dateOfBirth) user.dateOfBirth = dayjs(user.dateOfBirth);
+};
+
 const profiles = {
   all: async (): Promise<SimpleUser[]> => {
     const response = await fetch("/api/profiles");
@@ -54,6 +58,7 @@ const profiles = {
 
     const user: User = await response.json();
     sortVaccinations(user);
+    processDateOfBirth(user);
 
     return user;
   },
@@ -62,6 +67,7 @@ const profiles = {
 
     const user: User = await response.json();
     sortVaccinations(user);
+    processDateOfBirth(user);
 
     return user;
   },
@@ -71,7 +77,7 @@ const profiles = {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newProfile),
+      body: JSON.stringify({ ...newProfile, dateOfBirth: newProfile.dateOfBirth?.format("YYYY-MM-DD") }),
     });
   },
   blacklist: async (userId: string, state: boolean) => {

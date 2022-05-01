@@ -63,7 +63,8 @@ namespace BilHealth.Controllers
         [HttpPatch("{userId:guid}")]
         public async Task<IActionResult> Update(Guid userId, UserProfileDto newProfile)
         {
-            await ProfileService.UpdateProfile(userId, newProfile);
+            var requestingUser = (await AuthenticationService.GetAppUser(User)).DomainUser;
+            await ProfileService.UpdateProfile(userId, newProfile, requestingUser is Admin or Staff);
             return Ok();
         }
 

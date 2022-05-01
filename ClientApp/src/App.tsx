@@ -17,6 +17,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import FullLayout from "./components/FullLayout";
 import StaffPanel from "./components/pages/StaffPanel";
 import CalculatorsPage from "./components/pages/CalculatorsPage";
+import EditProfile from "./components/pages/EditProfile";
 
 const LoadingPage = () => {
   return (
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/cases/:caseid" element={<CasePage />} />
             <Route path="/notifications" element={<NotificationsListPage />} />
             <Route path="/profiles/:userid" element={<Profile />} />
+            <Route path="/profiles/:userid/edit" element={<EditProfile />} />
             <Route path="/test-results" element={<TestResultList />} />
             <Route path="/test-results/:testresultid" element={<TestResultPage />} />
             <Route path="/calculators" element={<CalculatorsPage />} />
