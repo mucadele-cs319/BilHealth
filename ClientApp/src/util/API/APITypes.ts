@@ -63,12 +63,48 @@ export enum BloodType {
   ONeg,
 }
 
-export const stringifyBloodType = (bloodType: BloodType | undefined) => BloodType[bloodType || 0];
+export const getAllBloodTypes = () => [
+  BloodType.Unspecified,
+  BloodType.APos,
+  BloodType.ANeg,
+  BloodType.BPos,
+  BloodType.BNeg,
+  BloodType.ABPos,
+  BloodType.ABNeg,
+  BloodType.OPos,
+  BloodType.ONeg,
+];
+
+export const stringifyBloodType = (bloodType: BloodType | undefined) => {
+  switch (bloodType) {
+    case BloodType.APos:
+      return "A Rh+";
+    case BloodType.ANeg:
+      return "A Rh-";
+    case BloodType.BPos:
+      return "B Rh+";
+    case BloodType.BNeg:
+      return "B Rh-";
+    case BloodType.ABPos:
+      return "AB Rh+";
+    case BloodType.ABNeg:
+      return "AB Rh-";
+    case BloodType.OPos:
+      return "O Rh+";
+    case BloodType.ONeg:
+      return "O Rh-";
+    default:
+      return "Unspecified";
+  }
+};
 
 export enum Campus {
+  Unspecified,
   Main,
   East,
 }
+
+export const getAllCampusTypes = () => [Campus.Unspecified, Campus.Main, Campus.East];
 
 export const stringifyCampus = (campus: Campus | undefined) => Campus[campus || 0];
 
@@ -117,6 +153,17 @@ export enum CaseType {
   Radiology,
 }
 
+export const getAllCaseTypes = () => [
+  CaseType.Dental,
+  CaseType.EarNoseThroat,
+  CaseType.Dermatology,
+  CaseType.Gynecology,
+  CaseType.Optometry,
+  CaseType.Orthopedics,
+  CaseType.Psychiatry,
+  CaseType.Radiology,
+];
+
 export enum CaseState {
   Open,
   Closed,
@@ -153,6 +200,8 @@ export enum Gender {
   Female,
 }
 
+export const getAllGenderTypes = () => [Gender.Unspecified, Gender.Male, Gender.Female];
+
 export const stringifyGender = (gender: Gender | undefined) => Gender[gender || 0];
 
 export interface Login {
@@ -179,6 +228,16 @@ export enum MedicalTestType {
   Tanita,
   Covid,
 }
+
+export const getAllMedicalTestTypes = () => [
+  MedicalTestType.Blood,
+  MedicalTestType.Urine,
+  MedicalTestType.Ultrasound,
+  MedicalTestType.Xray,
+  MedicalTestType.Electrocardiogram,
+  MedicalTestType.Tanita,
+  MedicalTestType.Covid,
+];
 
 export enum NotificationType {
   CaseNewAppointment, // CaseId, AppointmentId
