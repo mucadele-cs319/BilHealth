@@ -66,7 +66,13 @@ const PasswordCard = () => {
         </Stack>
 
         <Stack direction="row" justifyContent="end">
-          <LoadingButton disabled={!validate()} loading={isPending} onClick={handlePasswordChange} variant="text" loadingPosition="center">
+          <LoadingButton
+            disabled={!validate()}
+            loading={isPending}
+            onClick={handlePasswordChange}
+            variant="text"
+            loadingPosition="center"
+          >
             Change Password
           </LoadingButton>
         </Stack>
