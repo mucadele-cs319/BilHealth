@@ -7,9 +7,13 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { stringifyBloodType, stringifyCampus, stringifyGender, User, UserType } from "../../util/API/APITypes";
 import ProfileDetailsItem from "./ProfileDetailsItem";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   data: User;
+  editable?: boolean;
 }
 
 const failsafe = (content: string | number | undefined, suffix?: string) => {
@@ -18,13 +22,24 @@ const failsafe = (content: string | number | undefined, suffix?: string) => {
   return result;
 };
 
-const ProfileDetails = ({ data }: Props) => {
+const ProfileDetails = ({ data, editable = false }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
-        <Typography variant="h5" gutterBottom>
-          {`${data.firstName} ${data.lastName}`} <Chip className="ml-2" size="small" label={data.userType} />
-        </Typography>
+        <Stack direction="row" justifyContent="center">
+          <Typography variant="h5" gutterBottom>
+            {`${data.firstName} ${data.lastName}`} <Chip className="ml-2" size="small" label={data.userType} />
+          </Typography>
+          <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
+            {editable ? (
+              <Button onClick={() => navigate("edit")} variant="text">
+                Edit
+              </Button>
+            ) : null}
+          </Stack>
+        </Stack>
 
         <Grid container spacing={2} mt={1}>
           <Grid item>
