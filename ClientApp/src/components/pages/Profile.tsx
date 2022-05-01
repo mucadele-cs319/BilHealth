@@ -11,6 +11,7 @@ import ProfileDetails from "../profile/ProfileDetails";
 import VaccinationDetails from "../profile/VaccinationDetails";
 import { useUserContext } from "../UserContext";
 import BlacklistCard from "../profile/BlacklistCard";
+import PasswordCard from "../profile/PasswordCard";
 
 const Profile = () => {
   useDocumentTitle("Profile");
@@ -57,6 +58,7 @@ const Profile = () => {
                   refreshHandler={refreshUser}
                 />
               )}
+              {user?.id === queryUser?.id ? <PasswordCard /> : null}
             </>
           ) : (
             <Stack alignItems="center" className="mt-8">
