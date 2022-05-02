@@ -7,7 +7,6 @@ import CasePage from "./components/pages/CasePage";
 import NotificationsListPage from "./components/pages/NotificationsListPage";
 import Profile from "./components/pages/Profile";
 import TestResultList from "./components/pages/TestResultList";
-import TestResultPage from "./components/pages/TestResult";
 import Box from "@mui/material/Box";
 import LoginPage from "./components/pages/LoginPage";
 import { useUserContext } from "./components/UserContext";
@@ -52,8 +51,7 @@ const App = () => {
             <Route path="/notifications" element={<NotificationsListPage />} />
             <Route path="/profiles/:userid" element={<Profile />} />
             <Route path="/profiles/:userid/edit" element={<EditProfile />} />
-            <Route path="/test-results" element={<TestResultList />} />
-            <Route path="/test-results/:testresultid" element={<TestResultPage />} />
+            <Route path="/profiles/:userid/test-results" element={<TestResultList />} />
             <Route path="/calculators" element={<CalculatorsPage />} />
             <Route path="/staff-panel" element={<StaffPanel />} />
             <Route path="*" element={<NotFound />} />
