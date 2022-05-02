@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Announcement, Login, Registration, SimpleUser, User, Vaccination } from "./APITypes";
+import { Announcement, Login, Registration, SimpleUser, TestResult, User, Vaccination } from "./APITypes";
 
 const authentication = {
   register: async (registration: Registration) => {
@@ -47,6 +47,13 @@ const processDateOfBirth = (user: User) => {
   if (user.dateOfBirth) user.dateOfBirth = dayjs(user.dateOfBirth);
 };
 
+const sortTestResults = (user: User) => {
+  user.testResults?.forEach((testResult) => {
+    testResult.dateTime = dayjs(testResult.dateTime);
+  });
+  user.testResults?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+};
+
 const profiles = {
   all: async (): Promise<SimpleUser[]> => {
     const response = await fetch("/api/profiles");
@@ -58,6 +65,7 @@ const profiles = {
 
     const user: User = await response.json();
     sortVaccinations(user);
+    sortTestResults(user);
     processDateOfBirth(user);
 
     return user;
@@ -67,6 +75,7 @@ const profiles = {
 
     const user: User = await response.json();
     sortVaccinations(user);
+    sortTestResults(user);
     processDateOfBirth(user);
 
     return user;
@@ -112,7 +121,38 @@ const profiles = {
   },
 };
 
-const testResults = {};
+const testResults = {
+  add: async (testResult: TestResult) => {
+    const formData = new FormData();
+    formData.append("patientUserId", testResult.patientUserId);
+
+    if (testResult.type === undefined) throw Error("No type given for test result");
+    if (testResult.file === undefined) throw Error("No file given for test result");
+    formData.append("type", testResult.type.toString());
+    formData.append("file", testResult.file);
+
+    await fetch(`/api/testresults`, {
+      method: "POST",
+      body: formData,
+    });
+  },
+  update: async (testResult: TestResult) => {
+    const formData = new FormData();
+    if (testResult.type) formData.append("type", testResult.type.toString());
+    if (testResult.file) formData.append("file", testResult.file);
+
+    await fetch(`/api/testresults/${testResult.id}`, {
+      method: "PATCH",
+      body: formData,
+    });
+  },
+  delete: async (testResultId: string) => {
+    await fetch(`/api/testresults/${testResultId}`, {
+      method: "DELETE",
+    });
+  },
+  getFile: (testResultId: string) => `/api/testresults/${testResultId}/file`,
+};
 
 const appointments = {};
 
