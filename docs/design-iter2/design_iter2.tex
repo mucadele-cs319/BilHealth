@@ -103,11 +103,29 @@
   all of these personal information from any unauthorized activity.
   No user would want such private data to be accessed by any unauthorized person.
 
+  To secure the app, the implementation should follow an access control schema as such:
+  
+  \begin{itemize}
+    \item A doctor can access a patient's full profile only while the doctor is assigned to an open case with the patient.
+    \item A nurse can access a patient's full profile only while granted permission by the patient or a staff member.
+      This access should expire after some amount of time.
+    \item A staff member can always access a patient's full profile.
+      However, this access is fully tracked, also known as an \textit{audit trail}.
+  \end{itemize}
+  
+  From research, this schema appears to align with health information security practices around the globe.
+  
   \subsubsection{Performance}
 
   The system should give the best performance even on computers with old hardware.
   Every user interaction should be processed and displayed in less than 1 second to provide
   a better experience to the user.
+  
+  In order to ensure sufficient performance, potential bottleneck points should be addressed.
+  One of the most notorious bottlenecks is database access.
+  The system should limit round trips to the database as much as possible.
+  When data is queried or written, it should be done with transactions that allow all of the process to be completed
+  on a single request.
 
   \subsubsection{Scalability}
 
@@ -147,6 +165,13 @@
 
   \subsection{Subsystem Decomposition}
 
+  Since the project uses React as its front-end interface technology, the subsystems are not divided according to views.
+  The front-end client, \texttt{APIClient}, handles all communication with the API exposed by the \textit{controller layer}.
+  To elaborate, this client component sends HTTP requests to the back-end endpoints according to the user's interactions with React.
+  
+  The service layer is called by the controller layer to execute the business logic and database access required to perform a given action.
+  The data layer consists of the domain models, powered by the Entity Framework Core library.
+  
   \includegraphics[width=\linewidth]{subsystem}
 
   \subsection{Hardware-Software Mapping}
@@ -161,6 +186,14 @@
   system replicability and practicality.
   Similar to most other web services, the project is officially supported to run on a Linux environment, which
   may be of consideration when choosing hardware.
+  
+  The server on which the system runs should have the following specifications at a minimum:
+  
+  \begin{itemize}
+    \item A server-grade CPU such as Intel Xeon, with clockrates above 2.0 GHz
+    \item 16-32 GB of RAM to support many users and interactions at once
+    \item 1-2 TB of storage to support the database and the test result store
+  \end{itemize}
 
   \subsection{Persistent Data Management}
 
@@ -177,6 +210,8 @@
   constructed by EF Core with respect to our entity definitions in C\# code.
   The EF Core toolchain generates migrations, which it also converts to SQL scripts,
   using which a database can be configured to host the project in moments.
+  
+  All of the domain models seen on the class diagrams are persisted to the database.
 
   \subsection{Access Control and Security}
 
@@ -198,28 +233,26 @@
 
   \subsubsection{Initialization}
 
-  The project is a web application and does not require any initialization.
-  The access is easy through the web.
-  To access the website, only an internet connection is required.
-  Since the website is not protected, there are no extra requirements in this regard.
-  Once accessed, an account is needed for further actions.
-  To login, one needs a Bilkent ID and permission from the admins of the project.
+  To initialize the application, the admins need to first perform schema migrations on the database.
+  Once the database is ready, the rest of the system can be initialized through the \texttt{docker-compose} tool.
 
   \includegraphics[width=\linewidth]{deploy_diag.pdf}
 
   \subsubsection{Termination}
 
-  Since the project is a web application, ending the process is enough to terminate the application.
-  Through maintenances, the application will be terminated by admins and no users will be able to use the website.
-  Since the application is for the health center, the maintenance sessions will be no longer than 30 minutes each week.
+  The application is terminated through the \texttt{docker-compose} tool.
+  There are no special steps to be taken beyond commanding Docker to bring down the application containers.
 
   \subsubsection{Failure}
 
-  Being a website the most noxius failure is DDoS attacks.
-  DDoS attacks are on availability of the server and as a health center application we should guarantee that users does not have
-  any trouble using the website.
-  We will use Web Application Firewall (WAF) against these attacks to make sure our site does not go down.
+  The application does not crash in the event of failure.
+  The implementation is careful to catch exceptions in appropiate places, and log the incidents if need be.
+  Furthermore, the ASP.NET Core framework catches and reports any rare exceptions that may go unnoticed.
 
+  Also, database access should be conducted through \textit{transactions}, which allow multiple operations to
+  be made dependent on each other such that if one operation fails, the rest are not executed.
+  This is ideal for data reliability and integrity in the event of failure.
+  
   \section{Low-Level Design}
 
   \subsection{Object Design Trade-Offs}
@@ -227,21 +260,19 @@
   \begin{itemize}
     \item \textbf{Maintainability} versus \textbf{Performance:}
       The system will have objects for almost every part of the project because it is coded using OOP.
-      This situation will cause a decrease in performance but it is good for maintainability
-      because it provides developers the option to make changes easily.
+      This may cause a decrease in performance, but it is good for maintainability
+      as it provides developers the mechanism to make changes easily.
     \item \textbf{Memory} versus \textbf{Performance:}
-      The system will be created using OOP, so there will be lots of objects and classes
-      for almost every part of the project.
-      This causes a lot of memory usage but it can be handled by AWS which lowers the memory usage.
-      It increases the memory optimization and performance.
-    \item \textbf{Security} versus \textbf{Usability:}
-      The system will not have two way authentication for accounts.
-      In other words, user can access his/her account with only password.
-      This can be cause a problem for security but it increases the usability of the system.
-    \item \textbf{Functionality} versus \textbf{Usability:}
-      The project system will be used by patients, staff, doctors and nurses.
-      This forces the project to have many functionalities which are not available for everyone.
-      This decreases the usability.
+      The system will be created using OOP, so there will be many objects and classes involved
+      during the execution of a given action on the application.
+      This may cause some diminish in performance as memory is used by more objects and a bottleneck occurs.
+    \item \textbf{Security} versus \textbf{Accessibility:}
+      The system will not have security measures beyond a typical username and password.
+      This decreases the security of the authentication process, but is better for accessibility purposes
+      as users will not require extraordinary steps to access the system.
+    \item \textbf{Functionality} versus \textbf{Extensibility:}
+      As the system gains more functionality, despite the use of appropiate design patterns and practices,
+      interfaces may become more rigid. This may cause the application to be less extensible.
   \end{itemize}
 
   \subsection{Final Object Design}

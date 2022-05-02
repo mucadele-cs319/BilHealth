@@ -124,6 +124,7 @@
     \item \textbf{Staff:} Part of the health center staff, but not for medical tasks, and as such cannot accept cases.
       They are mostly able to perform a subset of doctor and patient features on their behalf, so as to manage the process.
     \item \textbf{Patient:} Able to open cases and receive medical attention as a result of their interaction with the system.
+      All patients receive the same fundamental capabilities, regardless of their background.
     \item \textbf{Admin:} Manages the system but is not necessarily a part of the health center staff.
       This is a role for developers/maintainers of the system to do housekeeping, such as mass registering new users.
   \end{itemize}
@@ -194,20 +195,19 @@
   \begin{itemize}
     \item \textbf{Security:} Since a person's health details are highly privacy sensitive, the system should protect a patient's records from any unauthorized activity
     \item \textbf{Accessibility:} The system should adhere to accessibility practices put forth by Mozilla and World Wide Web Consortium (W3C)
-    \item \textbf{Reliability:} The users' expectation of the system to be predictable in its reactions to user interaction should be satisfied
     \item \textbf{Scalability:} The system should be able to comfortably support a user base of up to 20000 users, with leeway for more
-    \item \textbf{Maintainability:} The system should be implemented in a way that is practical to maintain
+    \item \textbf{Maintainability:} The system should be implemented with industry best practices to make it maintainable
     \item \textbf{Deployment:} The system should not be tightly coupled with its hosting environment, to be able to deploy on most servers with ease
-    \item \textbf{Extensibility:} The system should be implemented in a way that allows developers to extend functionality without refactoring majorly
+    \item \textbf{Extensibility:} The system should be implemented with OOP design patterns that allow developers to extend functionality without refactoring majorly
     \item \textbf{Fault tolerance:} The system should be able to run despite database connection errors, and notify maintainers and users when a problem occurs
     \item \textbf{Integrability:} The system should be able to integrate services from another software system, such as Bilkent University's BCC infrastructure
-    \item \textbf{Testability:} The system should be implemented in a way that allows automated testing tools to be used
+    \item \textbf{Testability:} The system should be implemented with design patterns that allow automated testing tools to be used
   \end{itemize}
 
   \subsection{Pseudo Requirements}
 
   \begin{itemize}
-    \item The system should be implemented by using an object-oriented programming (OOP) language
+    \item The system should be implemented using an object-oriented programming (OOP) language
     \item The system should be implemented as a web application
     \item The system should be developed by a team of five students
     \item The system's development should take place on the git version control hosting platform, GitHub
