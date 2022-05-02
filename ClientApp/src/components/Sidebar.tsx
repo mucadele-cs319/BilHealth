@@ -85,7 +85,14 @@ const Sidebar = ({ mobile, drawerState }: Props) => {
         <List>
           <ListItemLink primary="Profile" to={`/profiles/${user?.id}`} icon={<AccountBoxIcon />} />
           <ListItemLink nested primary="Notifications" to="/notifications" icon={<NotificationsIcon />} />
-          <ListItemLink nested primary="Test Results" to="/test-results" icon={<BiotechIcon />} />
+          {user?.userType !== UserType.Patient ? null : (
+            <ListItemLink
+              nested
+              primary="Test Results"
+              to={`/profiles/${user?.id}/test-results`}
+              icon={<BiotechIcon />}
+            />
+          )}
           <ListItemLink primary="Announcements" to="/" icon={<Campaign />} />
           <ListItemLink primary="Cases" to="/cases" icon={<MedicalServicesIcon />} />
           <ListItemLink primary="Calculators" to="/calculators" icon={<CalculateIcon />} />
