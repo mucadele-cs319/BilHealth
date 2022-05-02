@@ -129,6 +129,17 @@
       This is a role for developers/maintainers of the system to do housekeeping, such as mass registering new users.
   \end{itemize}
 
+  The \textbf{Patient} actor can further be divided into:
+
+  \begin{itemize}
+    \item \textbf{Graduate Student:} May use insurance company or cash to pay.
+    \item \textbf{Academic Personnel:} May use insurance company or cash to pay.
+    \item \textbf{Undergraduate Student:} Receives free treatment.
+  \end{itemize}
+
+  Consequently, an external actor of the system are the \textbf{insurance companies}.
+  They reimburse the costs of a patient's treatment, if they are eligible to be covered by insurance.
+
   \pagebreak
   \subsection{Functional Requirements}
 
@@ -249,7 +260,9 @@
 
   The following diagrams demonstrates the various states a case can be in at a given time.
 
-  \includegraphics[width=\linewidth]{state_diag_patient.pdf}
+  \includegraphics[width=\linewidth]{state_diag_case}
+
+  \includegraphics[width=\linewidth]{state_diag_triage}
 
   \pagebreak
   \subsubsection{Class Diagram}
