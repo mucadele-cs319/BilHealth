@@ -256,11 +256,23 @@
 
   \includegraphics[width=\linewidth]{activity_diag_appointment}
 
+  The following diagram shows the general flow of activities as a user attempts to obtain a medical report.
+
+  \includegraphics[width=\linewidth]{activity_diag_report.pdf}
+
+  \pagebreak
+  The following diagram shows the general flow of activities as a staff member uploads a test result.
+
+  \includegraphics[width=\linewidth]{activity_diag_test.pdf}
+
   \subsubsection{State Diagram}
 
-  The following diagrams demonstrates the various states a case can be in at a given time.
+  The following diagram demonstrates the various states a case can be in at a given time.
 
   \includegraphics[width=\linewidth]{state_diag_case}
+
+  \pagebreak
+  The following diagram demonstrates the various states a triage request can be in at a given time.
 
   \includegraphics[width=\linewidth]{state_diag_triage}
 
@@ -281,15 +293,21 @@
   \pagebreak
   \subsubsection{User Interface}
 
-  The core \textit{case} functionality of our project bears a strong resemblence to that of GitHub's issue tracker.
-  Of course, the format GitHub uses is not unique, but we think it is a good example nonetheless.
-  Commits can be seen as appointment requests, visits, prescriptions, and such.
-  Messages act as communication between the patient and the medical staff.
-  System messages are used to alert users of any changes to the events.
-  A sidebar can be used to display the case information.
-  As such, our final user interface is likely to look similar to the following design.
+  Our front-end design uses Material UI components entirely.
+  The following are our concept designs, from the point of view of a staff member.
 
-  \includegraphics[width=\linewidth]{github_ui}
+  \includegraphics[width=\linewidth]{uim_login.png}
+
+  \includegraphics[width=\linewidth]{uim_announce.png}
+
+  \includegraphics[width=\linewidth]{uim_staff.png}
+
+  \includegraphics[width=\linewidth]{uim_profile.png}
+
+  \includegraphics[width=\linewidth]{uim_editprofile.png}
+
+  \includegraphics[width=\linewidth]{uim_testresult.png}
+
 
   \section{Glossary}
 
