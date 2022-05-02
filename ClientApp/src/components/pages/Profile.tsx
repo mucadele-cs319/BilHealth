@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
-import { User, UserType } from "../../util/API/APITypes";
+import { User } from "../../util/API/APITypes";
 import APIClient from "../../util/API/APIClient";
 import { useParams } from "react-router-dom";
 import ProfileDetails from "../profile/ProfileDetails";
@@ -12,12 +12,7 @@ import VaccinationDetails from "../profile/VaccinationDetails";
 import { useUserContext } from "../UserContext";
 import BlacklistCard from "../profile/BlacklistCard";
 import PasswordCard from "../profile/PasswordCard";
-
-type UserNullable = User | null | undefined;
-
-const isStaff = (user: UserNullable): user is User =>
-  user != null && [UserType.Staff, UserType.Admin].some((type) => type === user.userType);
-const isPatient = (user: UserNullable): user is User => user != null && user.userType === UserType.Patient;
+import { isPatient, isStaff } from "../../util/UserTypeUtil";
 
 const Profile = () => {
   useDocumentTitle("Profile");
