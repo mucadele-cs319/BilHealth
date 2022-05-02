@@ -239,6 +239,8 @@ export const getAllMedicalTestTypes = () => [
   MedicalTestType.Covid,
 ];
 
+export const stringifyMedicalTest = (medicalTestType: MedicalTestType) => MedicalTestType[medicalTestType];
+
 export enum NotificationType {
   CaseNewAppointment, // CaseId, AppointmentId
   CaseAppointmentTimeChanged, // CaseId, AppointmentId
@@ -272,7 +274,8 @@ export interface TestResult {
   id?: string;
   patientUserId: string;
   dateTime?: Dayjs;
-  type: MedicalTestType;
+  type?: MedicalTestType;
+  file?: File;
 }
 
 export interface TriageRequest {
