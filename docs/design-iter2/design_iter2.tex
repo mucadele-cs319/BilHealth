@@ -24,6 +24,7 @@
 %\usepackage{wrapfig} % Floating figures/tables
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{diagbox}
 
 % Prevents spamming tedious newlines everywhere, also disables auto indentation, etc.
 \usepackage[skip=0.75\baselineskip plus 2pt]{parskip}
@@ -104,7 +105,7 @@
   No user would want such private data to be accessed by any unauthorized person.
 
   To secure the app, the implementation should follow an access control schema as such:
-  
+
   \begin{itemize}
     \item A doctor can access a patient's full profile only while the doctor is assigned to an open case with the patient.
     \item A nurse can access a patient's full profile only while granted permission by the patient or a staff member.
@@ -112,15 +113,15 @@
     \item A staff member can always access a patient's full profile.
       However, this access is fully tracked, also known as an \textit{audit trail}.
   \end{itemize}
-  
+
   From research, this schema appears to align with health information security practices around the globe.
-  
+
   \subsubsection{Performance}
 
   The system should give the best performance even on computers with old hardware.
   Every user interaction should be processed and displayed in less than 1 second to provide
   a better experience to the user.
-  
+
   In order to ensure sufficient performance, potential bottleneck points should be addressed.
   One of the most notorious bottlenecks is database access.
   The system should limit round trips to the database as much as possible.
@@ -168,10 +169,10 @@
   Since the project uses React as its front-end interface technology, the subsystems are not divided according to views.
   The front-end client, \texttt{APIClient}, handles all communication with the API exposed by the \textit{controller layer}.
   To elaborate, this client component sends HTTP requests to the back-end endpoints according to the user's interactions with React.
-  
+
   The service layer is called by the controller layer to execute the business logic and database access required to perform a given action.
   The data layer consists of the domain models, powered by the Entity Framework Core library.
-  
+
   \includegraphics[width=\linewidth]{subsystem}
 
   \subsection{Hardware-Software Mapping}
@@ -186,9 +187,9 @@
   system replicability and practicality.
   Similar to most other web services, the project is officially supported to run on a Linux environment, which
   may be of consideration when choosing hardware.
-  
+
   The server on which the system runs should have the following specifications at a minimum:
-  
+
   \begin{itemize}
     \item A server-grade CPU such as Intel Xeon, with clockrates above 2.0 GHz
     \item 16-32 GB of RAM to support many users and interactions at once
@@ -210,7 +211,7 @@
   constructed by EF Core with respect to our entity definitions in C\# code.
   The EF Core toolchain generates migrations, which it also converts to SQL scripts,
   using which a database can be configured to host the project in moments.
-  
+
   All of the domain models seen on the class diagrams are persisted to the database.
 
   \subsection{Access Control and Security}
@@ -228,6 +229,26 @@
 
   Lastly, user details are stored in a database with their passwords having been hashed by the \textit{bcrypt} algorithm,
   which is among the top choices in secure password storage techniques at this time.
+
+  \begin{table}[h!]
+    \renewcommand{\arraystretch}{1.5}
+    \centering
+    \caption{Access Matrix}
+    \begin{tabular}[t]{l | c c c c c}
+      \toprule
+      \diagbox{Object}{Actor} & Patient & Nurse & Doctor & Staff & Admin \\
+      \midrule
+      Announcements & \scriptsize Read & \scriptsize Read & \scriptsize Read/Write & \scriptsize Read/Write & \scriptsize All \\
+      Appointments & \scriptsize Request & \scriptsize - & \scriptsize Deny & \scriptsize Approve/Deny & \scriptsize All \\
+      Authentication & \scriptsize Login & \scriptsize Login & \scriptsize Login & \scriptsize Login/Register & \scriptsize All \\
+      Cases & \scriptsize Open/Message & \scriptsize - & \scriptsize Close/Message & \scriptsize Open/Close & \scriptsize All \\
+      Appointment Visits & \scriptsize - & \scriptsize Add & \scriptsize - & \scriptsize - & \scriptsize All \\
+      Triage Requests & \scriptsize Request & \scriptsize Request & \scriptsize - & \scriptsize Approve/Deny & \scriptsize All \\
+      Profiles & \scriptsize Read/Write Own & \scriptsize Read Whitelisted & \scriptsize Read Associated & \scriptsize Read/Write All & \scriptsize All \\
+      Test Results & \scriptsize Read Own & \scriptsize Read Whitelisted & \scriptsize Read Associated & \scriptsize Read/Write All & \scriptsize All \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
 
   \subsection{Boundary Conditions}
 
@@ -252,7 +273,7 @@
   Also, database access should be conducted through \textit{transactions}, which allow multiple operations to
   be made dependent on each other such that if one operation fails, the rest are not executed.
   This is ideal for data reliability and integrity in the event of failure.
-  
+
   \section{Low-Level Design}
 
   \subsection{Object Design Trade-Offs}
