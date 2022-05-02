@@ -12,6 +12,7 @@ import VaccinationDetails from "../profile/VaccinationDetails";
 import { useUserContext } from "../UserContext";
 import BlacklistCard from "../profile/BlacklistCard";
 import PasswordCard from "../profile/PasswordCard";
+import TestResultLinkerCard from "../profile/TestResultLinkerCard";
 import { isPatient, isStaff } from "../../util/UserTypeUtil";
 
 const Profile = () => {
@@ -51,6 +52,7 @@ const Profile = () => {
                   vaccinations={queryUser.vaccinations}
                 />
               )}
+              {isPatient(queryUser) ? <TestResultLinkerCard /> : null}
               {!isStaff(user) || !isPatient(queryUser) ? null : (
                 <BlacklistCard
                   patientId={queryUser.id as string}
