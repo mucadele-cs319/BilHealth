@@ -250,6 +250,7 @@
     \end{tabular}
   \end{table}
 
+  \pagebreak
   \subsection{Boundary Conditions}
 
   \subsubsection{Initialization}
@@ -274,6 +275,7 @@
   be made dependent on each other such that if one operation fails, the rest are not executed.
   This is ideal for data reliability and integrity in the event of failure.
 
+  \pagebreak
   \section{Low-Level Design}
 
   \subsection{Object Design Trade-Offs}
@@ -358,9 +360,17 @@
 
   \subsubsection{Business Logic Layer}
 
+  The diagrams on the two following pages are of the service and controller layers respectively.
+
   \includegraphics[width=\linewidth]{businesslogic}
 
+  \includegraphics[width=\linewidth]{controller_layer}
+
+  \pagebreak
   \subsubsection{User Interface Layer}
+
+  Since the project uses React as its front-end technology, it is not possible to represent it in OOP fashion.
+  However, we have drawn a diagram using the component names and relations.
 
   \includegraphics[width=\linewidth]{uisystem}
 
