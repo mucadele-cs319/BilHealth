@@ -6,7 +6,7 @@ namespace BilHealth.Model.Dto
     {
         public Guid Id { get; set; }
         public Guid RequestingUserId { get; set; }
-        public Nurse NurseUser { get; set; }
+        public Nurse? NurseUser { get; set; }
         public Guid DoctorUserId { get; set; }
         public Guid CaseId { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
