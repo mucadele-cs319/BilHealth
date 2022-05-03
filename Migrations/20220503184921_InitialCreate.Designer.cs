@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220429191220_InitialCreate")]
+    [Migration("20220503184921_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -436,7 +436,10 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("DoctorUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("NurseUserId")
+                    b.Property<Guid?>("NurseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RequestingUserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -445,7 +448,9 @@ namespace BilHealth.Migrations
 
                     b.HasIndex("DoctorUserId");
 
-                    b.HasIndex("NurseUserId");
+                    b.HasIndex("NurseId");
+
+                    b.HasIndex("RequestingUserId");
 
                     b.ToTable("TriageRequests");
                 });
@@ -754,9 +759,13 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.Nurse", "NurseUser")
+                    b.HasOne("BilHealth.Model.Nurse", null)
                         .WithMany("TriageRequests")
-                        .HasForeignKey("NurseUserId")
+                        .HasForeignKey("NurseId");
+
+                    b.HasOne("BilHealth.Model.DomainUser", "RequestingUser")
+                        .WithMany()
+                        .HasForeignKey("RequestingUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -764,7 +773,7 @@ namespace BilHealth.Migrations
 
                     b.Navigation("DoctorUser");
 
-                    b.Navigation("NurseUser");
+                    b.Navigation("RequestingUser");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Vaccination", b =>
