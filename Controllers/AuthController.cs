@@ -20,7 +20,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoleType.Constant.Admin)]
+        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
         public async Task<IActionResult> Register(Registration registration)
         {
             var result = await AuthenticationService.Register(registration);
