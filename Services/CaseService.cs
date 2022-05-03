@@ -104,7 +104,7 @@ namespace BilHealth.Services
                 ApprovalStatus = ApprovalStatus.Waiting,
                 CaseId = details.CaseId,
                 DoctorUserId = details.DoctorUserId,
-                NurseUserId = details.NurseUserId
+                RequestingUserId = details.RequestingUserId
             };
             DbCtx.TriageRequests.Add(triageRequest);
             await DbCtx.SaveChangesAsync();

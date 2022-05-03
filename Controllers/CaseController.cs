@@ -94,11 +94,11 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/triagerequest")]
-        [Authorize(Roles = UserRoleType.Constant.Nurse)]
+        [Authorize(Roles = $"{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Patient}")]
         public async Task<TriageRequestDto> CreateTriageRequest(Guid caseId, TriageRequestDto details)
         {
             details.CaseId = caseId;
-            details.NurseUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
+            details.RequestingUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
             var triageRequest = await CaseService.CreateTriageRequest(details);
             return DtoMapper.Map(triageRequest);
         }
