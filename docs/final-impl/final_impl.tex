@@ -1,0 +1,187 @@
+\documentclass[a4paper, 12pt, titlepage]{article}
+
+% Document quality things
+\usepackage[utf8]{inputenc}
+\usepackage{microtype, xcolor}
+\usepackage{csquotes}
+\usepackage{url, hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+
+% Image-related packages
+\usepackage{graphicx}
+%\usepackage{float}
+\graphicspath{{./gfx/}}
+%\usepackage[font=small,skip=5pt]{caption}
+
+% Setting margins
+\usepackage[a4paper,bottom=2cm,top=2cm,left=2.5cm,right=2.5cm, includefoot]{geometry}
+
+% Table helper packages
+%\usepackage{multirow, multicol}
+%\usepackage{makecell}
+%\usepackage{array}
+%\usepackage{tabularx} % Not needed currently, but has a few nice options
+%\usepackage{wrapfig} % Floating figures/tables
+\usepackage{booktabs}
+\usepackage{longtable}
+
+% Prevents spamming tedious newlines everywhere, also disables auto indentation, etc.
+\usepackage[skip=0.75\baselineskip plus 2pt]{parskip}
+
+% Self-explanatory
+%\usepackage{titlesec}
+%\titleformat{\section}[block]{\normalfont\scshape\Large}{\thesection}{1em}{}
+%\titleformat{\subsection}{\normalfont\large}{\thesubsection}{1em}{}
+
+\title{
+    {CS 319 - Object Oriented Software Engineering}\\
+    {\small Instructor: Eray Tüzün, TA: Muhammad Umair Ahmed \& Elgun Jabrayilzade}\\
+    {\vspace{10mm}BilHealth}\\
+    {\Large \textbf{Final Report}}\\
+    {\small Implementation}\\
+    {\vspace{10mm}\includegraphics[width=0.3\linewidth]{bilkentlogo}}
+}
+\author{
+  Mehmet Alper Çetin\\ \texttt{21902324}
+  \and
+  Vedat Eren Arıcan\\ \texttt{22002643}
+  \and
+  Uygar Onat Erol\\ \texttt{21901908}
+  \and
+  Recep Uysal\\ \texttt{21803637}
+  \and
+  Efe Erkan\\ \texttt{21902248}
+}
+\date{\today}
+
+% \usepackage{tikz}
+% \usetikzlibrary{automata, positioning, arrows}
+
+\usepackage{pdflscape, pdfpages}
+
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \pagebreak
+
+  \section{Introduction}
+
+  Our project is a health center management software system, built in the form of a web application.
+  The main goal is to provide online, remote attention to patients to increase productivity for all parties involved.
+  The primary method of interaction is through \textit{case}s, which contain all relevant information for a given medical situation.
+  Patients use the system to open cases and request appointments, and the health center staff acts on these requests
+  to provide medical services.
+  These interactions also function as a variety of medical records for the health center.
+
+  \subsection{Current Implementation State}
+  
+  
+  
+  \section{Lessons Learned}
+  
+  
+  
+  \pagebreak
+  \section{Build \& Execution Instructions}
+  
+  There are two build flavors in which the application can run: development and production.
+  The production build is more stable, but also requires more initial effort to run.
+  Both builds are highly recommended to be run through \textbf{Docker}.
+  
+  The project runs best on a Linux-based environment, despite using Docker. 
+  Through \href{https://docs.microsoft.com/en-us/windows/wsl/about}{WSL} and its integration with Docker,
+  Windows is also able to run the project reasonably well.
+  Note that the project source must be located within the WSL filesystem.
+  In some instances, Docker causes WSL to consume unnecessarily high amounts of RAM.
+  This can be solved through the WSL configuration
+  \href{https://github.com/microsoft/WSL/issues/4166\#issuecomment-526725261}{as seen here}.
+  
+  For both of the build flavors, the prerequisites are that:
+  \begin{itemize}
+    \item you obtain the project source through tools such as \textit{git clone}.
+    \item you have installed \href{https://docs.docker.com/get-docker/}{Docker}
+      and \href{https://docs.docker.com/compose/install/}{docker-compose}.
+  \end{itemize}
+  
+  Then, begin by changing your working directory to the root of the project directory.
+  
+  For the most up to date version of these instructions, see the README on the project's repository.
+  
+  \subsection{Development Build}
+  
+  \begin{enumerate}
+    \item Build the Docker image:
+      \begin{verbatim}
+        docker-compose -f docker-compose.devel.yml build
+      \end{verbatim}
+    \item Any time after the first image build, run the application via:
+      \begin{verbatim}
+        docker-compose -f docker-compose.devel.yml up
+      \end{verbatim}
+  \end{enumerate}
+  
+  Once the containers are fully up, the project should be visible at \url{https://localhost:7257/}. 
+  This development image mounts the project folder into the container, allowing changes to the code to be seen in real-time.
+  
+  Note that the HTTPS support is through self-signed certificates, and your web browser may warn you about it.
+  Ideally, your browser should give you the option to add an exception for the certificate.
+  This is completely safe to do.
+  
+  \pagebreak
+  \subsection{Production Build}
+  
+  The production build process is slightly more involved, at least on the first run.
+  You will need to have additionally installed
+  \href{https://dotnet.microsoft.com/en-us/download/dotnet/6.0}{.NET Core SDK v6.0.x} and
+  \href{https://docs.microsoft.com/en-us/ef/core/cli/dotnet\#installing-the-tools}{EF Core tools}.
+  
+  Then;
+  
+  \begin{verbatim}
+# Build image
+docker-compose -f docker-compose.prod.yml build
+
+# Perform database migration (do this only on first run or new migration)
+## Bring up only the database container
+docker-compose -d -f docker-compose.prod.yml up dbpostgres
+## Generate idempotent SQL script and copy into container
+dotnet ef migrations --idempotent -o migrate.sql
+docker cp migrate.sql bilhealth_db_postgres_1:/migrate.sql
+## Enter the database environment and execute migration
+docker exec -it bilhealth_dbpostgres_1 bash
+cd / && psql -U postgres -d bilhealthprod -f migrate.sql && exit
+## Bring down database
+docker-compose -f docker-compose.prod.yml down
+
+# Bring up all containers
+docker-compose -d -f docker-compose.prod.yml up
+  \end{verbatim}
+  
+  Once the containers are fully up, the project should be visible at \url{http://localhost:5000/}.
+  Note that unlike the development image, this one may need to be rebuilt upon every change to the project.
+  The database migration process needs to be done only if the database is not up to date with the latest migration.
+  
+  There is currently no support for HTTPS in the production build.
+  If desired, a reverse proxy (such as Nginx) may be used to support HTTPS.
+  
+  \pagebreak
+  \section{User's Guide}
+
+  
+  
+  \pagebreak
+  \section{Work Allocation}
+  
+  \begin{itemize}
+    \item \textbf{Mehmet Alper Çetin:}
+    \item \textbf{Vedat Eren Arıcan:}
+      Interview with the Bilkent University health center.
+      Implementation of the backend and frontend code bases.
+      DevOps tasks such as integrating Docker and a GitHub CI workflow.
+      Writing textual report content through \LaTeX{}. Access matrix and deployment diagram.
+    \item \textbf{Uygar Onat Erol:}
+    \item \textbf{Recep Uysal:}
+    \item \textbf{Efe Erkan:}
+  \end{itemize}
+
+\end{document}
