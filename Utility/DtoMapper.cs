@@ -89,7 +89,7 @@ namespace BilHealth.Utility
                 CaseId = triageRequest.CaseId,
                 ApprovalStatus = triageRequest.ApprovalStatus,
                 DoctorUserId = triageRequest.DoctorUserId,
-                NurseUserId = triageRequest.NurseUserId
+                RequestingUserId = triageRequest.RequestingUserId
             };
             return dto;
         }
