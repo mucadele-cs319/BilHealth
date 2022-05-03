@@ -28,15 +28,19 @@ jobs:
           sudo apt update
           sudo apt install -y mono-runtime mono-devel msbuild
 
+      - name: Setup DocFX
+        working-directory: docs
+        run: |
+          mkdir docfx-bin && cd docfx-bin
+          wget https://github.com/dotnet/docfx/releases/download/v2.59.2/docfx.zip
+          7z x docfx.zip
+
       - name: Run DocFX
         env:
           DOCFX_SOURCE_BRANCH_NAME: master
         working-directory: docs/docfx
         run: |
-          mkdir docfx-bin && cd docfx-bin
-          wget https://github.com/dotnet/docfx/releases/download/v2.59.2/docfx.zip
-          7z x docfx.zip
-          mono docfx.exe ../docfx/docfx.json
+          mono ../docfx-bin/docfx.exe docfx.json
 
       - name: Commit Files
         working-directory: docs/docfx/_site
@@ -46,11 +50,12 @@ jobs:
           git add .
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "CI: Deploy DocFX"
+          git commit -m "CI: Deploy DocFX" -m "Generated for $COMMIT_ID"
 
       - name: Push to 'gh-pages' Branch
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          directory: docs/docfx/_site
           force: true
-          branch: gh-pages
+          branch: refs/heads/gh-pages

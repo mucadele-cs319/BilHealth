@@ -1,4 +1,6 @@
-# This is the **HOMEPAGE**.
-Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
-## Quick Start Notes:
-1. Add images to the *images* folder if the file is referencing an image.
+# **BilHealth** Documentation
+
+This GitHub Pages instance hosts our project documentation.
+The DocFX documentation is generated and deployed upon each pull request merge into our `master` branch.
+
+Navigate to the [*API Documentation*](api/index.html) to get started.
