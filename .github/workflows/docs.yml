@@ -36,7 +36,7 @@ jobs:
           mkdir docfx-bin && cd docfx-bin
           wget https://github.com/dotnet/docfx/releases/download/v2.59.2/docfx.zip
           7z x docfx.zip
-          mono docfx.exe ../docfx/doxfx.json
+          mono docfx.exe ../docfx/docfx.json
 
       - name: Commit Files
         working-directory: docs/docfx/_site
