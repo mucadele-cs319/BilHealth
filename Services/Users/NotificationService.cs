@@ -137,13 +137,13 @@ namespace BilHealth.Services.Users
             DbCtx.Notifications.Add(notification);
         }
 
-        public void AddCaseDoctorChangedNotification(Guid userId, Case _case)
+        public void AddCaseDoctorResignedNotification(Guid userId, Case _case)
         {
             var notification = new Notification
             {
                 DateTime = Clock.GetCurrentInstant(),
                 UserId = userId,
-                Type = NotificationType.CaseDoctorChanged,
+                Type = NotificationType.CaseDoctorResigned,
                 ReferenceId1 = _case.Id
             };
             DbCtx.Notifications.Add(notification);
