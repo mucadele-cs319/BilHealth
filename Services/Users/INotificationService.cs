@@ -19,7 +19,7 @@ namespace BilHealth.Services.Users
         Task AddNewCaseMessageNotification(CaseMessage message);
         void AddCaseClosedNotification(Guid userId, Case _case);
         void AddCaseTriagedNotification(Guid userId, Case _case);
-        void AddCaseDoctorChangedNotification(Guid userId, Case _case);
+        void AddCaseDoctorResignedNotification(Guid userId, Case _case);
         void AddNewPrescriptionNotification(Guid userId, Prescription prescription);
         void AddNewTestResultNotification(Guid userId, TestResult testResult);
 
