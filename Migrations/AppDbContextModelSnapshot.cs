@@ -434,9 +434,6 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("DoctorUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("NurseId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("RequestingUserId")
                         .HasColumnType("uuid");
 
@@ -445,8 +442,6 @@ namespace BilHealth.Migrations
                     b.HasIndex("CaseId");
 
                     b.HasIndex("DoctorUserId");
-
-                    b.HasIndex("NurseId");
 
                     b.HasIndex("RequestingUserId");
 
@@ -746,7 +741,7 @@ namespace BilHealth.Migrations
             modelBuilder.Entity("BilHealth.Model.TriageRequest", b =>
                 {
                     b.HasOne("BilHealth.Model.Case", "Case")
-                        .WithMany()
+                        .WithMany("TriageRequests")
                         .HasForeignKey("CaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -756,10 +751,6 @@ namespace BilHealth.Migrations
                         .HasForeignKey("DoctorUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("BilHealth.Model.Nurse", null)
-                        .WithMany("TriageRequests")
-                        .HasForeignKey("NurseId");
 
                     b.HasOne("BilHealth.Model.DomainUser", "RequestingUser")
                         .WithMany()
@@ -856,16 +847,13 @@ namespace BilHealth.Migrations
                     b.Navigation("Prescriptions");
 
                     b.Navigation("SystemMessages");
+
+                    b.Navigation("TriageRequests");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Doctor", b =>
                 {
                     b.Navigation("Cases");
-                });
-
-            modelBuilder.Entity("BilHealth.Model.Nurse", b =>
-                {
-                    b.Navigation("TriageRequests");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Patient", b =>

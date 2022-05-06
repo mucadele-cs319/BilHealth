@@ -394,8 +394,7 @@ namespace BilHealth.Migrations
                     RequestingUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ApprovalStatus = table.Column<int>(type: "integer", nullable: false),
-                    NurseId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ApprovalStatus = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -412,11 +411,6 @@ namespace BilHealth.Migrations
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TriageRequests_DomainUsers_NurseId",
-                        column: x => x.NurseId,
-                        principalTable: "DomainUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TriageRequests_DomainUsers_RequestingUserId",
                         column: x => x.RequestingUserId,
@@ -551,11 +545,6 @@ namespace BilHealth.Migrations
                 name: "IX_TriageRequests_DoctorUserId",
                 table: "TriageRequests",
                 column: "DoctorUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TriageRequests_NurseId",
-                table: "TriageRequests",
-                column: "NurseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TriageRequests_RequestingUserId",
