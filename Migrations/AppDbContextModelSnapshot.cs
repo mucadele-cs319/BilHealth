@@ -434,7 +434,7 @@ namespace BilHealth.Migrations
                     b.Property<Guid>("DoctorUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("NurseUserId")
+                    b.Property<Guid>("RequestingUserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -443,7 +443,7 @@ namespace BilHealth.Migrations
 
                     b.HasIndex("DoctorUserId");
 
-                    b.HasIndex("NurseUserId");
+                    b.HasIndex("RequestingUserId");
 
                     b.ToTable("TriageRequests");
                 });
@@ -741,7 +741,7 @@ namespace BilHealth.Migrations
             modelBuilder.Entity("BilHealth.Model.TriageRequest", b =>
                 {
                     b.HasOne("BilHealth.Model.Case", "Case")
-                        .WithMany()
+                        .WithMany("TriageRequests")
                         .HasForeignKey("CaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -752,9 +752,9 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.Nurse", "NurseUser")
-                        .WithMany("TriageRequests")
-                        .HasForeignKey("NurseUserId")
+                    b.HasOne("BilHealth.Model.DomainUser", "RequestingUser")
+                        .WithMany()
+                        .HasForeignKey("RequestingUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -762,7 +762,7 @@ namespace BilHealth.Migrations
 
                     b.Navigation("DoctorUser");
 
-                    b.Navigation("NurseUser");
+                    b.Navigation("RequestingUser");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Vaccination", b =>
@@ -847,16 +847,13 @@ namespace BilHealth.Migrations
                     b.Navigation("Prescriptions");
 
                     b.Navigation("SystemMessages");
+
+                    b.Navigation("TriageRequests");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Doctor", b =>
                 {
                     b.Navigation("Cases");
-                });
-
-            modelBuilder.Entity("BilHealth.Model.Nurse", b =>
-                {
-                    b.Navigation("TriageRequests");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Patient", b =>

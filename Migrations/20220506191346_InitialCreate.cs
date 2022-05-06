@@ -391,7 +391,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    NurseUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RequestingUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false),
                     ApprovalStatus = table.Column<int>(type: "integer", nullable: false)
@@ -412,8 +412,8 @@ namespace BilHealth.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TriageRequests_DomainUsers_NurseUserId",
-                        column: x => x.NurseUserId,
+                        name: "FK_TriageRequests_DomainUsers_RequestingUserId",
+                        column: x => x.RequestingUserId,
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -547,9 +547,9 @@ namespace BilHealth.Migrations
                 column: "DoctorUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TriageRequests_NurseUserId",
+                name: "IX_TriageRequests_RequestingUserId",
                 table: "TriageRequests",
-                column: "NurseUserId");
+                column: "RequestingUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vaccinations_PatientUserId",

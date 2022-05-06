@@ -107,9 +107,6 @@ namespace BilHealth.Services.Users
                 case Doctor doctor:
                     await DbCtx.Entry(doctor).Collection(d => d.Cases!).LoadAsync();
                     break;
-                case Nurse nurse:
-                    await DbCtx.Entry(nurse).Collection(n => n.TriageRequests!).LoadAsync();
-                    break;
                 case Patient patient:
                     await DbCtx.Entry(patient).Collection(p => p.Vaccinations!).LoadAsync();
                     await DbCtx.Entry(patient).Collection(p => p.TestResults!).LoadAsync();
