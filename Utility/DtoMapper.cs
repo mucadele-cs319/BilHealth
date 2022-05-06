@@ -29,10 +29,6 @@ namespace BilHealth.Utility
                 dto.Cases = patient.Cases?.Select(MapSimpleCase).ToList();
                 dto.Blacklisted = patient.Blacklisted;
             }
-            else if (user is Nurse nurse)
-            {
-                dto.TriageRequests = nurse.TriageRequests?.Select(Map).ToList();
-            }
             else if (user is Doctor doctor)
             {
                 dto.Specialization = doctor.Specialization;
@@ -119,6 +115,9 @@ namespace BilHealth.Utility
 
             if (_case.Prescriptions is not null)
                 dto.Prescriptions = _case.Prescriptions.Select(Map).ToList();
+
+            if (_case.TriageRequests is not null)
+                dto.TriageRequests = _case.TriageRequests.Select(Map).ToList();
 
             return dto;
         }

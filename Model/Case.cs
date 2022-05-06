@@ -16,10 +16,12 @@ namespace BilHealth.Model
         [Required] public CaseType Type { get; set; }
         [Required] public CaseState State { get; set; } = CaseState.WaitingTriage;
 
+        public string? Diagnosis { get; set; }
+
         public List<CaseMessage>? Messages { get; set; }
         public List<CaseSystemMessage>? SystemMessages { get; set; }
         public List<Prescription>? Prescriptions { get; set; }
         public List<Appointment>? Appointments { get; set; }
-        public string? Diagnosis { get; set; }
+        public List<TriageRequest>? TriageRequests { get; set; }
     }
 }
