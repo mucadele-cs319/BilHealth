@@ -1,4 +1,4 @@
-using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Authorization;
@@ -20,20 +20,18 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
-        public async Task<IActionResult> Register(Registration registration)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
+        public async Task<IActionResult> Register(RegistrationDto registration)
         {
             var result = await AuthenticationService.Register(registration);
-
             return result.Succeeded ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> LogIn(Login login)
+        public async Task<IActionResult> LogIn(LoginDto login)
         {
             var result = await AuthenticationService.LogIn(login);
-
             return result.Succeeded ? Ok(result) : Unauthorized(result);
         }
 
@@ -41,15 +39,14 @@ namespace BilHealth.Controllers
         public async Task<IActionResult> LogOut()
         {
             await AuthenticationService.LogOut();
-
             return Ok();
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword)
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            var result = await AuthenticationService.ChangePassword(user, currentPassword, newPassword);
+            var user = await AuthenticationService.GetUser(User);
+            var result = await AuthenticationService.ChangePassword(user.AppUser, currentPassword, newPassword);
 
             return result.Succeeded ? Ok(result) : Unauthorized(result);
         }

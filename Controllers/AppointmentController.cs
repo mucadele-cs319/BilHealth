@@ -1,4 +1,5 @@
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
@@ -23,19 +24,18 @@ namespace BilHealth.Controllers
             AppointmentService = appointmentService;
         }
 
-        [HttpPost]
-        public async Task<AppointmentDto> Create(AppointmentDto details)
+        [HttpPost("/api/cases/{caseId:guid}/appointment")]
+        public async Task<AppointmentDto> Create(Guid caseId, AppointmentUpdateDto details)
         {
-            details.RequestedById = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
-            var appointment = await AppointmentService.CreateAppointment(details);
+            var requestingUserId = (await AuthenticationService.GetUser(User)).Id;
+            var appointment = await AppointmentService.CreateAppointment(caseId, requestingUserId, details);
             return DtoMapper.Map(appointment);
         }
 
         [HttpPatch("{appointmentId:guid}")]
-        public async Task<AppointmentDto> Update(Guid appointmentId, AppointmentDto details)
+        public async Task<AppointmentDto> Update(Guid appointmentId, AppointmentUpdateDto details)
         {
-            details.Id = appointmentId;
-            var appointment = await AppointmentService.UpdateAppointment(details);
+            var appointment = await AppointmentService.UpdateAppointment(appointmentId, details);
             return DtoMapper.Map(appointment);
         }
 
@@ -47,27 +47,25 @@ namespace BilHealth.Controllers
         }
 
         [HttpPut("{appointmentId:guid}/approval")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
         public async Task SetApproval(Guid appointmentId, ApprovalStatus approval)
         {
             await AppointmentService.SetAppointmentApproval(appointmentId, approval);
         }
 
         [HttpPost("{appointmentId:guid}/visit")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
-        public async Task<AppointmentVisitDto> CreateVisit(Guid appointmentId, AppointmentVisitDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Nurse},{UserType.Doctor}")]
+        public async Task<AppointmentVisitDto> CreateVisit(Guid appointmentId, AppointmentVisitUpdateDto details)
         {
-            details.AppointmentId = appointmentId;
-            var visit = await AppointmentService.CreateVisit(details);
+            var visit = await AppointmentService.CreateVisit(appointmentId, details);
             return DtoMapper.Map(visit);
         }
 
         [HttpPut("{appointmentId:guid}/visit")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
-        public async Task UpdateVisit(Guid appointmentId, AppointmentVisitDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
+        public async Task UpdateVisit(Guid appointmentId, AppointmentVisitUpdateDto details)
         {
-            details.AppointmentId = appointmentId;
-            await AppointmentService.UpdatePatientVisitDetails(details);
+            await AppointmentService.UpdatePatientVisitDetails(appointmentId, details);
         }
     }
 }

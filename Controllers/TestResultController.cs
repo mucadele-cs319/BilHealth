@@ -23,11 +23,11 @@ namespace BilHealth.Controllers
             TestResultService = testResultService;
         }
 
-        [HttpPost]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
-        public async Task<TestResultDto> Create([FromForm] TestResultDto details, IFormFile? file)
+        [HttpPost("/api/profiles/{patientUserId:guid}/testresults")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
+        public async Task<TestResultDto> Create(Guid patientUserId, [FromQuery] MedicalTestType testType, IFormFile? file)
         {
-            var testResult = await TestResultService.CreateTestResult(details, file);
+            var testResult = await TestResultService.CreateTestResult(patientUserId, testType, file);
             return DtoMapper.Map(testResult);
         }
 
@@ -35,8 +35,8 @@ namespace BilHealth.Controllers
         [Produces("application/pdf")]
         public async Task<IActionResult> GetFile(Guid testResultId)
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            if (!(await AuthenticationService.CanAccessTestResult(user.DomainUser, testResultId)))
+            var user = await AuthenticationService.GetUser(User);
+            if (!(await AuthenticationService.CanAccessTestResult(user, testResultId)))
                 return Forbid();
 
             var fileStream = await TestResultService.GetTestResultFile(testResultId);
@@ -44,15 +44,14 @@ namespace BilHealth.Controllers
         }
 
         [HttpPatch("{testResultId:guid}")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
-        public async Task<IActionResult> Update(Guid testResultId, [FromForm] TestResultDto details, IFormFile? file)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
+        public async Task<IActionResult> Update(Guid testResultId, [FromQuery] MedicalTestType testType, IFormFile? file)
         {
-            details.Id = testResultId;
-            return Ok(DtoMapper.Map(await TestResultService.UpdateTestResult(details, file)));
+            return Ok(DtoMapper.Map(await TestResultService.UpdateTestResult(testResultId, testType, file)));
         }
 
         [HttpDelete("{testResultId:guid}")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
         public async Task<IActionResult> Delete(Guid testResultId)
         {
             return await TestResultService.RemoveTestResult(testResultId) ? Ok() : NotFound();

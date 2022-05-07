@@ -1,5 +1,6 @@
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -24,24 +25,24 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
         public async Task<List<SimpleUserDto>> GetAll()
         {
-            var users = await AuthenticationService.GetAllAppUsers();
-            return users.Select(u => DtoMapper.MapSimpleUser(u.DomainUser)).ToList();
+            var users = await AuthenticationService.GetAllUsers();
+            return users.Select(DtoMapper.MapSimpleUser).ToList();
         }
 
         [HttpGet("me")]
         public async Task<UserProfileDto> GetCurrentUser()
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            return DtoMapper.Map(user.DomainUser);
+            var user = await AuthenticationService.GetUser(User);
+            return DtoMapper.Map(user);
         }
 
         [HttpGet("{userId:guid}")]
         public async Task<IActionResult> GetUser(Guid userId)
         {
-            DomainUser requestingUser = (await AuthenticationService.GetAppUser(User)).DomainUser;
+            var requestingUser = await AuthenticationService.GetUser(User);
 
             UserProfileDto dto;
             try
@@ -61,37 +62,36 @@ namespace BilHealth.Controllers
         }
 
         [HttpPatch("{userId:guid}")]
-        public async Task<IActionResult> Update(Guid userId, UserProfileDto newProfile)
+        public async Task<IActionResult> Update(Guid userId, UserProfileUpdateDto details)
         {
-            var requestingUser = (await AuthenticationService.GetAppUser(User)).DomainUser;
-            await ProfileService.UpdateProfile(userId, newProfile, requestingUser is Admin or Staff);
+            var requestingUser = await AuthenticationService.GetUser(User);
+            await ProfileService.UpdateProfile(userId, details, requestingUser is Admin or Staff);
             return Ok();
         }
 
         [HttpPut("{patientUserId:guid}/blacklist")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
         public async Task SetBlacklist(Guid patientUserId, bool newState)
         {
             await ProfileService.SetPatientBlacklistState(patientUserId, newState);
         }
 
         [HttpPost("{patientUserId:guid}/vaccinations")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
-        public async Task AddVaccination(Guid patientUserId, VaccinationDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
+        public async Task AddVaccination(Guid patientUserId, VaccinationUpdateDto details)
         {
-            await ProfileService.AddVaccination(details);
+            await ProfileService.AddVaccination(patientUserId, details);
         }
 
         [HttpPut("vaccinations/{vaccinationId:guid}")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
-        public async Task UpdateVaccination(Guid vaccinationId, VaccinationDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
+        public async Task UpdateVaccination(Guid vaccinationId, VaccinationUpdateDto details)
         {
-            details.Id = vaccinationId;
-            await ProfileService.UpdateVaccination(details);
+            await ProfileService.UpdateVaccination(vaccinationId, details);
         }
 
         [HttpDelete("vaccinations/{vaccinationId:guid}")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Doctor}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
         public async Task RemoveVaccination(Guid vaccinationId)
         {
             await ProfileService.RemoveVaccination(vaccinationId);
