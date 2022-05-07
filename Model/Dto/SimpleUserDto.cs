@@ -1,6 +1,6 @@
 namespace BilHealth.Model.Dto
 {
-    public record SimpleUserDto
+    public class SimpleUserDto
     {
         public Guid Id { get; set; }
         public string UserType { get; set; } = null!;

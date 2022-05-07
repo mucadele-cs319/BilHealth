@@ -1,4 +1,5 @@
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -9,7 +10,7 @@ namespace BilHealth.Controllers
 {
     [ApiController]
     [Route("api/[controller]s")]
-    [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Staff},{UserRoleType.Constant.Doctor}")]
+    [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Doctor}")]
     [Produces("application/json")]
     public class AnnouncementController : ControllerBase
     {
@@ -29,16 +30,15 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost]
-        public async Task<AnnouncementDto> Create(AnnouncementDto announcement)
+        public async Task<AnnouncementDto> Create(AnnouncementUpdateDto details)
         {
-            return DtoMapper.Map(await AnnouncementService.AddAnnouncement(announcement));
+            return DtoMapper.Map(await AnnouncementService.AddAnnouncement(details));
         }
 
         [HttpPut("{announcementId:guid}")]
-        public async Task<IActionResult> Update(Guid announcementId, AnnouncementDto announcement)
+        public async Task<AnnouncementDto> Update(Guid announcementId, AnnouncementUpdateDto details)
         {
-            announcement.Id = announcementId;
-            return await AnnouncementService.UpdateAnnouncement(announcement) ? Ok() : NotFound();
+            return DtoMapper.Map(await AnnouncementService.UpdateAnnouncement(announcementId, details));
         }
 
         [HttpDelete("{announcementId:guid}")]

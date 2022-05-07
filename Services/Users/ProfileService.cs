@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace BilHealth.Services.Users
 
         public async Task<UserProfileDto> GetFilteredUser(DomainUser requestingUser, Guid requestedUserId)
         {
-            var requestedUser = await AuthenticationService.GetDomainUser(requestedUserId);
+            var requestedUser = await AuthenticationService.GetUser(requestedUserId);
             var dto = DtoMapper.Map(requestedUser);
 
             switch (requestingUser)
@@ -72,36 +73,36 @@ namespace BilHealth.Services.Users
             }
         }
 
-        public async Task UpdateProfile(DomainUser user, UserProfileDto newProfile, bool fullyEdit)
+        public async Task UpdateProfile(DomainUser user, UserProfileUpdateDto details, bool fullyEdit)
         {
             if (fullyEdit)
             {
-                user.Gender = newProfile.Gender ?? Gender.Unspecified;
-                user.FirstName = newProfile.FirstName ?? user.FirstName;
-                user.LastName = newProfile.LastName ?? user.LastName;
-                user.DateOfBirth = newProfile.DateOfBirth;
+                user.Gender = details.Gender ?? Gender.Unspecified;
+                user.FirstName = details.FirstName ?? user.FirstName;
+                user.LastName = details.LastName ?? user.LastName;
+                user.DateOfBirth = details.DateOfBirth;
             }
 
             switch (user)
             {
                 case Patient patient:
-                    patient.BodyWeight = newProfile.BodyWeight;
-                    patient.BodyHeight = newProfile.BodyHeight;
-                    patient.BloodType = newProfile.BloodType ?? BloodType.Unspecified;
+                    patient.BodyWeight = details.BodyWeight;
+                    patient.BodyHeight = details.BodyHeight;
+                    patient.BloodType = details.BloodType ?? BloodType.Unspecified;
                     break;
                 case Doctor doctor:
-                    doctor.Specialization = newProfile.Specialization ?? String.Empty;
-                    doctor.Campus = newProfile.Campus ?? Campus.Unspecified;
+                    doctor.Specialization = details.Specialization ?? String.Empty;
+                    doctor.Campus = details.Campus ?? Campus.Unspecified;
                     break;
             }
 
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task UpdateProfile(Guid userId, UserProfileDto newProfile, bool fullyEdit)
+        public async Task UpdateProfile(Guid userId, UserProfileUpdateDto details, bool fullyEdit)
         {
             var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
-            await UpdateProfile(user, newProfile, fullyEdit);
+            await UpdateProfile(user, details, fullyEdit);
         }
 
         public async Task SetPatientBlacklistState(Guid patientUserId, bool newState)
@@ -115,29 +116,22 @@ namespace BilHealth.Services.Users
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task AddVaccination(VaccinationDto details)
+        public async Task AddVaccination(Guid patientUserId, VaccinationUpdateDto details)
         {
             var vaccination = new Vaccination
             {
+                PatientUserId = patientUserId,
                 DateTime = details.DateTime,
-                PatientUserId = details.PatientUserId,
                 Type = details.Type
             };
-
-            if (vaccination.DateTime == null)
-            {
-                vaccination.DateTime = Clock.GetCurrentInstant();
-            }
 
             DbCtx.Vaccinations.Add(vaccination);
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateVaccination(VaccinationDto details)
+        public async Task<bool> UpdateVaccination(Guid vaccinationId, VaccinationUpdateDto details)
         {
-            var vaccination = await DbCtx.Vaccinations.SingleOrDefaultAsync(v => v.Id == details.Id);
-            if (vaccination is null)
-                return false;
+            var vaccination = await DbCtx.Vaccinations.FindOrThrowAsync(vaccinationId);
 
             vaccination.DateTime = details.DateTime;
             vaccination.Type = details.Type;
@@ -147,9 +141,7 @@ namespace BilHealth.Services.Users
 
         public async Task<bool> RemoveVaccination(Guid vaccinationId)
         {
-            var vaccination = await DbCtx.Vaccinations.FindAsync(vaccinationId);
-            if (vaccination is null)
-                return false;
+            var vaccination = await DbCtx.Vaccinations.FindOrThrowAsync(vaccinationId);
 
             DbCtx.Vaccinations.Remove(vaccination);
             await DbCtx.SaveChangesAsync();

@@ -9,7 +9,7 @@ namespace BilHealth.Model
         [Required] public Guid PatientUserId { get; set; }
         public Patient PatientUser { get; set; } = null!;
 
-        public Instant? DateTime { get; set; }
+        [Required] public Instant DateTime { get; set; }
         [Required] public string Type { get; set; } = null!;
     }
 }

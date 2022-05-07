@@ -1,9 +1,7 @@
-namespace BilHealth.Model.Dto
+namespace BilHealth.Model.Dto.Incoming
 {
-    public class AppointmentVisitDto
+    public class AppointmentVisitUpdateDto
     {
-        public Guid Id { get; set; }
-        public Guid AppointmentId { get; set; }
         public string? Notes { get; set; }
         public double? BPM { get; set; }
         public double? BloodPressure { get; set; }

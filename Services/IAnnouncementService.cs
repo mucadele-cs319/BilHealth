@@ -1,17 +1,17 @@
 using BilHealth.Model;
-using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 
 namespace BilHealth.Services
 {
     public interface IAnnouncementService
     {
-        Task<Announcement> AddAnnouncement(AnnouncementDto announcement);
+        Task<Announcement> AddAnnouncement(AnnouncementUpdateDto details);
         /// <summary>
         /// Updates an announcement's message and title, if it exists.
         /// </summary>
-        /// <param name="announcement">The announcement object containing edits</param>
-        /// <returns>true if announcement exists, otherwise false</returns>
-        Task<bool> UpdateAnnouncement(AnnouncementDto announcement);
+        /// <param name="details">The announcement object containing edits</param>
+        /// <returns>The updated announcement</returns>
+        Task<Announcement> UpdateAnnouncement(Guid announcementId, AnnouncementUpdateDto details);
         /// <summary>
         /// Removes an announcement, if it exists.
         /// </summary>

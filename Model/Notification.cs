@@ -12,8 +12,13 @@ namespace BilHealth.Model
         public bool Read { get; set; } = false;
         [Required] public NotificationType Type { get; set; }
 
-        // Refer to the file `NotificationType.cs` for the meaning of the following two fields
+        /// <summary>
+        /// See <see cref="NotificationType"/> for meaning.
+        /// </summary>
         public Guid? ReferenceId1 { get; set; }
+        /// <summary>
+        /// See <see cref="NotificationType"/> for meaning.
+        /// </summary>
         public Guid? ReferenceId2 { get; set; }
     }
 }

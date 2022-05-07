@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BilHealth.Model.Dto
+namespace BilHealth.Model.Dto.Incoming
 {
-    public record Login
+    public class LoginDto
     {
         [Required] public string UserName { get; init; } = null!;
         [Required] public string Password { get; init; } = null!;

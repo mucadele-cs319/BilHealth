@@ -2,6 +2,7 @@ using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Services.Users;
+using BilHealth.Utility.Enum;
 using NodaTime;
 
 namespace BilHealth.Services
@@ -37,13 +38,13 @@ namespace BilHealth.Services
             File.Delete(filePath);
         }
 
-        public async Task<TestResult> CreateTestResult(TestResultDto details, IFormFile? testResultFile)
+        public async Task<TestResult> CreateTestResult(Guid patientUserId, MedicalTestType testType, IFormFile? testResultFile)
         {
             var testResult = new TestResult
             {
                 DateTime = Clock.GetCurrentInstant(),
-                PatientUserId = details.PatientUserId,
-                Type = details.Type
+                PatientUserId = patientUserId,
+                Type = testType
             };
             DbCtx.TestResults.Add(testResult);
 
@@ -52,7 +53,7 @@ namespace BilHealth.Services
                 testResult.FileName = await SaveFile(testResultFile);
             }
 
-            NotificationService.AddNewTestResultNotification(details.PatientUserId, testResult);
+            NotificationService.AddNewTestResultNotification(patientUserId, testResult);
 
             try
             {
@@ -78,11 +79,11 @@ namespace BilHealth.Services
             return true;
         }
 
-        public async Task<TestResult> UpdateTestResult(TestResultDto details, IFormFile? testResultFile)
+        public async Task<TestResult> UpdateTestResult(Guid testResultId, MedicalTestType testType, IFormFile? testResultFile)
         {
-            var testResult = await DbCtx.TestResults.FindOrThrowAsync(details.Id ?? throw new ArgumentNullException(nameof(details.Id)));
+            var testResult = await DbCtx.TestResults.FindOrThrowAsync(testResultId);
 
-            testResult.Type = details.Type;
+            testResult.Type = testType;
 
             if (testResultFile is not null && testResultFile.Length > 0)
             {

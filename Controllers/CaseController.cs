@@ -1,4 +1,5 @@
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
@@ -26,15 +27,15 @@ namespace BilHealth.Controllers
         [HttpGet("{caseId:guid}")]
         public async Task<IActionResult> Get(Guid caseId)
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            if (!(await AuthenticationService.CanAccessCase(user.DomainUser, caseId)))
+            var user = await AuthenticationService.GetUser(User);
+            if (!(await AuthenticationService.CanAccessCase(user, caseId)))
                 return Forbid();
 
             return Ok(DtoMapper.Map(await CaseService.GetCase(caseId)));
         }
 
         [HttpPost]
-        public async Task<CaseDto> Create(CaseDto details)
+        public async Task<CaseDto> Create(CaseCreateDto details)
         {
             var _case = await CaseService.CreateCase(details);
             return DtoMapper.Map(_case);
@@ -48,18 +49,16 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/messages")]
-        public async Task<CaseMessageDto> CreateMessage(Guid caseId, CaseMessageDto details)
+        public async Task<CaseMessageDto> CreateMessage(Guid caseId, CaseMessageUpdateDto details)
         {
-            details.CaseId = caseId;
-            details.UserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
-            return DtoMapper.Map(await CaseService.CreateMessage(details));
+            var userId = (await AuthenticationService.GetUser(User)).Id;
+            return DtoMapper.Map(await CaseService.CreateMessage(caseId, userId, details));
         }
 
         [HttpPut("messages/{messageId:guid}")]
-        public async Task<CaseMessageDto> UpdateMessage(Guid messageId, CaseMessageDto details)
+        public async Task<CaseMessageDto> UpdateMessage(Guid messageId, CaseMessageUpdateDto details)
         {
-            details.Id = messageId;
-            return DtoMapper.Map(await CaseService.EditMessage(details));
+            return DtoMapper.Map(await CaseService.EditMessage(messageId, details));
         }
 
         [HttpDelete("messages/{messageId:guid}")]
@@ -69,51 +68,47 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/prescriptions")]
-        [Authorize(Roles = UserRoleType.Constant.Doctor)]
-        public async Task<PrescriptionDto> CreatePrescription(Guid caseId, PrescriptionDto details)
+        [Authorize(Roles = UserType.Doctor)]
+        public async Task<PrescriptionDto> CreatePrescription(Guid caseId, PrescriptionUpdateDto details)
         {
-            details.CaseId = caseId;
-            details.DoctorUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
-            var prescription = await CaseService.CreatePrescription(details);
+            var doctorUserId = (await AuthenticationService.GetUser(User)).Id;
+            var prescription = await CaseService.CreatePrescription(caseId, doctorUserId, details);
             return DtoMapper.Map(prescription);
         }
 
         [HttpPut("prescriptions/{prescriptionId:guid}")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor}")]
-        public async Task<PrescriptionDto> UpdatePrescription(Guid prescriptionId, PrescriptionDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Doctor}")]
+        public async Task<PrescriptionDto> UpdatePrescription(Guid prescriptionId, PrescriptionUpdateDto details)
         {
-            details.Id = prescriptionId;
-            return DtoMapper.Map(await CaseService.UpdatePrescription(details));
+            return DtoMapper.Map(await CaseService.UpdatePrescription(prescriptionId, details));
         }
 
         [HttpDelete("prescriptions/{prescriptionId:guid}")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Doctor}")]
         public async Task<IActionResult> RemovePrescription(Guid prescriptionId)
         {
             return await CaseService.RemovePrescription(prescriptionId) ? Ok() : NotFound();
         }
 
         [HttpPost("{caseId:guid}/triagerequest")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Nurse},{UserRoleType.Constant.Patient}")]
-        public async Task<TriageRequestDto> CreateTriageRequest(Guid caseId, TriageRequestDto details)
+        [Authorize(Roles = $"{UserType.Nurse},{UserType.Patient}")]
+        public async Task<TriageRequestDto> CreateTriageRequest(Guid caseId, [FromQuery] Guid doctorUserId)
         {
-            details.CaseId = caseId;
-            details.RequestingUserId = (await AuthenticationService.GetAppUser(User)).DomainUser.Id;
-            var triageRequest = await CaseService.CreateTriageRequest(details);
+            var requestingUserId = (await AuthenticationService.GetUser(User)).Id;
+            var triageRequest = await CaseService.CreateTriageRequest(caseId, requestingUserId, doctorUserId);
             return DtoMapper.Map(triageRequest);
         }
 
         [HttpPatch("{caseId:guid}/triagerequest")]
-        [Authorize(Roles = $"{UserRoleType.Constant.Admin},{UserRoleType.Constant.Doctor},{UserRoleType.Constant.Staff}")]
-        public async Task<IActionResult> SetTriageRequestApproval(Guid caseId, TriageRequestDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Doctor},{UserType.Staff}")]
+        public async Task<IActionResult> SetTriageRequestApproval(Guid caseId, ApprovalStatus approval)
         {
-            details.CaseId = caseId;
-            await CaseService.SetTriageRequestApproval(details);
+            await CaseService.SetTriageRequestApproval(caseId, approval);
             return Ok();
         }
 
         [HttpPatch("{caseId:guid}/diagnosis")]
-        [Authorize(Roles = UserRoleType.Constant.Doctor)]
+        [Authorize(Roles = UserType.Doctor)]
         public async Task<CaseDto> SetDiagnosis(Guid caseId, [FromBody] string diagnosis)
         {
 

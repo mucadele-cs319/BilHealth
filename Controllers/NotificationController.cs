@@ -24,8 +24,8 @@ namespace BilHealth.Controllers
         [HttpGet]
         public async Task<List<NotificationDto>> Get(bool unread = false)
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            var notifications = await NotificationService.GetNotifications(user.DomainUser, unread);
+            var user = await AuthenticationService.GetUser(User);
+            var notifications = await NotificationService.GetNotifications(user, unread);
             return notifications.Select(DtoMapper.Map).ToList();
         }
 
@@ -39,8 +39,8 @@ namespace BilHealth.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkAllRead()
         {
-            var user = await AuthenticationService.GetAppUser(User);
-            await NotificationService.MarkAllNotificationsRead(user.DomainUser);
+            var user = await AuthenticationService.GetUser(User);
+            await NotificationService.MarkAllNotificationsRead(user);
             return Ok();
         }
     }

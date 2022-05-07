@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
-using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +28,9 @@ namespace BilHealth.Services.Users
             HttpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<IdentityResult> Register(Registration registration)
+        public async Task<IdentityResult> Register(RegistrationDto registration)
         {
-            var roleType = UserRoleType.Names.First(roleType => roleType == registration.UserType);
+            var roleType = UserType.Names.First(roleType => roleType == registration.UserType);
             if (roleType is null) return IdentityResult.Failed(new IdentityError { Description = "Invalid role" });
 
             AppUser user = new(registration);
@@ -39,13 +39,13 @@ namespace BilHealth.Services.Users
             return creationResult.Succeeded ? await AssignRole(user, roleType) : creationResult;
         }
 
-        public async Task RegisterMany(IList<Registration> registrations)
+        public async Task RegisterMany(IList<RegistrationDto> registrations)
         {
             foreach (var registration in registrations)
                 await Register(registration);
         }
 
-        public async Task<SignInResult> LogIn(Login login)
+        public async Task<SignInResult> LogIn(LoginDto login)
         {
             var user = await UserManager.FindByNameAsync(login.UserName);
             if (user is null) return SignInResult.Failed;
@@ -60,22 +60,14 @@ namespace BilHealth.Services.Users
 
         public async Task CreateRoles()
         {
-            foreach (var roleName in UserRoleType.Names)
+            foreach (var roleName in UserType.Names)
                 if (!await RoleManager.RoleExistsAsync(roleName))
                     await RoleManager.CreateAsync(new Role { Name = roleName });
         }
 
-        public async Task<IdentityResult> AssignRole(AppUser user, UserRoleType roleType)
+        public async Task<IdentityResult> AssignRole(AppUser user, string userType)
         {
-            return await UserManager.AddToRoleAsync(user, roleType);
-        }
-
-        public async Task<IdentityResult> AssignRole(string userName, UserRoleType roleType)
-        {
-            var user = await UserManager.FindByNameAsync(userName);
-            if (user is null) return IdentityResult.Failed();
-
-            return await AssignRole(user, roleType);
+            return await UserManager.AddToRoleAsync(user, userType);
         }
 
         public async Task<IdentityResult> DeleteUser(string userName)
@@ -90,7 +82,7 @@ namespace BilHealth.Services.Users
         }
 
         /// <summary>
-        /// Unsafe: Only to be used for administration tasks
+        /// Unsafe: To be used strictly for administration tasks
         /// </summary>
         public async Task<IdentityResult> ChangePasswordUnsafe(AppUser user, string newPassword)
         {
@@ -121,6 +113,7 @@ namespace BilHealth.Services.Users
             await LoadUser(user.AppUser);
         }
 
+        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
         public async Task<AppUser> GetAppUser(ClaimsPrincipal principal)
         {
             var user = await UserManager.GetUserAsync(principal);
@@ -128,6 +121,7 @@ namespace BilHealth.Services.Users
             return user;
         }
 
+        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
         public async Task<AppUser> GetAppUser(Guid userId)
         {
             var user = await DbCtx.Users.FindOrThrowAsync(userId);
@@ -135,29 +129,38 @@ namespace BilHealth.Services.Users
             return user;
         }
 
+        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
         public async Task<List<AppUser>> GetAllAppUsers()
         {
             var users = await DbCtx.Users.Include(u => u.DomainUser).ToListAsync();
             return users;
         }
 
-        public async Task<DomainUser> GetDomainUser(Guid userId)
+        public async Task<DomainUser> GetUser(ClaimsPrincipal principal)
+        {
+            var user = await UserManager.GetUserAsync(principal);
+            await LoadUser(user);
+            return user.DomainUser;
+        }
+
+        public async Task<DomainUser> GetUser(Guid userId)
         {
             var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
             await LoadUser(user);
             return user;
         }
 
-        public async Task<UserRoleType> GetUserRole(AppUser user)
+        /// <summary>
+        /// Only loads the <see cref="AppUser"/> navigation property.
+        /// </summary>
+        /// <remarks>
+        /// This is not scalable. Ideally, pagination would be used.
+        /// </remarks>
+        /// <returns>List of all <see cref="DomainUser"/>s</returns>
+        public async Task<List<DomainUser>> GetAllUsers()
         {
-            var roleName = (await UserManager.GetRolesAsync(user)).First();
-            return UserRoleType.Names.First(roleType => roleType == roleName);
-        }
-
-        public UserRoleType GetUserRole(DomainUser user)
-        {
-            var roleName = user.Discriminator;
-            return UserRoleType.Names.First(roleType => roleType == roleName);
+            var users = await DbCtx.DomainUsers.Include(u => u.AppUser).ToListAsync();
+            return users;
         }
 
         public async Task<bool> CanAccessCase(DomainUser user, Guid caseId)
@@ -189,7 +192,7 @@ namespace BilHealth.Services.Users
                 case Staff:
                     return true;
                 case Doctor:
-                    var patient = (Patient)await GetDomainUser(testResult.PatientUserId);
+                    var patient = (Patient)await GetUser(testResult.PatientUserId);
                     return patient.Cases!.Any(c => c.DoctorUserId == user.Id);
                 case Nurse:
                     return false;

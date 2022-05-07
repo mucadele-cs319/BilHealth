@@ -14,6 +14,6 @@ namespace BilHealth.Model
         public double? BodyTemperature { get; set; }
 
         [Required] public Guid AppointmentId { get; set; }
-        public Appointment? Appointment { get; set; }
+        public Appointment Appointment { get; set; } = null!;
     }
 }

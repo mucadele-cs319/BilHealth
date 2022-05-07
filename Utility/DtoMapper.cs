@@ -82,6 +82,7 @@ namespace BilHealth.Utility
             var dto = new TriageRequestDto
             {
                 Id = triageRequest.Id,
+                DateTime = triageRequest.DateTime,
                 CaseId = triageRequest.CaseId,
                 ApprovalStatus = triageRequest.ApprovalStatus,
                 DoctorUserId = triageRequest.DoctorUserId,
@@ -156,7 +157,7 @@ namespace BilHealth.Utility
             var dto = new AppointmentDto
             {
                 Id = appointment.Id,
-                RequestedById = appointment.RequestedById,
+                RequestedById = appointment.RequestingUserId,
                 CaseId = appointment.CaseId,
                 ApprovalStatus = appointment.ApprovalStatus,
                 Attended = appointment.Attended,

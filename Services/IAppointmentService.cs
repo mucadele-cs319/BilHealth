@@ -1,17 +1,17 @@
 using BilHealth.Model;
-using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Utility.Enum;
 
 namespace BilHealth.Services
 {
     public interface IAppointmentService
     {
-        Task<Appointment> CreateAppointment(AppointmentDto details);
-        Task<Appointment> UpdateAppointment(AppointmentDto details);
+        Task<Appointment> CreateAppointment(Guid caseId, Guid requestingUserId, AppointmentUpdateDto details);
+        Task<Appointment> UpdateAppointment(Guid appointmentId, AppointmentUpdateDto details);
         Task<bool> CancelAppointment(Guid appointmentId);
         Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval);
 
-        Task<AppointmentVisit> CreateVisit(AppointmentVisitDto details);
-        Task<AppointmentVisit> UpdatePatientVisitDetails(AppointmentVisitDto details);
+        Task<AppointmentVisit> CreateVisit(Guid appointmentId, AppointmentVisitUpdateDto details);
+        Task<AppointmentVisit> UpdatePatientVisitDetails(Guid appointmentId, AppointmentVisitUpdateDto details);
     }
 }

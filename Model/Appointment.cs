@@ -7,8 +7,8 @@ namespace BilHealth.Model
     public class Appointment
     {
         [Required] public Guid Id { get; private set; }
-        [Required] public Guid RequestedById { get; set; }
-        public DomainUser? RequestedBy { get; set; }
+        [Required] public Guid RequestingUserId { get; set; }
+        public DomainUser RequestingUser { get; set; } = null!;
         [Required] public Instant CreatedAt { get; set; }
         [Required] public Instant DateTime { get; set; }
         [Required] public string Description { get; set; } = null!;
@@ -17,7 +17,7 @@ namespace BilHealth.Model
         [Required] public bool Cancelled { get; set; } = false;
 
         [Required] public Guid CaseId { get; set; }
-        public Case? Case { get; set; }
+        public Case Case { get; set; } = null!;
 
         public AppointmentVisit? Visit { get; set; }
     }

@@ -3,7 +3,7 @@ using NodaTime;
 
 namespace BilHealth.Model.Dto
 {
-    public record CaseSystemMessageDto
+    public class CaseSystemMessageDto
     {
         public Guid Id { get; set; }
         public Guid CaseId { get; set; }

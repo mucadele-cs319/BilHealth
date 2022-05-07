@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using NodaTime;
@@ -18,18 +19,18 @@ namespace BilHealth.Services
             Clock = clock;
         }
 
-        public async Task<Appointment> CreateAppointment(AppointmentDto details)
+        public async Task<Appointment> CreateAppointment(Guid caseId, Guid requestingUserId, AppointmentUpdateDto details)
         {
-            var _case = await DbCtx.Cases.FindOrThrowAsync(details.CaseId);
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
 
-            var requestingUser = await DbCtx.DomainUsers.FindOrThrowAsync(details.RequestedById);
+            var requestingUser = await DbCtx.DomainUsers.FindOrThrowAsync(requestingUserId);
             if (requestingUser is Patient patient && patient.Blacklisted)
-                throw new InvalidOperationException($"Patient ({details.RequestedById}) is blacklisted from online appointments");
+                throw new InvalidOperationException($"Patient ({requestingUserId}) is blacklisted from online appointments");
 
             var appointment = new Appointment
             {
-                CaseId = details.CaseId,
-                RequestedById = details.RequestedById,
+                CaseId = caseId,
+                RequestingUserId = requestingUserId,
                 ApprovalStatus = ApprovalStatus.Waiting,
                 Attended = false,
                 CreatedAt = Clock.GetCurrentInstant(),
@@ -42,9 +43,9 @@ namespace BilHealth.Services
             return appointment;
         }
 
-        public async Task<Appointment> UpdateAppointment(AppointmentDto details)
+        public async Task<Appointment> UpdateAppointment(Guid appointmentId, AppointmentUpdateDto details)
         {
-            var appointment = await DbCtx.Appointments.FindOrThrowAsync(details.Id);
+            var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
             await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
 
             if (appointment.DateTime != details.DateTime)
@@ -69,11 +70,11 @@ namespace BilHealth.Services
             return true;
         }
 
-        public async Task<AppointmentVisit> CreateVisit(AppointmentVisitDto details)
+        public async Task<AppointmentVisit> CreateVisit(Guid appointmentId, AppointmentVisitUpdateDto details)
         {
             var visit = new AppointmentVisit
             {
-                AppointmentId = details.AppointmentId,
+                AppointmentId = appointmentId,
                 BloodPressure = details.BloodPressure,
                 BodyTemperature = details.BodyTemperature,
                 BPM = details.BPM,
@@ -93,9 +94,13 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task<AppointmentVisit> UpdatePatientVisitDetails(AppointmentVisitDto details)
+        public async Task<AppointmentVisit> UpdatePatientVisitDetails(Guid appointmentId, AppointmentVisitUpdateDto details)
         {
-            var visit = await DbCtx.AppointmentVisits.FindOrThrowAsync(details.Id);
+            var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
+            await DbCtx.Entry(appointment).Reference(a => a.Visit).LoadAsync();
+
+            var visit = appointment.Visit;
+            if (visit is null) throw new InvalidOperationException($"Cannot update nonexisting visit on appointment {appointmentId}");
 
             visit.Notes = details.Notes ?? visit.Notes;
             visit.BloodPressure = details.BloodPressure ?? visit.BloodPressure;

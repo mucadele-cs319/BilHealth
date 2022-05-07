@@ -1,30 +1,33 @@
 using System.Security.Claims;
 using BilHealth.Model;
-using BilHealth.Model.Dto;
-using BilHealth.Utility.Enum;
+using BilHealth.Model.Dto.Incoming;
 using Microsoft.AspNetCore.Identity;
 
 namespace BilHealth.Services.Users
 {
     public interface IAuthenticationService
     {
-        Task<IdentityResult> Register(Registration registration);
-        Task RegisterMany(IList<Registration> registrations);
-        Task<SignInResult> LogIn(Login login);
+        Task<IdentityResult> Register(RegistrationDto registration);
+        Task RegisterMany(IList<RegistrationDto> registrations);
+        Task<SignInResult> LogIn(LoginDto login);
         Task LogOut();
 
         Task CreateRoles();
-        Task<IdentityResult> AssignRole(AppUser user, UserRoleType roleType);
-        Task<IdentityResult> AssignRole(string userName, UserRoleType roleType);
+        Task<IdentityResult> AssignRole(AppUser user, string userType);
 
         Task<IdentityResult> DeleteUser(string userName);
         Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
+
+        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
         Task<AppUser> GetAppUser(ClaimsPrincipal principal);
+        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
         Task<AppUser> GetAppUser(Guid userId);
+        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
         Task<List<AppUser>> GetAllAppUsers();
-        Task<DomainUser> GetDomainUser(Guid userId);
-        Task<UserRoleType> GetUserRole(AppUser user);
-        UserRoleType GetUserRole(DomainUser user);
+
+        Task<DomainUser> GetUser(ClaimsPrincipal principal);
+        Task<DomainUser> GetUser(Guid userId);
+        Task<List<DomainUser>> GetAllUsers();
 
         Task<bool> CanAccessCase(DomainUser user, Guid caseId);
         Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId);
