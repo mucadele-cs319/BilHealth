@@ -3,9 +3,9 @@ using NodaTime;
 
 namespace BilHealth.Model.Dto
 {
-    public record TestResultDto
+    public class TestResultDto
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
         public Guid PatientUserId { get; set; }
 
         public Instant DateTime { get; set; }
