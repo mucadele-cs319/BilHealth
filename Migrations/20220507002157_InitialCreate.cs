@@ -272,7 +272,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: true),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -291,7 +291,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    RequestedById = table.Column<Guid>(type: "uuid", nullable: false),
+                    RequestingUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
@@ -310,8 +310,8 @@ namespace BilHealth.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Appointments_DomainUsers_RequestedById",
-                        column: x => x.RequestedById,
+                        name: "FK_Appointments_DomainUsers_RequestingUserId",
+                        column: x => x.RequestingUserId,
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -391,6 +391,7 @@ namespace BilHealth.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
                     RequestingUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CaseId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -448,9 +449,9 @@ namespace BilHealth.Migrations
                 column: "CaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_RequestedById",
+                name: "IX_Appointments_RequestingUserId",
                 table: "Appointments",
-                column: "RequestedById");
+                column: "RequestingUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentVisits_AppointmentId",
