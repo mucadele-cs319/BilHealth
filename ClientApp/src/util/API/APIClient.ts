@@ -124,14 +124,11 @@ const profiles = {
 const testResults = {
   add: async (testResult: TestResult) => {
     const formData = new FormData();
-    formData.append("patientUserId", testResult.patientUserId);
-
     if (testResult.type === undefined) throw Error("No type given for test result");
     if (testResult.file === undefined) throw Error("No file given for test result");
-    formData.append("type", testResult.type.toString());
     formData.append("file", testResult.file);
 
-    await fetch(`/api/testresults`, {
+    await fetch(`/api/profiles/${testResult.patientUserId}/testresults?type=${testResult.type.toString()}`, {
       method: "POST",
       body: formData,
     });
