@@ -22,10 +22,10 @@ namespace BilHealth.Services.AccessControl
             public Task<bool> TriggerAccess(Guid accessingUserId, Guid accessedUserId) =>
                 CheckAccess(accessingUserId, accessedUserId);
 
-            public async Task<bool> CheckAccess(Guid accessingUserId, Guid accessedUserId)
+            public Task<bool> CheckAccess(Guid accessingUserId, Guid accessedUserId)
             {
                 var currentTime = Clock.GetCurrentInstant();
-                return await DbCtx.TimedAccessGrants.AnyAsync(g =>
+                return DbCtx.TimedAccessGrants.AnyAsync(g =>
                     g.UserId == accessingUserId &&
                     g.PatientUserId == accessedUserId &&
                     g.Canceled == false &&

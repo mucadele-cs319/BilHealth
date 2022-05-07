@@ -47,9 +47,9 @@ namespace BilHealth.Services
             return announcement;
         }
 
-        public async Task<List<Announcement>> GetAllAnnouncements()
+        public Task<List<Announcement>> GetAllAnnouncements()
         {
-            return await DbCtx.Announcements.OrderByDescending(a => a.DateTime).ToListAsync();
+            return DbCtx.Announcements.OrderByDescending(a => a.DateTime).ToListAsync();
         }
     }
 }
