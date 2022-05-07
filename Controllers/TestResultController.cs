@@ -1,5 +1,6 @@
 using BilHealth.Model.Dto;
 using BilHealth.Services;
+using BilHealth.Services.AccessControl;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -15,11 +16,13 @@ namespace BilHealth.Controllers
     public class TestResultController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
+        private readonly IAccessControlService AccessControlService;
         private readonly ITestResultService TestResultService;
 
-        public TestResultController(IAuthenticationService authenticationService, ITestResultService testResultService)
+        public TestResultController(IAuthenticationService authenticationService, IAccessControlService accessControlService, ITestResultService testResultService)
         {
             AuthenticationService = authenticationService;
+            AccessControlService = accessControlService;
             TestResultService = testResultService;
         }
 
@@ -36,8 +39,12 @@ namespace BilHealth.Controllers
         public async Task<IActionResult> GetFile(Guid testResultId)
         {
             var user = await AuthenticationService.GetUser(User);
-            if (!(await AuthenticationService.CanAccessTestResult(user, testResultId)))
-                return Forbid();
+            try
+            {
+                if (!(await AccessControlService.TestResult(user.Id, testResultId)))
+                    return Forbid();
+            }
+            catch (IdNotFoundException) { return NotFound(); }
 
             var fileStream = await TestResultService.GetTestResultFile(testResultId);
             return File(fileStream, "application/pdf");
