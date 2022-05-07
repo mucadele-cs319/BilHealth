@@ -6,11 +6,10 @@ import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import DoneIcon from '@mui/icons-material/Done';
+import DoneIcon from "@mui/icons-material/Done";
 import APIClient from "../../util/API/APIClient";
 
 const NotificationControlCard = () => {
-
   const handleRead = async () => {
     await APIClient.notifications.markAllRead();
   };

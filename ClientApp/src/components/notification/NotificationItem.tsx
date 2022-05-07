@@ -7,15 +7,14 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { Notification } from "../../util/API/APITypes";
-import DoneIcon from '@mui/icons-material/Done';
+import DoneIcon from "@mui/icons-material/Done";
 import APIClient from "../../util/API/APIClient";
 
 interface Props {
-  data: Notification,
+  data: Notification;
 }
 
 const NotificationItem = ({ data: notification }: Props) => {
-
   const handleRead = async () => {
     await APIClient.notifications.markRead(notification.id);
   };
