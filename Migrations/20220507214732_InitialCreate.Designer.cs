@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220507202842_InitialCreate")]
+    [Migration("20220507214732_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -740,7 +740,7 @@ namespace BilHealth.Migrations
             modelBuilder.Entity("BilHealth.Model.Case", b =>
                 {
                     b.HasOne("BilHealth.Model.Doctor", "DoctorUser")
-                        .WithMany("Cases")
+                        .WithMany()
                         .HasForeignKey("DoctorUserId");
 
                     b.HasOne("BilHealth.Model.Patient", "PatientUser")
@@ -820,7 +820,7 @@ namespace BilHealth.Migrations
             modelBuilder.Entity("BilHealth.Model.TimedAccessGrant", b =>
                 {
                     b.HasOne("BilHealth.Model.Patient", "PatientUser")
-                        .WithMany()
+                        .WithMany("TimedAccessGrants")
                         .HasForeignKey("PatientUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -949,16 +949,13 @@ namespace BilHealth.Migrations
                     b.Navigation("TriageRequests");
                 });
 
-            modelBuilder.Entity("BilHealth.Model.Doctor", b =>
-                {
-                    b.Navigation("Cases");
-                });
-
             modelBuilder.Entity("BilHealth.Model.Patient", b =>
                 {
                     b.Navigation("Cases");
 
                     b.Navigation("TestResults");
+
+                    b.Navigation("TimedAccessGrants");
 
                     b.Navigation("Vaccinations");
                 });

@@ -22,6 +22,7 @@ namespace BilHealth.Model.Dto
 
         public List<VaccinationDto>? Vaccinations { get; set; }
         public List<TestResultDto>? TestResults { get; set; }
+        public List<TimedAccessGrantDto>? TimedAccessGrants { get; set; }
 
         public List<SimpleCaseDto>? Cases { get; set; }
         public bool? Blacklisted { get; set; }

@@ -26,6 +26,7 @@ namespace BilHealth.Utility
                 dto.BloodType = patient.BloodType;
                 dto.Vaccinations = patient.Vaccinations?.Select(Map).ToList();
                 dto.TestResults = patient.TestResults?.Select(Map).ToList();
+                dto.TimedAccessGrants = patient.TimedAccessGrants?.Select(Map).ToList();
                 dto.Cases = patient.Cases?.Select(MapSimpleCase).ToList();
                 dto.Blacklisted = patient.Blacklisted;
             }
@@ -33,7 +34,6 @@ namespace BilHealth.Utility
             {
                 dto.Specialization = doctor.Specialization;
                 dto.Campus = doctor.Campus;
-                dto.Cases = doctor.Cases?.Select(MapSimpleCase).ToList();
             }
 
             return dto;

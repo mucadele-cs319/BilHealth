@@ -94,12 +94,10 @@ namespace BilHealth.Services.Users
         {
             switch (user)
             {
-                case Doctor doctor:
-                    await DbCtx.Entry(doctor).Collection(d => d.Cases!).LoadAsync();
-                    break;
                 case Patient patient:
                     await DbCtx.Entry(patient).Collection(p => p.Vaccinations!).LoadAsync();
                     await DbCtx.Entry(patient).Collection(p => p.TestResults!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.TimedAccessGrants!).LoadAsync();
                     await DbCtx.Entry(patient).Collection(p => p.Cases!).LoadAsync();
                     break;
             }
