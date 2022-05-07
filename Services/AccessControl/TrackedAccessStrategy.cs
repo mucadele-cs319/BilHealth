@@ -15,18 +15,20 @@ namespace BilHealth.Services.AccessControl
                 Clock = clock;
             }
 
-            public Task<bool> TriggerAccess(Guid accessingUserId, Guid accessedUserId)
+            public async Task<bool> TriggerAccess(Guid accessingUserId, Guid accessedUserId)
             {
-                var access = CheckAccess(accessingUserId, accessedUserId);
+                var access = await CheckAccess(accessingUserId, accessedUserId);
 
-                var trail = new AuditTrail
+                if (access)
                 {
-                    AccessTime = Clock.GetCurrentInstant(),
-                    UserId = accessingUserId,
-                    AccessedPatientUserId = accessedUserId,
-                };
-                DbCtx.AuditTrails.Add(trail);
-                DbCtx.SaveChangesAsync();
+                    DbCtx.AuditTrails.Add(new AuditTrail
+                    {
+                        AccessTime = Clock.GetCurrentInstant(),
+                        UserId = accessingUserId,
+                        AccessedPatientUserId = accessedUserId,
+                    });
+                    await DbCtx.SaveChangesAsync();
+                }
 
                 return access;
             }
