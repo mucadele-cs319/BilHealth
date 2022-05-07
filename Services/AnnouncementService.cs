@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
@@ -14,13 +15,13 @@ namespace BilHealth.Services
             Clock = clock;
         }
 
-        public async Task<Announcement> AddAnnouncement(AnnouncementDto announcement)
+        public async Task<Announcement> AddAnnouncement(AnnouncementUpdateDto details)
         {
             var newAnnouncement = new Announcement
             {
                 DateTime = Clock.GetCurrentInstant(),
-                Title = announcement.Title,
-                Message = announcement.Message
+                Title = details.Title,
+                Message = details.Message
             };
             DbCtx.Announcements.Add(newAnnouncement);
             await DbCtx.SaveChangesAsync();
@@ -29,25 +30,21 @@ namespace BilHealth.Services
 
         public async Task<bool> RemoveAnnouncement(Guid announcementId)
         {
-            var announcement = await DbCtx.Announcements.FindAsync(announcementId);
-            if (announcement is null)
-                return false;
+            var announcement = await DbCtx.Announcements.FindOrThrowAsync(announcementId);
 
             DbCtx.Announcements.Remove(announcement);
             await DbCtx.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateAnnouncement(AnnouncementDto announcement)
+        public async Task<Announcement> UpdateAnnouncement(Guid announcementId, AnnouncementUpdateDto details)
         {
-            var existingAnnouncement = await DbCtx.Announcements.SingleOrDefaultAsync(a => a.Id == announcement.Id);
-            if (existingAnnouncement is null)
-                return false;
+            var announcement = await DbCtx.Announcements.FindOrThrowAsync(announcementId);
 
-            existingAnnouncement.Title = announcement.Title;
-            existingAnnouncement.Message = announcement.Message;
+            announcement.Title = details.Title;
+            announcement.Message = details.Message;
             await DbCtx.SaveChangesAsync();
-            return true;
+            return announcement;
         }
 
         public async Task<List<Announcement>> GetAllAnnouncements()

@@ -30,7 +30,7 @@ namespace BilHealth.Services.Users
 
         public async Task AddNewAppointmentNotification(Appointment appointment)
         {
-            var user = await DbCtx.DomainUsers.FindOrThrowAsync(appointment.RequestedById);
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(appointment.RequestingUserId);
             await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
             if (appointment.Case!.DoctorUserId is null)
                 throw new InvalidOperationException($"Case ({appointment.Case.Id}) is missing a doctor");

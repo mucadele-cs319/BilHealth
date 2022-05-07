@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using NodaTime;
@@ -22,10 +23,10 @@ namespace BilHealth.Services
         {
             var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
 
-            await DbCtx.Entry(_case).Collection(c => c.Messages!).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.SystemMessages!).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.Appointments!).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.Prescriptions!).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Messages).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.SystemMessages).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Appointments).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Prescriptions).LoadAsync();
 
             if (_case.Appointments is not null)
                 foreach (var appointment in _case.Appointments)
@@ -34,33 +35,31 @@ namespace BilHealth.Services
             return _case;
         }
 
-        public async Task<Case> CreateCase(CaseDto details)
+        public async Task<Case> CreateCase(CaseCreateDto details)
         {
             var _case = new Case
             {
-                PatientUserId = details.PatientUserId,
                 DateTime = Clock.GetCurrentInstant(),
+                PatientUserId = details.PatientUserId,
                 Title = details.Title,
+                Type = details.Type,
                 State = CaseState.WaitingTriage,
-                Type = details.Type
             };
 
-            if (_case.Type == CaseType.Dental || _case.Type == CaseType.Psychiatry)
-            {
+            if (_case.Type is CaseType.Dental or CaseType.Psychiatry)
                 _case.State = CaseState.Ongoing;
-            }
 
             DbCtx.Cases.Add(_case);
             await DbCtx.SaveChangesAsync();
             return _case;
         }
 
-        public async Task<CaseMessage> CreateMessage(CaseMessageDto details)
+        public async Task<CaseMessage> CreateMessage(Guid caseId, Guid userId, CaseMessageUpdateDto details)
         {
             var message = new CaseMessage
             {
-                CaseId = details.CaseId,
-                UserId = details.UserId,
+                CaseId = caseId,
+                UserId = userId,
                 Content = details.Content,
                 DateTime = Clock.GetCurrentInstant()
             };
@@ -70,13 +69,13 @@ namespace BilHealth.Services
             return message;
         }
 
-        public async Task<Prescription> CreatePrescription(PrescriptionDto details)
+        public async Task<Prescription> CreatePrescription(Guid caseId, Guid doctorUserId, PrescriptionUpdateDto details)
         {
             var prescription = new Prescription
             {
-                CaseId = details.CaseId,
+                CaseId = caseId,
                 DateTime = Clock.GetCurrentInstant(),
-                DoctorUserId = details.DoctorUserId,
+                DoctorUserId = doctorUserId,
                 Item = details.Item
             };
             DbCtx.Prescriptions.Add(prescription);
@@ -97,23 +96,24 @@ namespace BilHealth.Services
             DbCtx.Add(message);
         }
 
-        public async Task<TriageRequest> CreateTriageRequest(TriageRequestDto details)
+        public async Task<TriageRequest> CreateTriageRequest(Guid caseId, Guid requestingUserId, Guid doctorUserId)
         {
             var triageRequest = new TriageRequest
             {
                 ApprovalStatus = ApprovalStatus.Waiting,
-                CaseId = details.CaseId,
-                DoctorUserId = details.DoctorUserId,
-                RequestingUserId = details.RequestingUserId
+                CaseId = caseId,
+                DoctorUserId = doctorUserId,
+                RequestingUserId = requestingUserId
             };
+
             DbCtx.TriageRequests.Add(triageRequest);
             await DbCtx.SaveChangesAsync();
             return triageRequest;
         }
 
-        public async Task<CaseMessage> EditMessage(CaseMessageDto details)
+        public async Task<CaseMessage> EditMessage(Guid messageId, CaseMessageUpdateDto details)
         {
-            var message = (CaseMessage)await DbCtx.FindOrThrowAsync(typeof(CaseMessage), details.Id);
+            var message = (CaseMessage)await DbCtx.FindOrThrowAsync(typeof(CaseMessage), messageId);
 
             message.Content = details.Content ?? message.Content;
             await DbCtx.SaveChangesAsync();
@@ -157,12 +157,11 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task SetTriageRequestApproval(TriageRequestDto details)
+        public async Task SetTriageRequestApproval(Guid caseId, ApprovalStatus approval)
         {
-            var triageRequest = await DbCtx.TriageRequests.FindOrThrowAsync(details.Id);
-            await DbCtx.Entry(triageRequest).Reference(t => t.Case).LoadAsync();
+            var triageRequest = DbCtx.TriageRequests.Where(t => t.CaseId == caseId).OrderBy(t => t.DateTime).Last();
 
-            triageRequest.ApprovalStatus = details.ApprovalStatus;
+            triageRequest.ApprovalStatus = approval;
 
             if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
             {
@@ -174,9 +173,9 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task<Prescription> UpdatePrescription(PrescriptionDto details)
+        public async Task<Prescription> UpdatePrescription(Guid prescriptionId, PrescriptionUpdateDto details)
         {
-            var prescription = await DbCtx.Prescriptions.FindOrThrowAsync(details.Id);
+            var prescription = await DbCtx.Prescriptions.FindOrThrowAsync(prescriptionId);
 
             prescription.Item = details.Item ?? prescription.Item;
             await DbCtx.SaveChangesAsync();

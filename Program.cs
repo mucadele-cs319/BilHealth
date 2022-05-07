@@ -95,7 +95,7 @@ using (var scope = app.Services.CreateScope())
         Email = "tempmail@example.com",
         FirstName = "John",
         LastName = "Smith",
-        UserType = UserRoleType.Admin
+        UserType = UserType.Admin
     }).Wait();
 }
 
