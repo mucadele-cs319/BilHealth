@@ -26,5 +26,8 @@ namespace BilHealth.Data
         public DbSet<AppointmentVisit> AppointmentVisits => Set<AppointmentVisit>();
         public DbSet<TriageRequest> TriageRequests => Set<TriageRequest>();
         public DbSet<Announcement> Announcements => Set<Announcement>();
+
+        public DbSet<AuditTrail> AuditTrails => Set<AuditTrail>();
+        public DbSet<TimedAccessGrant> TimedAccessGrants => Set<TimedAccessGrant>();
     }
 }
