@@ -20,7 +20,7 @@ namespace BilHealth.Services.Users
 
         Task<DomainUser> GetUser(ClaimsPrincipal principal);
         Task<DomainUser> GetUser(Guid userId);
-        string GetUserType(Guid userId);
+        Task<string> GetUserType(Guid userId);
         Task<List<DomainUser>> GetAllUsers();
     }
 }

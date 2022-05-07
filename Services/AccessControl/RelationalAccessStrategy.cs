@@ -1,5 +1,6 @@
 using BilHealth.Data;
 using BilHealth.Utility.Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace BilHealth.Services.AccessControl
 {
@@ -18,12 +19,12 @@ namespace BilHealth.Services.AccessControl
             public Task<bool> TriggerAccess(Guid accessingUserId, Guid accessedUserId) =>
                 CheckAccess(accessingUserId, accessedUserId);
 
-            public Task<bool> CheckAccess(Guid accessingUserId, Guid accessedUserId) =>
-                Task.FromResult(DbCtx.Cases.Any(c =>
+            public async Task<bool> CheckAccess(Guid accessingUserId, Guid accessedUserId) =>
+                await DbCtx.Cases.AnyAsync(c =>
                     c.PatientUserId == accessedUserId &&
                     c.DoctorUserId == accessingUserId &&
                     c.State != CaseState.Closed
-                ));
+                );
         }
     }
 }

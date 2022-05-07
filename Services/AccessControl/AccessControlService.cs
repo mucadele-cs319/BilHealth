@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
 namespace BilHealth.Services.AccessControl
@@ -26,23 +27,23 @@ namespace BilHealth.Services.AccessControl
             _ => throw new ArgumentOutOfRangeException(nameof(userType), "Invalid user type"),
         };
 
-        protected IAccessStrategy GetAccessStrategy(Guid accessingUserId) =>
-            AccessStrategyFactory(AuthenticationService.GetUserType(accessingUserId));
+        protected async Task<IAccessStrategy> GetAccessStrategy(Guid accessingUserId) =>
+            AccessStrategyFactory(await AuthenticationService.GetUserType(accessingUserId));
 
-        protected Task<bool> BaseHandler(Guid accessingUserId, Guid accessedUserId, Func<Guid, Guid, Task<bool>> accessStrategyMethod)
+        protected async Task<bool> BaseHandler(Guid accessingUserId, Guid accessedUserId, Func<Guid, Guid, Task<bool>> accessStrategyMethod)
         {
-            if (accessedUserId == accessingUserId) return Task.FromResult(true);
+            if (accessedUserId == accessingUserId) return true;
 
-            if (AuthenticationService.GetUserType(accessedUserId) == UserType.Patient)
-                return accessStrategyMethod(accessingUserId, accessedUserId);
-            return Task.FromResult(true);
+            if (await AuthenticationService.GetUserType(accessedUserId) == UserType.Patient)
+                return await accessStrategyMethod(accessingUserId, accessedUserId);
+            return true;
         }
 
-        public Task<bool> AccessGuard(Guid accessingUserId, Guid accessedUserId) =>
-            BaseHandler(accessingUserId, accessedUserId, GetAccessStrategy(accessingUserId).TriggerAccess);
+        public async Task<bool> AccessGuard(Guid accessingUserId, Guid accessedUserId) =>
+            await BaseHandler(accessingUserId, accessedUserId, (await GetAccessStrategy(accessingUserId)).TriggerAccess);
 
-        public Task<bool> Profile(Guid accessingUserId, Guid accessedUserId) =>
-            BaseHandler(accessingUserId, accessedUserId, GetAccessStrategy(accessingUserId).CheckAccess);
+        public async Task<bool> Profile(Guid accessingUserId, Guid accessedUserId) =>
+            await BaseHandler(accessingUserId, accessedUserId, (await GetAccessStrategy(accessingUserId)).CheckAccess);
 
         public async Task<bool> TestResult(Guid accessingUserId, Guid testResultId)
         {

@@ -115,9 +115,8 @@ namespace BilHealth.Services.Users
         public async Task<DomainUser> GetUser(Guid userId) =>
             await LoadUserNavigationProps(await DbCtx.DomainUsers.FindOrThrowAsync(userId));
 
-        public string GetUserType(Guid userId) =>
-            DbCtx.DomainUsers.Where(u => u.Id == userId).Select(u => u.Discriminator).SingleOrDefault()
-            ?? throw new InvalidOperationException("Null discriminator");
+        public Task<string> GetUserType(Guid userId) =>
+            DbCtx.DomainUsers.Where(u => u.Id == userId).Select(u => u.Discriminator).SingleOrDefaultAsync()!;
 
         /// <summary>
         /// Only loads the <see cref="AppUser"/> navigation property.
