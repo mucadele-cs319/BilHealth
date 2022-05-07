@@ -1,6 +1,7 @@
 using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Services;
+using BilHealth.Services.AccessControl;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -61,6 +62,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddSingleton<IClock>(SystemClock.Instance);
 
+builder.Services.AddScoped<IAccessControlService, AccessControlService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
