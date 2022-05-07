@@ -46,9 +46,6 @@ namespace BilHealth.Services
                 State = CaseState.WaitingTriage,
             };
 
-            if (_case.Type is CaseType.Dental or CaseType.Psychiatry)
-                _case.State = CaseState.Ongoing;
-
             DbCtx.Cases.Add(_case);
             await DbCtx.SaveChangesAsync();
             return _case;
