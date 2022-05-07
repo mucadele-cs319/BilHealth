@@ -10,6 +10,20 @@ namespace BilHealth.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<DomainUser>().Navigation(u => u.AppUser).AutoInclude();
+            builder.Entity<AppUser>().Navigation(u => u.DomainUser).AutoInclude();
+
+            builder.Entity<Patient>().Navigation(p => p.Vaccinations).AutoInclude();
+            builder.Entity<Patient>().Navigation(p => p.TestResults).AutoInclude();
+            builder.Entity<Patient>().Navigation(p => p.Cases).AutoInclude();
+
+            builder.Entity<Doctor>().Navigation(d => d.Cases).AutoInclude();
+        }
+
         public DbSet<DomainUser> DomainUsers => Set<DomainUser>();
         public DbSet<Admin> AdminUsers => Set<Admin>();
         public DbSet<Doctor> DoctorUsers => Set<Doctor>();
