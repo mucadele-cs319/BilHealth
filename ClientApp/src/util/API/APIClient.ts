@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Announcement, Login, Registration, SimpleUser, TestResult, User, Vaccination } from "./APITypes";
+import { Announcement, Login, Notification, Registration, SimpleUser, TestResult, User, Vaccination } from "./APITypes";
 
 const authentication = {
   register: async (registration: Registration) => {
@@ -34,7 +34,26 @@ const authentication = {
   },
 };
 
-const notifications = {};
+const notifications = {
+  get: async (unread = false): Promise<Notification[]> => {
+    const response = await fetch(`/api/notifications?unread=${unread}`);
+    const notifications: Notification[] = await response.json();
+    notifications.forEach((notification) => {
+      notification.dateTime = dayjs(notification.dateTime);
+    });
+    return notifications;
+  },
+  markRead: async (notificationId: string) => {
+    await fetch(`/api/notifications/${notificationId}`, {
+      method: "PATCH",
+    });
+  },
+  markAllRead: async () => {
+    await fetch("/api/notifications", {
+      method: "POST",
+    });
+  },
+};
 
 const sortVaccinations = (user: User) => {
   user.vaccinations?.forEach((vaccination) => {
