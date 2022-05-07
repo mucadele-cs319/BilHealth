@@ -92,5 +92,37 @@ namespace BilHealth.Controllers
         {
             await ProfileService.RemoveVaccination(vaccinationId);
         }
+
+        [HttpPost("{patientUserId:guid}/accessgrants")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Patient}")]
+        public async Task<IActionResult> GrantAccess(Guid patientUserId, TimedAccessGrantCreateDto details)
+        {
+            var requestingUser = await AuthenticationService.GetUser(User);
+            if (!await AccessControlService.Profile(requestingUser.Id, patientUserId)) return Forbid();
+
+            await AccessControlService.GrantTimedAccess(details);
+            return Ok();
+        }
+
+        [HttpPatch("{patientUserId:guid}/accessgrants/{accessGrantId:guid}")]
+        public async Task<IActionResult> CancelAccessGrant(Guid patientUserId, Guid accessGrantId)
+        {
+            var requestingUser = await AuthenticationService.GetUser(User);
+            if (!await AccessControlService.Profile(requestingUser.Id, patientUserId)) return Forbid();
+
+            try
+            {
+                await AccessControlService.CancelTimedAccessGrant(accessGrantId);
+            }
+            catch (IdNotFoundException) { return NotFound(); }
+            return Ok();
+        }
+
+        [HttpGet("audittrails")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
+        public async Task<List<AuditTrailDto>> GetRecentAuditTrails(Guid patientUserId, TimedAccessGrantCreateDto details)
+        {
+            return (await AccessControlService.GetRecentAuditTrails()).Select(DtoMapper.Map).ToList();
+        }
     }
 }

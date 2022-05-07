@@ -1,4 +1,5 @@
 using BilHealth.Model;
+using BilHealth.Model.Dto.Incoming;
 
 namespace BilHealth.Services.AccessControl
 {
@@ -44,5 +45,8 @@ namespace BilHealth.Services.AccessControl
         /// <param name="count">The max amount of audit trails to include</param>
         /// <returns>List of <see cref="AuditTrail"/></returns>
         Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100);
+
+        Task GrantTimedAccess(TimedAccessGrantCreateDto details);
+        Task CancelTimedAccessGrant(Guid grantId);
     }
 }

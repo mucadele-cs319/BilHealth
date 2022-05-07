@@ -1,5 +1,6 @@
 using BilHealth.Data;
 using BilHealth.Model;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
@@ -60,5 +61,26 @@ namespace BilHealth.Services.AccessControl
 
         public Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100) =>
             DbCtx.AuditTrails.OrderByDescending(a => a.AccessTime).Take(count).ToListAsync();
+
+        public async Task GrantTimedAccess(TimedAccessGrantCreateDto details)
+        {
+            var grant = new TimedAccessGrant
+            {
+                PatientUserId = details.PatientUserId,
+                UserId = details.UserId,
+                Canceled = false,
+                Period = details.Period,
+                ExpiryTime = Clock.GetCurrentInstant() + details.Period.ToDuration(),
+            };
+            DbCtx.TimedAccessGrants.Add(grant);
+            await DbCtx.SaveChangesAsync();
+        }
+
+        public async Task CancelTimedAccessGrant(Guid grantId)
+        {
+            var grant = await DbCtx.TimedAccessGrants.FindOrThrowAsync(grantId);
+            grant.Canceled = true;
+            await DbCtx.SaveChangesAsync();
+        }
     }
 }
