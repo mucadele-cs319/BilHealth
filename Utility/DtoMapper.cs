@@ -237,5 +237,31 @@ namespace BilHealth.Utility
             };
             return dto;
         }
+
+        public static AuditTrailDto Map(AuditTrail auditTrail)
+        {
+            var dto = new AuditTrailDto
+            {
+                Id = auditTrail.Id,
+                AccessTime = auditTrail.AccessTime,
+                AccessedPatientUserId = auditTrail.AccessedPatientUserId,
+                UserId = auditTrail.UserId
+            };
+            return dto;
+        }
+
+        public static TimedAccessGrantDto Map(TimedAccessGrant timedAccessGrant)
+        {
+            var dto = new TimedAccessGrantDto
+            {
+                Id = timedAccessGrant.Id,
+                Canceled = timedAccessGrant.Canceled,
+                Period = timedAccessGrant.Period,
+                ExpiryTime = timedAccessGrant.ExpiryTime,
+                PatientUserId = timedAccessGrant.PatientUserId,
+                UserId = timedAccessGrant.UserId
+            };
+            return dto;
+        }
     }
 }
