@@ -7,7 +7,7 @@ namespace BilHealth.Model
     {
         [Required] public Guid Id { get; private set; }
         [Required] public Instant ExpiryTime { get; set; }
-        [Required] public Duration Duration { get; set; }
+        [Required] public Period Period { get; set; } = null!;
         [Required] public bool Canceled { get; set; } = false;
 
         [Required] public Guid PatientUserId { get; set; }

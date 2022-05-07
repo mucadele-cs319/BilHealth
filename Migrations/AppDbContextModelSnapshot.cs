@@ -452,14 +452,15 @@ namespace BilHealth.Migrations
                     b.Property<bool>("Canceled")
                         .HasColumnType("boolean");
 
-                    b.Property<Duration>("Duration")
-                        .HasColumnType("interval");
-
                     b.Property<Instant>("ExpiryTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PatientUserId")
                         .HasColumnType("uuid");
+
+                    b.Property<Period>("Period")
+                        .IsRequired()
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");

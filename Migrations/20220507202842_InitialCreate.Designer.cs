@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220507180933_InitialCreate")]
+    [Migration("20220507202842_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -454,14 +454,15 @@ namespace BilHealth.Migrations
                     b.Property<bool>("Canceled")
                         .HasColumnType("boolean");
 
-                    b.Property<Duration>("Duration")
-                        .HasColumnType("interval");
-
                     b.Property<Instant>("ExpiryTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PatientUserId")
                         .HasColumnType("uuid");
+
+                    b.Property<Period>("Period")
+                        .IsRequired()
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");

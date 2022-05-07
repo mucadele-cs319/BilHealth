@@ -298,7 +298,7 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ExpiryTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
-                    Duration = table.Column<Duration>(type: "interval", nullable: false),
+                    Period = table.Column<Period>(type: "interval", nullable: false),
                     Canceled = table.Column<bool>(type: "boolean", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
