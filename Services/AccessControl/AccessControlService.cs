@@ -1,4 +1,5 @@
 using BilHealth.Data;
+using BilHealth.Model;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
@@ -56,5 +57,8 @@ namespace BilHealth.Services.AccessControl
             var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
             return await Profile(accessingUserId, _case.PatientUserId);
         }
+
+        public Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100) =>
+            DbCtx.AuditTrails.OrderByDescending(a => a.AccessTime).Take(count).ToListAsync();
     }
 }

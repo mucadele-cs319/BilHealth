@@ -1,3 +1,5 @@
+using BilHealth.Model;
+
 namespace BilHealth.Services.AccessControl
 {
     public interface IAccessControlService
@@ -35,5 +37,12 @@ namespace BilHealth.Services.AccessControl
         /// <param name="caseId">The ID of the case being accessed</param>
         /// <returns>true if the access is granted</returns>
         Task<bool> Case(Guid accessingUserId, Guid caseId);
+
+        /// <summary>
+        /// Lists the most recent audit trails.
+        /// </summary>
+        /// <param name="count">The max amount of audit trails to include</param>
+        /// <returns>List of <see cref="AuditTrail"/></returns>
+        Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100);
     }
 }
