@@ -90,13 +90,30 @@ namespace BilHealth.Services.Users
             return await UserManager.ResetPasswordAsync(user, token, newPassword);
         }
 
+        private async Task<DomainUser> LoadUserNavigationProps(DomainUser user)
+        {
+            switch (user)
+            {
+                case Doctor doctor:
+                    await DbCtx.Entry(doctor).Collection(d => d.Cases!).LoadAsync();
+                    break;
+                case Patient patient:
+                    await DbCtx.Entry(patient).Collection(p => p.Vaccinations!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.TestResults!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.Cases!).LoadAsync();
+                    break;
+            }
+            return user;
+        }
+
         public async Task<DomainUser> GetUser(ClaimsPrincipal principal)
         {
             var user = await UserManager.GetUserAsync(principal);
-            return user.DomainUser;
+            return await LoadUserNavigationProps(user.DomainUser);
         }
 
-        public Task<DomainUser> GetUser(Guid userId) => DbCtx.DomainUsers.FindOrThrowAsync(userId);
+        public async Task<DomainUser> GetUser(Guid userId) =>
+            await LoadUserNavigationProps(await DbCtx.DomainUsers.FindOrThrowAsync(userId));
 
         public string GetUserType(Guid userId) =>
             DbCtx.DomainUsers.Where(u => u.Id == userId).Select(u => u.Discriminator).SingleOrDefault()
