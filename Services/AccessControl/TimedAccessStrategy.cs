@@ -1,10 +1,14 @@
 using BilHealth.Data;
+using BilHealth.Model;
 using NodaTime;
 
 namespace BilHealth.Services.AccessControl
 {
     public partial class AccessControlService
     {
+        /// <summary>
+        /// Only grants access while the user has an unexpired <see cref="TimedAccessGrant"/>.
+        /// </summary>
         protected class TimedAccessStrategy : DbServiceBase, IAccessStrategy
         {
             private readonly IClock Clock;

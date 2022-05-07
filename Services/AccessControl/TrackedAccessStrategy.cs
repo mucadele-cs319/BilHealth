@@ -6,6 +6,9 @@ namespace BilHealth.Services.AccessControl
 {
     public partial class AccessControlService
     {
+        /// <summary>
+        /// Always grants access, however, all access is tracked in an <see cref="AuditTrail"/>.
+        /// </summary>
         protected class TrackedAccessStrategy : DbServiceBase, IAccessStrategy
         {
             private readonly IClock Clock;
