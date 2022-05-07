@@ -1,4 +1,4 @@
-using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Utility;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,7 +8,7 @@ namespace BilHealth.Model
     {
         public AppUser() { }
 
-        public AppUser(Registration registration)
+        public AppUser(RegistrationDto registration)
         {
             UserName = registration.UserName; // Bilkent ID
             Email = registration.Email;
