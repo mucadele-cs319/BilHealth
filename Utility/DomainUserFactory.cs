@@ -1,49 +1,29 @@
 using BilHealth.Model;
-using BilHealth.Model.Dto;
+using BilHealth.Model.Dto.Incoming;
 using BilHealth.Utility.Enum;
 
 namespace BilHealth.Utility
 {
     public class DomainUserFactory
     {
-        public static DomainUser Create(Registration registration)
-        {
-            var userType = UserRoleType.Names.First(roleType => roleType == registration.UserType);
-            return Create(userType, u =>
+        public static DomainUser Create(RegistrationDto registration) =>
+            Create(registration.UserType, u =>
             {
                 u.FirstName = registration.FirstName;
                 u.LastName = registration.LastName;
             });
-        }
 
-        public static DomainUser Create(UserRoleType userType, Action<DomainUser> initializer)
+        public static DomainUser Create(string userType, Action<DomainUser> initializer)
         {
-            DomainUser domainUser;
-
-            if (userType == UserRoleType.Admin)
+            DomainUser domainUser = userType switch
             {
-                domainUser = new Admin();
-            }
-            else if (userType == UserRoleType.Doctor)
-            {
-                domainUser = new Doctor();
-            }
-            else if (userType == UserRoleType.Nurse)
-            {
-                domainUser = new Nurse();
-            }
-            else if (userType == UserRoleType.Staff)
-            {
-                domainUser = new Staff();
-            }
-            else if (userType == UserRoleType.Patient)
-            {
-                domainUser = new Patient();
-            }
-            else
-            {
-                throw new ArgumentException("Invalid user type", nameof(userType));
-            }
+                UserType.Admin => new Admin(),
+                UserType.Staff => new Staff(),
+                UserType.Doctor => new Doctor(),
+                UserType.Nurse => new Nurse(),
+                UserType.Patient => new Patient(),
+                _ => throw new ArgumentOutOfRangeException("Invalid user type", nameof(userType)),
+            };
 
             initializer(domainUser);
             return domainUser;
