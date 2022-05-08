@@ -196,5 +196,11 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
             return _case;
         }
+
+        public async Task<Case> CreateReport(Guid patientId)
+        {
+            var _case = await DbCtx.Cases.FindOrThrowAsync(patientId);
+            return _case;
+        }
     }
 }
