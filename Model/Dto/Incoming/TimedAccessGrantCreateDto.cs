@@ -7,7 +7,6 @@ namespace BilHealth.Model.Dto.Incoming
     {
         [Required] public Period Period { get; set; } = null!;
 
-        [Required] public Guid PatientUserId { get; set; }
         [Required] public Guid UserId { get; set; }
     }
 }

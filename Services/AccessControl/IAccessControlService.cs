@@ -46,7 +46,7 @@ namespace BilHealth.Services.AccessControl
         /// <returns>List of <see cref="AuditTrail"/></returns>
         Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100);
 
-        Task GrantTimedAccess(TimedAccessGrantCreateDto details);
+        Task GrantTimedAccess(Guid patientUserId, TimedAccessGrantCreateDto details);
         Task CancelTimedAccessGrant(Guid grantId);
 
         /// <summary>

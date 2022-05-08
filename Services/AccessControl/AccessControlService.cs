@@ -62,11 +62,11 @@ namespace BilHealth.Services.AccessControl
         public Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100) =>
             DbCtx.AuditTrails.OrderByDescending(a => a.AccessTime).Take(count).ToListAsync();
 
-        public async Task GrantTimedAccess(TimedAccessGrantCreateDto details)
+        public async Task GrantTimedAccess(Guid patientUserId, TimedAccessGrantCreateDto details)
         {
             var grant = new TimedAccessGrant
             {
-                PatientUserId = details.PatientUserId,
+                PatientUserId = patientUserId,
                 UserId = details.UserId,
                 Canceled = false,
                 Period = details.Period,

@@ -100,7 +100,7 @@ namespace BilHealth.Controllers
             var requestingUser = await AuthenticationService.GetUser(User);
             if (!await AccessControlService.Profile(requestingUser.Id, patientUserId)) return Forbid();
 
-            await AccessControlService.GrantTimedAccess(details);
+            await AccessControlService.GrantTimedAccess(patientUserId, details);
             return Ok();
         }
 
