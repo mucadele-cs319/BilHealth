@@ -27,6 +27,14 @@ namespace BilHealth.Controllers
             CaseService = caseService;
         }
 
+        [HttpGet]
+        public async Task<List<SimpleCaseDto>> GetPersonalized()
+        {
+            var user = await AuthenticationService.GetUser(User);
+            var list = await AccessControlService.GetPersonalizedCaseList(user);
+            return list.Select(DtoMapper.MapSimpleCase).ToList();
+        }
+
         [HttpGet("{caseId:guid}")]
         public async Task<IActionResult> Get(Guid caseId)
         {
