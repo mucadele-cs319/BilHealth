@@ -70,6 +70,8 @@ namespace BilHealth.Services.Users
             return UserManager.AddToRoleAsync(user, userType);
         }
 
+        public Task<bool> UserNameExists(string userName) => DbCtx.Users.AnyAsync(u => u.UserName == userName);
+
         public async Task<IdentityResult> DeleteUser(string userName)
         {
             var user = await UserManager.FindByNameAsync(userName);

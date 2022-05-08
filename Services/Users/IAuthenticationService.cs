@@ -15,6 +15,7 @@ namespace BilHealth.Services.Users
         Task CreateRoles();
         Task<IdentityResult> AssignRole(AppUser user, string userType);
 
+        Task<bool> UserNameExists(string userName);
         Task<IdentityResult> DeleteUser(string userName);
         Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
 
