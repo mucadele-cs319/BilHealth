@@ -16,6 +16,11 @@ namespace BilHealth.Services.Users
         Task<IdentityResult> AssignRole(AppUser user, string userType);
 
         Task<bool> UserNameExists(string userName);
+        /// <summary>
+        /// Avoid this method as much as you can.
+        /// We do not currently handle the deletion of users well (at all).
+        /// It will leave stale IDs all over the database.
+        /// </summary>
         Task<IdentityResult> DeleteUser(string userName);
         Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
 
