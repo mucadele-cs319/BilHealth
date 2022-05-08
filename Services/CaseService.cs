@@ -187,7 +187,7 @@ namespace BilHealth.Services
             return _case;
         }
 
-        public async Task<Case> DeleteDoctor(Guid caseId, Guid doctorUserId)
+        public async Task<Case> UnassignDoctor(Guid caseId)
         {
             var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
             _case.DoctorUserId = null;
