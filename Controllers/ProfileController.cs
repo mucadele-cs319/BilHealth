@@ -120,7 +120,7 @@ namespace BilHealth.Controllers
 
         [HttpGet("audittrails")]
         [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
-        public async Task<List<AuditTrailDto>> GetRecentAuditTrails(Guid patientUserId, TimedAccessGrantCreateDto details)
+        public async Task<List<AuditTrailDto>> GetRecentAuditTrails()
         {
             return (await AccessControlService.GetRecentAuditTrails()).Select(DtoMapper.Map).ToList();
         }
