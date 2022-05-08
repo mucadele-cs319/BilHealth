@@ -187,5 +187,14 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
             return _case;
         }
+
+        public async Task<Case> UnassignDoctor(Guid caseId)
+        {
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+            _case.DoctorUserId = null;
+            _case.State = CaseState.WaitingTriage;
+            await DbCtx.SaveChangesAsync();
+            return _case;
+        }
     }
 }
