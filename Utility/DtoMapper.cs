@@ -264,7 +264,7 @@ namespace BilHealth.Utility
             return dto;
         }
 
-        public static CaseReportDto ReportMap(Case _case)
+        public static CaseReportDto MapCaseReport(Case _case)
         {
             var dto = new CaseReportDto
             {
