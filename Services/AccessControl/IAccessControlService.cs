@@ -48,5 +48,7 @@ namespace BilHealth.Services.AccessControl
 
         Task GrantTimedAccess(TimedAccessGrantCreateDto details);
         Task CancelTimedAccessGrant(Guid grantId);
+
+        Task<List<Case>> GetPersonalizedCaseList(DomainUser user);
     }
 }

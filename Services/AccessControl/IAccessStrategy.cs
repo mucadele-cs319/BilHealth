@@ -1,3 +1,6 @@
+using System.Linq.Expressions;
+using BilHealth.Model;
+
 namespace BilHealth.Services.AccessControl
 {
     public interface IAccessStrategy
@@ -19,5 +22,11 @@ namespace BilHealth.Services.AccessControl
         /// <param name="accessedUserId">The ID of the user whose profile is being accessed</param>
         /// <returns>true if the access is granted</returns>
         Task<bool> TriggerAccess(Guid accessingUserId, Guid accessedUserId);
+        /// <summary>
+        /// Get a LINQ query expression based on this access strategy.
+        /// </summary>
+        /// <param name="user">The user for whom to personalize this case list</param>
+        /// <returns>Expression with appropiate constraints</returns>
+        Task<Expression<Func<Case, bool>>> GetPersonalizedCaseQuery(DomainUser user);
     }
 }

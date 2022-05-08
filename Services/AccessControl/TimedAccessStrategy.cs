@@ -1,7 +1,8 @@
+using System.Linq.Expressions;
 using BilHealth.Data;
 using BilHealth.Model;
-using NodaTime;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace BilHealth.Services.AccessControl
 {
@@ -31,6 +32,12 @@ namespace BilHealth.Services.AccessControl
                     g.Canceled == false &&
                     g.ExpiryTime.CompareTo(currentTime) > 0
                 );
+            }
+
+            public async Task<Expression<Func<Case, bool>>> GetPersonalizedCaseQuery(DomainUser user)
+            {
+                var accessiblePatientIds = await DbCtx.TimedAccessGrants.Where(g => g.UserId == user.Id).Select(g => g.PatientUserId).ToListAsync();
+                return c => accessiblePatientIds.Contains(c.PatientUserId);
             }
         }
     }

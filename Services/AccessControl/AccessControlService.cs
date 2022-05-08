@@ -82,5 +82,8 @@ namespace BilHealth.Services.AccessControl
             grant.Canceled = true;
             await DbCtx.SaveChangesAsync();
         }
+
+        public async Task<List<Case>> GetPersonalizedCaseList(DomainUser user) =>
+            await DbCtx.Cases.Where(await AccessStrategyFactory(user.Discriminator).GetPersonalizedCaseQuery(user)).ToListAsync();
     }
 }

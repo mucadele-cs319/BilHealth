@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using BilHealth.Data;
 using BilHealth.Model;
 using NodaTime;
@@ -37,6 +38,11 @@ namespace BilHealth.Services.AccessControl
             }
 
             public Task<bool> CheckAccess(Guid accessingUserId, Guid accessedUserId) => Task.FromResult(true);
+
+            public Task<Expression<Func<Case, bool>>> GetPersonalizedCaseQuery(DomainUser user)
+            {
+                return Task.FromResult<Expression<Func<Case, bool>>>(c => true);
+            }
         }
     }
 }
