@@ -25,7 +25,5 @@ namespace BilHealth.Services
 
         Task<Case> SetDiagnosis(Guid caseId, string diagnosis);
         Task<Case> UnassignDoctor(Guid caseId);
-
-        Task<Case> CreateReport(Guid patientId);
     }
 }
