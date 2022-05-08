@@ -114,5 +114,12 @@ namespace BilHealth.Controllers
 
             return DtoMapper.Map(await CaseService.SetDiagnosis(caseId, diagnosis));
         }
+
+        [HttpPatch("{caseId:guid}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Doctor},{UserType.Staff}")]
+        public async Task<CaseDto> DeleteDoctor(Guid caseId, Guid doctorUserId)
+        {
+            return DtoMapper.Map(await CaseService.DeleteDoctor(caseId, doctorUserId));
+        }
     }
 }
