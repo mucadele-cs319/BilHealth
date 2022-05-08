@@ -132,9 +132,16 @@ namespace BilHealth.Controllers
 
         [HttpPatch("{caseId:guid}/unassign")]
         [Authorize(Roles = $"{UserType.Admin},{UserType.Doctor},{UserType.Staff}")]
-        public async Task<CaseDto> DeleteDoctor(Guid caseId)
+        public async Task<IActionResult> UnassignDoctor(Guid caseId)
         {
-            return DtoMapper.Map(await CaseService.UnassignDoctor(caseId));
+            return await CaseService.UnassignDoctor(caseId) ? Ok() : UnprocessableEntity();
+        }
+
+        [HttpGet("{caseId:guid}/report")]
+        [Authorize(Roles = $"{UserType.Patient},{UserType.Doctor},{UserType.Staff}")]
+        public async Task<CaseReportDto> CreateReport(Guid caseId)
+        {
+            return DtoMapper.MapCaseReport(await CaseService.GetCase(caseId));
         }
     }
 }

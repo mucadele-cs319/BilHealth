@@ -3,6 +3,7 @@ using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
+using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
@@ -188,13 +189,20 @@ namespace BilHealth.Services
             return _case;
         }
 
-        public async Task<Case> UnassignDoctor(Guid caseId)
+        public async Task<bool> UnassignDoctor(Guid caseId)
         {
-            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+            Case _case;
+            try
+            {
+                _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+            }
+            catch (IdNotFoundException) { return false; }
+            if (_case.DoctorUserId is null) return false;
+
             _case.DoctorUserId = null;
             _case.State = CaseState.WaitingTriage;
             await DbCtx.SaveChangesAsync();
-            return _case;
+            return true;
         }
     }
 }

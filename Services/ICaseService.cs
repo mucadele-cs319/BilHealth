@@ -24,6 +24,6 @@ namespace BilHealth.Services
         Task SetTriageRequestApproval(Guid caseId, ApprovalStatus approval);
 
         Task<Case> SetDiagnosis(Guid caseId, string diagnosis);
-        Task<Case> UnassignDoctor(Guid caseId);
+        Task<bool> UnassignDoctor(Guid caseId);
     }
 }

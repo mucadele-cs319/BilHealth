@@ -263,5 +263,20 @@ namespace BilHealth.Utility
             };
             return dto;
         }
+
+        public static CaseReportDto MapCaseReport(Case _case)
+        {
+            var dto = new CaseReportDto
+            {
+                DateTime = _case.DateTime,
+                Title = _case.Title,
+                Diagnosis = _case.Diagnosis,
+                Type = _case.Type,
+                Prescriptions = _case.Prescriptions,
+                MessageCount = _case.Messages?.Count() ?? 0,
+                TriageCount = _case.TriageRequests?.Count() ?? 0
+            };
+            return dto;
+        }
     }
 }
