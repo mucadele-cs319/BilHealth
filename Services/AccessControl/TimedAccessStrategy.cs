@@ -36,7 +36,13 @@ namespace BilHealth.Services.AccessControl
 
             public async Task<Expression<Func<Case, bool>>> GetPersonalizedCaseQuery(DomainUser user)
             {
-                var accessiblePatientIds = await DbCtx.TimedAccessGrants.Where(g => g.UserId == user.Id).Select(g => g.PatientUserId).ToListAsync();
+                var currentTime = Clock.GetCurrentInstant();
+                var accessiblePatientIds = await DbCtx.TimedAccessGrants.Where(g =>
+                                                                            g.UserId == user.Id &&
+                                                                            g.Canceled == false &&
+                                                                            g.ExpiryTime.CompareTo(currentTime) > 0
+                                                                        ).Select(g => g.PatientUserId)
+                                                                        .ToListAsync();
                 return c => accessiblePatientIds.Contains(c.PatientUserId);
             }
         }
