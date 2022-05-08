@@ -264,18 +264,14 @@ namespace BilHealth.Utility
             return dto;
         }
 
-        public static ReportDto ReportMap(Case _case)
+        public static CaseReportDto ReportMap(Case _case)
         {
-            var dto = new ReportDto
+            var dto = new CaseReportDto
             {
-                Id = _case.Id,
                 DateTime = _case.DateTime,
                 Title = _case.Title,
-                PatientUserId = _case.PatientUserId,
                 Diagnosis = _case.Diagnosis,
-                DoctorUserId = _case.DoctorUserId,
                 Type = _case.Type,
-                State = _case.State,
                 Prescriptions = _case.Prescriptions
             };
             return dto;

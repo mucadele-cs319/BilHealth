@@ -9,6 +9,6 @@ namespace BilHealth.Model.Dto
         public string Title { get; set; } = null!;
         public string? Diagnosis { get; set; } = null!;
         public CaseType Type { get; set; }
-        public List<Prescription>? Prescriptions { get; set; } = new();
+        public List<Prescription>? Prescriptions { get; set; }
     }
 }
