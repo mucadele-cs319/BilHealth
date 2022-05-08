@@ -49,6 +49,12 @@ namespace BilHealth.Services.AccessControl
         Task GrantTimedAccess(TimedAccessGrantCreateDto details);
         Task CancelTimedAccessGrant(Guid grantId);
 
+        /// <summary>
+        /// Get a list of cases personalized to the user's access workflow.
+        /// The <c>Case</c> entities only have their <c>CaseMessage</c> navigation property loaded.
+        /// </summary>
+        /// <param name="user">The user doing the accessing</param>
+        /// <returns>List of cases</returns>
         Task<List<Case>> GetPersonalizedCaseList(DomainUser user);
     }
 }
