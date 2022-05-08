@@ -85,20 +85,23 @@ using (var scope = app.Services.CreateScope())
 // TODO: A proper system initialization flow with default user creation
 using (var scope = app.Services.CreateScope())
 {
-    // Register an admin user
+    // Register an admin user if it doesn't exist
     var authService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
     var adminUsername = "0000";
 
-    authService.DeleteUser(adminUsername).Wait();
-    authService.Register(new()
+    if (!authService.UserNameExists(adminUsername).GetAwaiter().GetResult())
     {
-        UserName = adminUsername,
-        Password = "admin123",
-        Email = "tempmail@example.com",
-        FirstName = "John",
-        LastName = "Smith",
-        UserType = UserType.Admin
-    }).Wait();
+        // authService.DeleteUser(adminUsername).Wait();
+        authService.Register(new()
+        {
+            UserName = adminUsername,
+            Password = "admin123",
+            Email = "tempmail@example.com",
+            FirstName = "John",
+            LastName = "Smith",
+            UserType = UserType.Admin
+        }).Wait();
+    }
 }
 
 if (!app.Environment.IsDevelopment())
