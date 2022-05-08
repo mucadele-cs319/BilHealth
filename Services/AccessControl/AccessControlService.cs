@@ -84,6 +84,8 @@ namespace BilHealth.Services.AccessControl
         }
 
         public async Task<List<Case>> GetPersonalizedCaseList(DomainUser user) =>
-            await DbCtx.Cases.Where(await AccessStrategyFactory(user.Discriminator).GetPersonalizedCaseQuery(user)).ToListAsync();
+            await DbCtx.Cases.Where(await AccessStrategyFactory(user.Discriminator).GetPersonalizedCaseQuery(user))
+                             .Include(c => c.Messages)
+                             .ToListAsync();
     }
 }
