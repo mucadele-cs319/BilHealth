@@ -15,21 +15,18 @@ namespace BilHealth.Services.Users
         Task CreateRoles();
         Task<IdentityResult> AssignRole(AppUser user, string userType);
 
+        Task<bool> UserNameExists(string userName);
+        /// <summary>
+        /// Avoid this method as much as you can.
+        /// We do not currently handle the deletion of users well (at all).
+        /// It will leave stale IDs all over the database.
+        /// </summary>
         Task<IdentityResult> DeleteUser(string userName);
         Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
 
-        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
-        Task<AppUser> GetAppUser(ClaimsPrincipal principal);
-        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
-        Task<AppUser> GetAppUser(Guid userId);
-        [Obsolete($"Do not pass around the {nameof(AppUser)} type, use {nameof(DomainUser)} instead.", true)]
-        Task<List<AppUser>> GetAllAppUsers();
-
         Task<DomainUser> GetUser(ClaimsPrincipal principal);
         Task<DomainUser> GetUser(Guid userId);
+        Task<string> GetUserType(Guid userId);
         Task<List<DomainUser>> GetAllUsers();
-
-        Task<bool> CanAccessCase(DomainUser user, Guid caseId);
-        Task<bool> CanAccessTestResult(DomainUser user, Guid testResultId);
     }
 }

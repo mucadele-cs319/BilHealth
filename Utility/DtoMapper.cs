@@ -26,6 +26,7 @@ namespace BilHealth.Utility
                 dto.BloodType = patient.BloodType;
                 dto.Vaccinations = patient.Vaccinations?.Select(Map).ToList();
                 dto.TestResults = patient.TestResults?.Select(Map).ToList();
+                dto.TimedAccessGrants = patient.TimedAccessGrants?.Select(Map).ToList();
                 dto.Cases = patient.Cases?.Select(MapSimpleCase).ToList();
                 dto.Blacklisted = patient.Blacklisted;
             }
@@ -33,7 +34,6 @@ namespace BilHealth.Utility
             {
                 dto.Specialization = doctor.Specialization;
                 dto.Campus = doctor.Campus;
-                dto.Cases = doctor.Cases?.Select(MapSimpleCase).ToList();
             }
 
             return dto;
@@ -234,6 +234,32 @@ namespace BilHealth.Utility
                 DateTime = prescription.DateTime,
                 DoctorUserId = prescription.DoctorUserId,
                 Item = prescription.Item
+            };
+            return dto;
+        }
+
+        public static AuditTrailDto Map(AuditTrail auditTrail)
+        {
+            var dto = new AuditTrailDto
+            {
+                Id = auditTrail.Id,
+                AccessTime = auditTrail.AccessTime,
+                AccessedPatientUserId = auditTrail.AccessedPatientUserId,
+                UserId = auditTrail.UserId
+            };
+            return dto;
+        }
+
+        public static TimedAccessGrantDto Map(TimedAccessGrant timedAccessGrant)
+        {
+            var dto = new TimedAccessGrantDto
+            {
+                Id = timedAccessGrant.Id,
+                Canceled = timedAccessGrant.Canceled,
+                Period = timedAccessGrant.Period,
+                ExpiryTime = timedAccessGrant.ExpiryTime,
+                PatientUserId = timedAccessGrant.PatientUserId,
+                UserId = timedAccessGrant.UserId
             };
             return dto;
         }

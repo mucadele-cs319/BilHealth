@@ -1,8 +1,6 @@
 using BilHealth.Data;
 using BilHealth.Model;
-using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
-using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
@@ -20,36 +18,15 @@ namespace BilHealth.Services.Users
             Clock = clock;
         }
 
-        public async Task<UserProfileDto> GetFilteredUser(DomainUser requestingUser, Guid requestedUserId)
-        {
-            var requestedUser = await AuthenticationService.GetUser(requestedUserId);
-            var dto = DtoMapper.Map(requestedUser);
-
-            switch (requestingUser)
-            {
-                case Patient:
-                    if (requestedUser is Patient && requestedUserId != requestingUser.Id)
-                        throw new InvalidOperationException("Patient cannot access other patient profiles");
-                    break;
-                case Nurse:
-                case Doctor:
-                case Staff:
-                case Admin:
-                    break;
-            }
-
-            return dto;
-        }
-
-        public async Task<List<Case>> GetOpenCases(DomainUser user)
+        public Task<List<Case>> GetOpenCases(DomainUser user)
         {
             if (user is Patient patient)
             {
-                return await DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State != CaseState.Closed).ToListAsync();
+                return DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State != CaseState.Closed).ToListAsync();
             }
             else if (user is Doctor doctor)
             {
-                return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State != CaseState.Closed).ToListAsync();
+                return DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State != CaseState.Closed).ToListAsync();
             }
             else
             {
@@ -57,15 +34,15 @@ namespace BilHealth.Services.Users
             }
         }
 
-        public async Task<List<Case>> GetPastCases(DomainUser user)
+        public Task<List<Case>> GetPastCases(DomainUser user)
         {
             if (user is Patient patient)
             {
-                return await DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State == CaseState.Closed).ToListAsync();
+                return DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State == CaseState.Closed).ToListAsync();
             }
             else if (user is Doctor doctor)
             {
-                return await DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Closed).ToListAsync();
+                return DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Closed).ToListAsync();
             }
             else
             {

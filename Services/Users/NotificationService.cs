@@ -189,9 +189,9 @@ namespace BilHealth.Services.Users
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task<List<Notification>> GetNotifications(DomainUser user, bool unread)
+        public Task<List<Notification>> GetNotifications(DomainUser user, bool unread)
         {
-            return await DbCtx.Notifications.Where(n => n.UserId == user.Id && (!unread || n.Read == false))
+            return DbCtx.Notifications.Where(n => n.UserId == user.Id && (!unread || n.Read == false))
                 .OrderByDescending(n => n.DateTime).ToListAsync();
         }
     }

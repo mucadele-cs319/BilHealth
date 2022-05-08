@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using BilHealth.Utility.Enum;
 
 namespace BilHealth.Model
@@ -8,6 +7,6 @@ namespace BilHealth.Model
         public string Specialization { get; set; } = String.Empty;
         public Campus Campus { get; set; }
 
-        [InverseProperty("DoctorUser")] public List<Case>? Cases { get; set; }
+        // [InverseProperty("DoctorUser")] public List<Case>? Cases { get; set; }
     }
 }

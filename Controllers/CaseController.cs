@@ -1,6 +1,7 @@
 using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services;
+using BilHealth.Services.AccessControl;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -16,20 +17,34 @@ namespace BilHealth.Controllers
     public class CaseController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
+        private readonly IAccessControlService AccessControlService;
         private readonly ICaseService CaseService;
 
-        public CaseController(IAuthenticationService authenticationService, ICaseService caseService)
+        public CaseController(IAuthenticationService authenticationService, IAccessControlService accessControlService, ICaseService caseService)
         {
             AuthenticationService = authenticationService;
+            AccessControlService = accessControlService;
             CaseService = caseService;
+        }
+
+        [HttpGet]
+        public async Task<List<SimpleCaseDto>> GetPersonalized()
+        {
+            var user = await AuthenticationService.GetUser(User);
+            var list = await AccessControlService.GetPersonalizedCaseList(user);
+            return list.Select(DtoMapper.MapSimpleCase).ToList();
         }
 
         [HttpGet("{caseId:guid}")]
         public async Task<IActionResult> Get(Guid caseId)
         {
             var user = await AuthenticationService.GetUser(User);
-            if (!(await AuthenticationService.CanAccessCase(user, caseId)))
-                return Forbid();
+            try
+            {
+                if (!(await AccessControlService.Case(user.Id, caseId)))
+                    return Forbid();
+            }
+            catch (IdNotFoundException) { return NotFound(); }
 
             return Ok(DtoMapper.Map(await CaseService.GetCase(caseId)));
         }

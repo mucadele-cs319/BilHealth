@@ -11,6 +11,7 @@ namespace BilHealth.Model
 
         public List<Vaccination>? Vaccinations { get; set; }
         public List<TestResult>? TestResults { get; set; }
+        [InverseProperty("PatientUser")] public List<TimedAccessGrant>? TimedAccessGrants { get; set; }
 
         [InverseProperty("PatientUser")] public List<Case>? Cases { get; set; }
         public bool Blacklisted { get; set; } = false;

@@ -4,6 +4,7 @@ using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
 namespace BilHealth.Services
@@ -156,13 +157,13 @@ namespace BilHealth.Services
 
         public async Task SetTriageRequestApproval(Guid caseId, ApprovalStatus approval)
         {
-            var triageRequest = DbCtx.TriageRequests.Where(t => t.CaseId == caseId).OrderBy(t => t.DateTime).Last();
+            var triageRequest = await DbCtx.TriageRequests.Where(t => t.CaseId == caseId).OrderBy(t => t.DateTime).Include(t => t.Case).LastAsync();
 
             triageRequest.ApprovalStatus = approval;
 
             if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
             {
-                triageRequest.Case!.DoctorUserId = triageRequest.DoctorUserId;
+                triageRequest.Case.DoctorUserId = triageRequest.DoctorUserId;
                 triageRequest.Case.State = CaseState.Ongoing;
                 NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
             }

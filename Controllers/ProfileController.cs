@@ -1,6 +1,7 @@
 using BilHealth.Model;
 using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
+using BilHealth.Services.AccessControl;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
 using BilHealth.Utility.Enum;
@@ -16,11 +17,13 @@ namespace BilHealth.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IAuthenticationService AuthenticationService;
+        private readonly IAccessControlService AccessControlService;
         private readonly IProfileService ProfileService;
 
-        public ProfileController(IAuthenticationService authenticationService, IProfileService profileService)
+        public ProfileController(IAuthenticationService authenticationService, IAccessControlService accessControlService, IProfileService profileService)
         {
             AuthenticationService = authenticationService;
+            AccessControlService = accessControlService;
             ProfileService = profileService;
         }
 
@@ -44,21 +47,14 @@ namespace BilHealth.Controllers
         {
             var requestingUser = await AuthenticationService.GetUser(User);
 
-            UserProfileDto dto;
+            DomainUser user;
             try
             {
-                dto = await ProfileService.GetFilteredUser(requestingUser, userId);
+                user = await AuthenticationService.GetUser(userId);
             }
-            catch (IdNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (InvalidOperationException)
-            {
-                return Forbid();
-            }
+            catch (IdNotFoundException) { return NotFound(); }
 
-            return Ok(dto);
+            return await AccessControlService.AccessGuard(requestingUser.Id, user.Id) ? Ok(DtoMapper.Map(user)) : Forbid();
         }
 
         [HttpPatch("{userId:guid}")]
@@ -95,6 +91,38 @@ namespace BilHealth.Controllers
         public async Task RemoveVaccination(Guid vaccinationId)
         {
             await ProfileService.RemoveVaccination(vaccinationId);
+        }
+
+        [HttpPost("{patientUserId:guid}/accessgrants")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Patient}")]
+        public async Task<IActionResult> GrantAccess(Guid patientUserId, TimedAccessGrantCreateDto details)
+        {
+            var requestingUser = await AuthenticationService.GetUser(User);
+            if (!await AccessControlService.Profile(requestingUser.Id, patientUserId)) return Forbid();
+
+            await AccessControlService.GrantTimedAccess(patientUserId, details);
+            return Ok();
+        }
+
+        [HttpPatch("{patientUserId:guid}/accessgrants/{accessGrantId:guid}")]
+        public async Task<IActionResult> CancelAccessGrant(Guid patientUserId, Guid accessGrantId)
+        {
+            var requestingUser = await AuthenticationService.GetUser(User);
+            if (!await AccessControlService.Profile(requestingUser.Id, patientUserId)) return Forbid();
+
+            try
+            {
+                await AccessControlService.CancelTimedAccessGrant(accessGrantId);
+            }
+            catch (IdNotFoundException) { return NotFound(); }
+            return Ok();
+        }
+
+        [HttpGet("audittrails")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
+        public async Task<List<AuditTrailDto>> GetRecentAuditTrails()
+        {
+            return (await AccessControlService.GetRecentAuditTrails()).Select(DtoMapper.Map).ToList();
         }
     }
 }

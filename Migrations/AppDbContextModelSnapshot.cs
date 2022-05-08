@@ -183,6 +183,30 @@ namespace BilHealth.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("BilHealth.Model.AuditTrail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Instant>("AccessTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("AccessedPatientUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccessedPatientUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuditTrails");
+                });
+
             modelBuilder.Entity("BilHealth.Model.Case", b =>
                 {
                     b.Property<Guid>("Id")
@@ -417,6 +441,37 @@ namespace BilHealth.Migrations
                     b.HasIndex("PatientUserId");
 
                     b.ToTable("TestResults");
+                });
+
+            modelBuilder.Entity("BilHealth.Model.TimedAccessGrant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Canceled")
+                        .HasColumnType("boolean");
+
+                    b.Property<Instant>("ExpiryTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PatientUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Period>("Period")
+                        .IsRequired()
+                        .HasColumnType("interval");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TimedAccessGrants");
                 });
 
             modelBuilder.Entity("BilHealth.Model.TriageRequest", b =>
@@ -661,10 +716,29 @@ namespace BilHealth.Migrations
                     b.Navigation("Appointment");
                 });
 
+            modelBuilder.Entity("BilHealth.Model.AuditTrail", b =>
+                {
+                    b.HasOne("BilHealth.Model.Patient", "AccessedPatientUser")
+                        .WithMany()
+                        .HasForeignKey("AccessedPatientUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BilHealth.Model.DomainUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccessedPatientUser");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BilHealth.Model.Case", b =>
                 {
                     b.HasOne("BilHealth.Model.Doctor", "DoctorUser")
-                        .WithMany("Cases")
+                        .WithMany()
                         .HasForeignKey("DoctorUserId");
 
                     b.HasOne("BilHealth.Model.Patient", "PatientUser")
@@ -739,6 +813,25 @@ namespace BilHealth.Migrations
                         .IsRequired();
 
                     b.Navigation("PatientUser");
+                });
+
+            modelBuilder.Entity("BilHealth.Model.TimedAccessGrant", b =>
+                {
+                    b.HasOne("BilHealth.Model.Patient", "PatientUser")
+                        .WithMany("TimedAccessGrants")
+                        .HasForeignKey("PatientUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BilHealth.Model.DomainUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PatientUser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BilHealth.Model.TriageRequest", b =>
@@ -854,16 +947,13 @@ namespace BilHealth.Migrations
                     b.Navigation("TriageRequests");
                 });
 
-            modelBuilder.Entity("BilHealth.Model.Doctor", b =>
-                {
-                    b.Navigation("Cases");
-                });
-
             modelBuilder.Entity("BilHealth.Model.Patient", b =>
                 {
                     b.Navigation("Cases");
 
                     b.Navigation("TestResults");
+
+                    b.Navigation("TimedAccessGrants");
 
                     b.Navigation("Vaccinations");
                 });

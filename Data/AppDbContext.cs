@@ -10,6 +10,14 @@ namespace BilHealth.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<DomainUser>().Navigation(u => u.AppUser).AutoInclude();
+            builder.Entity<AppUser>().Navigation(u => u.DomainUser).AutoInclude();
+        }
+
         public DbSet<DomainUser> DomainUsers => Set<DomainUser>();
         public DbSet<Admin> AdminUsers => Set<Admin>();
         public DbSet<Doctor> DoctorUsers => Set<Doctor>();
@@ -26,5 +34,8 @@ namespace BilHealth.Data
         public DbSet<AppointmentVisit> AppointmentVisits => Set<AppointmentVisit>();
         public DbSet<TriageRequest> TriageRequests => Set<TriageRequest>();
         public DbSet<Announcement> Announcements => Set<Announcement>();
+
+        public DbSet<AuditTrail> AuditTrails => Set<AuditTrail>();
+        public DbSet<TimedAccessGrant> TimedAccessGrants => Set<TimedAccessGrant>();
     }
 }

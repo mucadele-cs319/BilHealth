@@ -22,7 +22,7 @@ namespace BilHealth.Utility
                 UserType.Doctor => new Doctor(),
                 UserType.Nurse => new Nurse(),
                 UserType.Patient => new Patient(),
-                _ => throw new ArgumentOutOfRangeException("Invalid user type", nameof(userType)),
+                _ => throw new ArgumentOutOfRangeException(nameof(userType), "Invalid user type"),
             };
 
             initializer(domainUser);
