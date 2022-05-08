@@ -136,5 +136,12 @@ namespace BilHealth.Controllers
         {
             return DtoMapper.Map(await CaseService.UnassignDoctor(caseId));
         }
+
+        [HttpPatch("{caseId:guid}/report")]
+        [Authorize(Roles = $"{UserType.Patient},{UserType.Doctor},{UserType.Staff}")]
+        public async Task<CaseDto> CreateReport(Guid patientId)
+        {
+            return DtoMapper.Map(await CaseService.CreateReport(patientId));
+        }
     }
 }
