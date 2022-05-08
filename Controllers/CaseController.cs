@@ -139,9 +139,9 @@ namespace BilHealth.Controllers
 
         [HttpGet("{caseId:guid}/report")]
         [Authorize(Roles = $"{UserType.Patient},{UserType.Doctor},{UserType.Staff}")]
-        public async Task<CaseDto> CreateReport(Guid patientId)
+        public async Task<ReportDto> CreateReport(Guid caseId)
         {
-            return DtoMapper.Map(await CaseService.CreateReport(patientId));
+            return DtoMapper.ReportMap(await CaseService.CreateReport(caseId));
         }
     }
 }
