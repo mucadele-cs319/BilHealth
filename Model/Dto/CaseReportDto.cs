@@ -10,5 +10,7 @@ namespace BilHealth.Model.Dto
         public string? Diagnosis { get; set; } = null!;
         public CaseType Type { get; set; }
         public List<Prescription>? Prescriptions { get; set; }
+        public int MessageCount { get; set; }
+        public int TriageCount { get; set; }
     }
 }
