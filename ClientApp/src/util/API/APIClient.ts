@@ -308,7 +308,7 @@ const processCaseTimes = (_case: Case) => {
 
   _case.messages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
   _case.systemMessages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
-  _case.triageRequests.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
+  _case.triageRequests.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const cases = {
