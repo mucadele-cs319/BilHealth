@@ -4,6 +4,7 @@ import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
 import RegistrationCard from "../staffpanel/RegistrationCard";
 import UserListCard from "../staffpanel/UserListCard";
+import AuditTrailCard from "../staffpanel/AuditTrailCard";
 
 const StaffPanel = () => {
   useDocumentTitle("Staff Panel");
@@ -14,6 +15,7 @@ const StaffPanel = () => {
         <Grid item lg={10} xs={11}>
           <RegistrationCard />
           <UserListCard />
+          <AuditTrailCard />
         </Grid>
       </Fade>
     </Grid>
