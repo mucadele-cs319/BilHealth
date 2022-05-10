@@ -3,143 +3,116 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import APIClient from "../../util/API/APIClient";
-import {
-  ApprovalStatus,
-  Case,
-  getAllApprovalTypes,
-  SimpleUser,
-  CaseState,
-  stringifyApproval,
-} from "../../util/API/APITypes";
-import { isStaff } from "../../util/UserTypeUtil";
+import { ApprovalStatus, Case, CaseState } from "../../util/API/APITypes";
 import AddIcon from "@mui/icons-material/Add";
-import { useUserContext } from "../UserContext";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
+import TriageRequestItem from "./TriageRequestItem";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
+import Divider from "@mui/material/Divider";
 
 interface Props {
   _case: Case;
   refreshHandler: () => void;
 }
 
-const TriageRequestCard = ({ _case }: Props) => {
-  const [doctorUserSimple, setDoctorUserSimple] = useState<SimpleUser>();
-
-  const { user } = useUserContext();
-
-  const [approval, setApproval] = useState(ApprovalStatus.Waiting);
-  const [doctorUserId, setDoctorUserId] = useState("");
-  const [isApprovalPending, setIsApprovalPending] = useState(false);
+const TriageRequestCard = ({ _case, refreshHandler }: Props) => {
   const [creating, setCreating] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
-  const handleApproval = async () => {
-    setIsApprovalPending(true);
-    await APIClient.cases.triageRequests.setApproval(_case.id, approval);
-    setIsApprovalPending(false);
-  };
+  const [doctorUserId, setDoctorUserId] = useState("");
 
   const handleCreate = async () => {
-    setIsApprovalPending(true);
+    setIsPending(true);
     await APIClient.cases.triageRequests.create(_case.id, doctorUserId);
-    setIsApprovalPending(false);
+    setIsPending(false);
+    handleCancel();
+    refreshHandler();
   };
 
-  useEffect(() => {
-    if (_case.triageRequests.length > 0) {
-      APIClient.profiles.getSimple(_case.triageRequests[0].doctorUserId).then((responseUser) => {
-        setDoctorUserSimple(responseUser);
-      });
-    }
-  }, []);
+  const handleCancel = () => {
+    setDoctorUserId("");
+    setCreating(false);
+  };
 
   const validate = () => doctorUserId.length > 0;
 
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
-        <Stack direction="row" sx={{ mb: 3 }}>
+        <Stack direction="row">
           <Typography variant="h5" gutterBottom>
             Triage Requests
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-            <Button
-              disabled={
-                _case.triageRequests.length != 0 || _case.triageRequests[0].approvalStatus !== ApprovalStatus.Rejected
-              }
-              onClick={() => setCreating(true)}
-              variant="text"
-              startIcon={<AddIcon />}
-            >
+            <Button disabled={_case.state !== CaseState.WaitingTriage} onClick={() => setCreating(true)} variant="text">
               Add Request
             </Button>
           </Stack>
         </Stack>
 
-        {!creating ? null : (
-          <Box>
+        {creating ? (
+          <Stack justifyContent="center" direction="row" spacing={2}>
             <TextField
-              id="case-druserid-input"
+              id="triagerequest-id-input"
               label="Doctor User ID"
               variant="outlined"
               margin="dense"
               value={doctorUserId}
               onChange={(e) => setDoctorUserId(e.target.value)}
             />
-            <LoadingButton
-              loading={isApprovalPending}
-              disabled={!validate()}
-              onClick={handleCreate}
-              variant="text"
-              loadingPosition="center"
-            >
-              Create
-            </LoadingButton>
+            <Stack direction="column" justifyContent="center">
+              <Button onClick={handleCancel} startIcon={<CancelIcon />}>
+                Cancel
+              </Button>
+              <LoadingButton
+                disabled={!validate()}
+                loading={isPending}
+                variant="text"
+                loadingPosition="start"
+                startIcon={creating ? <AddIcon /> : <SaveIcon />}
+                onClick={handleCreate}
+              >
+                Request
+              </LoadingButton>
+            </Stack>
+          </Stack>
+        ) : null}
+
+        {_case.triageRequests.length === 0 ? (
+          <Stack alignItems="center" className="mt-8">
+            <Typography color="text.secondary">No triage requests have been made.</Typography>
+          </Stack>
+        ) : _case.triageRequests[0].approvalStatus !== ApprovalStatus.Waiting ? (
+          <Stack alignItems="center" className="mt-8">
+            <Typography color="text.secondary">No active triage requests at this time.</Typography>
+          </Stack>
+        ) : (
+          <Box>
+            <TriageRequestItem triageRequest={_case.triageRequests[0]} refreshHandler={refreshHandler} />
           </Box>
         )}
 
-        {_case.state !== CaseState.WaitingTriage ? (
-          <>
-            <Typography variant="body2" gutterBottom>
-              Approval: {stringifyApproval(_case.triageRequests[0].approvalStatus)}
+        {_case.triageRequests.length > 0 &&
+        _case.triageRequests.some((t) => t.approvalStatus === ApprovalStatus.Rejected) ? (
+          <Box mt={2}>
+            <Divider />
+            <Typography mt={2} variant="h6">
+              Previous Requests
             </Typography>
-            <Typography variant="body2">
-              Doctor Requested:{" "}
-              <Link
-                to={`/profiles/${doctorUserSimple?.id}`}
-              >{`${doctorUserSimple?.firstName} ${doctorUserSimple?.lastName}`}</Link>
-            </Typography>
-            {!isStaff(user) ? null : (
-              <Box>
-                <TextField
-                  select
-                  margin="dense"
-                  fullWidth
-                  label="Approval"
-                  onChange={(e) => setApproval(parseInt(e.target.value))}
-                  value={approval}
-                >
-                  {getAllApprovalTypes().map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {stringifyApproval(type)}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <Stack justifyContent="right">
-                  <LoadingButton loading={isApprovalPending} onClick={handleApproval} variant="text">
-                    Set Approval
-                  </LoadingButton>
-                </Stack>
-              </Box>
-            )}
-          </>
-        ) : (
-          <Typography variant="body2">No active triage requests exist.</Typography>
-        )}
+            <Box className="max-h-96 overflow-auto">
+              {_case.triageRequests
+                .filter((request) => request.approvalStatus !== ApprovalStatus.Waiting)
+                .map((request) => (
+                  <TriageRequestItem key={request.id} triageRequest={request} refreshHandler={refreshHandler} />
+                ))}
+            </Box>
+          </Box>
+        ) : null}
       </CardContent>
     </Card>
   );
