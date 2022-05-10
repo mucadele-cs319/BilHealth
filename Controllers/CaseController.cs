@@ -28,11 +28,25 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet]
-        public async Task<List<SimpleCaseDto>> GetPersonalized()
+        public async Task<SimpleCaseDto[]> GetPersonalized()
         {
             var user = await AuthenticationService.GetUser(User);
             var list = await AccessControlService.GetPersonalizedCaseList(user);
-            return list.Select(DtoMapper.MapSimpleCase).ToList();
+
+            var patientUsers = new List<Model.Patient>();
+            var doctorUsers = new List<Model.Doctor?>();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                patientUsers.Add((Model.Patient)await AuthenticationService.GetBareUser(list[i].PatientUserId));
+                if (list[i].DoctorUserId is Guid doctorUserId)
+                    doctorUsers.Add((Model.Doctor?)await AuthenticationService.GetBareUser(doctorUserId));
+                else doctorUsers.Add(null);
+            }
+
+            return list.Select((_case, i) =>
+                DtoMapper.MapSimpleCase(_case, patientUsers[i], doctorUsers[i])
+            ).ToArray();
         }
 
         [HttpGet("{caseId:guid}")]
@@ -46,7 +60,11 @@ namespace BilHealth.Controllers
             }
             catch (IdNotFoundException) { return NotFound(); }
 
-            return Ok(DtoMapper.Map(await CaseService.GetCase(caseId)));
+            var _case = await CaseService.GetCase(caseId);
+            var patientUser = await AuthenticationService.GetBareUser(_case.PatientUserId);
+            var doctorUser = _case.DoctorUserId is null ? null : await AuthenticationService.GetBareUser((Guid)_case.DoctorUserId);
+
+            return Ok(DtoMapper.Map(_case, (Model.Patient)patientUser, (Model.Doctor?)doctorUser));
         }
 
         [HttpPost]

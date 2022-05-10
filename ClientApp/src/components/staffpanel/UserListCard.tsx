@@ -87,7 +87,7 @@ const UserListCard = () => {
                     .filter(
                       (user) =>
                         searchString.length === 0 ||
-                        [user.userName, user.email, `${user.firstName} ${user.lastName}`].some((prop) =>
+                        [user.userName, user.email, `${user.firstName} ${user.lastName}`, user.id].some((prop) =>
                           prop.toLowerCase().includes(searchString.toLowerCase()),
                         ),
                     )

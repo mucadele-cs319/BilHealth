@@ -57,6 +57,19 @@ namespace BilHealth.Controllers
             return await AccessControlService.AccessGuard(requestingUser.Id, user.Id) ? Ok(DtoMapper.Map(user)) : Forbid();
         }
 
+        [HttpGet("{userId:guid}/simple")]
+        public async Task<IActionResult> GetUserSimple(Guid userId)
+        {
+            DomainUser user;
+            try
+            {
+                user = await AuthenticationService.GetUser(userId);
+            }
+            catch (IdNotFoundException) { return NotFound(); }
+
+            return Ok(DtoMapper.MapSimpleUser(user));
+        }
+
         [HttpPatch("{userId:guid}")]
         public async Task<IActionResult> Update(Guid userId, UserProfileUpdateDto details)
         {

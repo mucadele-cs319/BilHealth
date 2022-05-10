@@ -35,7 +35,8 @@ const AnnouncementItemEditable = ({ data, changeHandler, cancelHandler }: Props)
 
   const handleEditAnnouncement = async () => {
     setIsPending(true);
-    await APIClient.announcements.update({ id: data?.id, title, message });
+    if (data === undefined) throw Error("No existing announcement");
+    await APIClient.announcements.update(data.id, { title, message });
     setIsPending(false);
     changeHandler();
   };

@@ -1,5 +1,32 @@
 import dayjs from "dayjs";
-import { Announcement, Login, Notification, Registration, SimpleUser, TestResult, User, Vaccination } from "./APITypes";
+import {
+  Announcement,
+  AnnouncementUpdate,
+  Appointment,
+  AppointmentUpdate,
+  AppointmentVisit,
+  AppointmentVisitUpdate,
+  ApprovalStatus,
+  AuditTrail,
+  Case,
+  CaseCreate,
+  CaseMessage,
+  CaseMessageUpdate,
+  CaseState,
+  Login,
+  MedicalTestType,
+  Notification,
+  Prescription,
+  PrescriptionUpdate,
+  Registration,
+  SimpleCase,
+  SimpleUser,
+  TimedAccessGrantCreate,
+  TriageRequest,
+  User,
+  UserUpdate,
+  VaccinationUpdate,
+} from "./APITypes";
 
 const authentication = {
   register: async (registration: Registration) => {
@@ -73,6 +100,13 @@ const sortTestResults = (user: User) => {
   user.testResults?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
 };
 
+const sortTimedGrants = (user: User) => {
+  user.timedAccessGrants?.forEach((grant) => {
+    grant.expiryTime = dayjs(grant.expiryTime);
+  });
+  user.timedAccessGrants?.sort((a, b) => (a.expiryTime?.isAfter(b.expiryTime) ? -1 : 1));
+};
+
 const profiles = {
   all: async (): Promise<SimpleUser[]> => {
     const response = await fetch("/api/profiles");
@@ -86,6 +120,7 @@ const profiles = {
     sortVaccinations(user);
     sortTestResults(user);
     processDateOfBirth(user);
+    sortTimedGrants(user);
 
     return user;
   },
@@ -96,11 +131,17 @@ const profiles = {
     sortVaccinations(user);
     sortTestResults(user);
     processDateOfBirth(user);
+    sortTimedGrants(user);
 
     return user;
   },
-  update: async (newProfile: User): Promise<void> => {
-    await fetch(`/api/profiles/${newProfile.id}`, {
+  getSimple: async (userId: string): Promise<SimpleUser> => {
+    const response = await fetch(`/api/profiles/${userId}/simple`);
+    const user: SimpleUser = await response.json();
+    return user;
+  },
+  update: async (userId: string, newProfile: UserUpdate): Promise<void> => {
+    await fetch(`/api/profiles/${userId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -114,8 +155,8 @@ const profiles = {
     });
   },
   vaccination: {
-    add: async (vaccination: Vaccination): Promise<void> => {
-      await fetch(`/api/profiles/${vaccination.patientUserId}/vaccinations`, {
+    add: async (patientUserId: string, vaccination: VaccinationUpdate): Promise<void> => {
+      await fetch(`/api/profiles/${patientUserId}/vaccinations`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -123,8 +164,8 @@ const profiles = {
         body: JSON.stringify(vaccination),
       });
     },
-    update: async (vaccination: Vaccination): Promise<void> => {
-      await fetch(`/api/profiles/vaccinations/${vaccination.id}`, {
+    update: async (vaccinationId: string, vaccination: VaccinationUpdate): Promise<void> => {
+      await fetch(`/api/profiles/vaccinations/${vaccinationId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -138,26 +179,49 @@ const profiles = {
       });
     },
   },
+  accessControl: {
+    grantTimedAccess: async (patientUserId: string, grant: TimedAccessGrantCreate) => {
+      await fetch(`/api/profiles/${patientUserId}/accessgrants`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(grant),
+      });
+    },
+    cancelTimedAccess: async (patientUserId: string, accessGrantId: string) => {
+      await fetch(`/api/profiles/${patientUserId}/accessgrants/${accessGrantId}`, {
+        method: "PATCH",
+      });
+    },
+    getAuditTrails: async (): Promise<AuditTrail[]> => {
+      const response = await fetch(`/api/profiles/audittrails`);
+      const trails: AuditTrail[] = await response.json();
+      trails.forEach((testResult) => {
+        testResult.accessTime = dayjs(testResult.accessTime);
+      });
+      trails.sort((a, b) => (a.accessTime.isAfter(b.accessTime) ? -1 : 1));
+      return trails;
+    },
+  },
 };
 
 const testResults = {
-  add: async (testResult: TestResult) => {
+  add: async (patientUserId: string, testType: MedicalTestType, file?: File) => {
     const formData = new FormData();
-    if (testResult.type === undefined) throw Error("No type given for test result");
-    if (testResult.file === undefined) throw Error("No file given for test result");
-    formData.append("file", testResult.file);
+    if (file === undefined) throw Error("No file given for test result");
+    formData.append("file", file);
 
-    await fetch(`/api/profiles/${testResult.patientUserId}/testresults?type=${testResult.type.toString()}`, {
+    await fetch(`/api/profiles/${patientUserId}/testresults?testType=${testType.toString()}`, {
       method: "POST",
       body: formData,
     });
   },
-  update: async (testResult: TestResult) => {
+  update: async (testResultId: string, testType: MedicalTestType, file?: File) => {
     const formData = new FormData();
-    if (testResult.type) formData.append("type", testResult.type.toString());
-    if (testResult.file) formData.append("file", testResult.file);
+    if (file) formData.append("file", file);
 
-    await fetch(`/api/testresults/${testResult.id}`, {
+    await fetch(`/api/testresults/${testResultId}?testType=${testType.toString()}`, {
       method: "PATCH",
       body: formData,
     });
@@ -170,9 +234,205 @@ const testResults = {
   getFile: (testResultId: string) => `/api/testresults/${testResultId}/file`,
 };
 
-const appointments = {};
+const appointments = {
+  create: async (caseId: string, details: AppointmentUpdate): Promise<Appointment> => {
+    const response = await fetch(`/api/cases/${caseId}/appointment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(details),
+    });
+    const appointment: Appointment = await response.json();
+    appointment.dateTime = dayjs(appointment.dateTime);
+    appointment.createdAt = dayjs(appointment.createdAt);
+    return appointment;
+  },
+  update: async (appointmentId: string, details: AppointmentUpdate): Promise<Appointment> => {
+    const response = await fetch(`/api/appointments/${appointmentId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(details),
+    });
+    const appointment: Appointment = await response.json();
+    appointment.dateTime = dayjs(appointment.dateTime);
+    appointment.createdAt = dayjs(appointment.createdAt);
+    return appointment;
+  },
+  cancel: async (appointmentId: string) => {
+    await fetch(`/api/appointments/${appointmentId}/cancel`, {
+      method: "PUT",
+    });
+  },
+  setApproval: async (appointmentId: string, approval: ApprovalStatus) => {
+    await fetch(`/api/appointments/${appointmentId}/approval?approval=${approval}`, {
+      method: "PUT",
+    });
+  },
+  visits: {
+    create: async (appointmentId: string, details: AppointmentVisitUpdate): Promise<AppointmentVisit> => {
+      const response = await fetch(`/api/appointments/${appointmentId}/visit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
+      const visit: AppointmentVisit = await response.json();
+      return visit;
+    },
+    update: async (appointmentId: string, details: AppointmentVisitUpdate) => {
+      await fetch(`/api/appointments/${appointmentId}/visit`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
+    },
+  },
+};
 
-const cases = {};
+const processCaseTimes = (_case: Case) => {
+  _case.dateTime = dayjs(_case.dateTime);
+  _case.appointments.forEach((appointment) => {
+    appointment.createdAt = dayjs(appointment.createdAt);
+    appointment.dateTime = dayjs(appointment.dateTime);
+  });
+  _case.messages.forEach((msg) => (msg.dateTime = dayjs(msg.dateTime)));
+  _case.prescriptions.forEach((prescription) => (prescription.dateTime = dayjs(prescription.dateTime)));
+  _case.systemMessages.forEach((msg) => (msg.dateTime = dayjs(msg.dateTime)));
+
+  _case.messages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
+  _case.systemMessages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
+};
+
+const cases = {
+  getList: async (): Promise<SimpleCase[]> => {
+    const response = await fetch(`/api/cases`);
+    const cases: SimpleCase[] = await response.json();
+
+    cases.forEach((_case) => (_case.dateTime = dayjs(_case.dateTime)));
+    cases.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+    return cases;
+  },
+  get: async (caseId: string): Promise<Case> => {
+    const response = await fetch(`/api/cases/${caseId}`);
+    const _case: Case = await response.json();
+    processCaseTimes(_case);
+    return _case;
+  },
+  create: async (details: CaseCreate) => {
+    const response = await fetch(`/api/cases`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(details),
+    });
+    const _case: Case = await response.json();
+    processCaseTimes(_case);
+    return _case;
+  },
+  changeState: async (caseId: string, state: CaseState) => {
+    await fetch(`/api/cases/${caseId}?state=${state.toString()}`, {
+      method: "PATCH",
+    });
+  },
+  messages: {
+    add: async (caseId: string, details: CaseMessageUpdate): Promise<CaseMessage> => {
+      const response = await fetch(`/api/cases/${caseId}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
+      const message: CaseMessage = await response.json();
+      message.dateTime = dayjs(message.dateTime);
+      return message;
+    },
+    update: async (messageId: string, details: CaseMessageUpdate): Promise<CaseMessage> => {
+      const response = await fetch(`/api/cases/messages/${messageId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
+      const message: CaseMessage = await response.json();
+      message.dateTime = dayjs(message.dateTime);
+      return message;
+    },
+    delete: async (messageId: string) => {
+      await fetch(`/api/cases/messages/${messageId}`, {
+        method: "DELETE",
+      });
+    },
+  },
+  prescriptions: {
+    add: async (caseId: string, details: PrescriptionUpdate): Promise<Prescription> => {
+      const response = await fetch(`/api/cases/${caseId}/prescriptions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
+      const prescription: Prescription = await response.json();
+      prescription.dateTime = dayjs(prescription.dateTime);
+      return prescription;
+    },
+    update: async (prescriptionId: string, details: PrescriptionUpdate): Promise<Prescription> => {
+      const response = await fetch(`/api/cases/prescriptions/${prescriptionId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(details),
+      });
+      const prescription: Prescription = await response.json();
+      prescription.dateTime = dayjs(prescription.dateTime);
+      return prescription;
+    },
+    delete: async (prescriptionId: string) => {
+      await fetch(`/api/cases/prescriptions/${prescriptionId}`, {
+        method: "DELETE",
+      });
+    },
+  },
+  triageRequests: {
+    create: async (caseId: string, doctorUserId: string): Promise<TriageRequest> => {
+      const response = await fetch(`/api/cases/${caseId}/triagerequest?doctorUserId=${doctorUserId}`, {
+        method: "POST",
+      });
+      const triageRequest: TriageRequest = await response.json();
+      triageRequest.dateTime = dayjs(triageRequest.dateTime);
+      return triageRequest;
+    },
+    setApproval: async (caseId: string, approval: ApprovalStatus) => {
+      await fetch(`/api/cases/${caseId}/triagerequest?approval=${approval}`, {
+        method: "PATCH",
+      });
+    },
+  },
+  unassign: async (caseId: string) => {
+    await fetch(`/api/cases/${caseId}/unassign`, {
+      method: "PATCH",
+    });
+  },
+  diagnosis: async (caseId: string, details: string) => {
+    await fetch(`/api/cases/${caseId}/diagnosis`, {
+      method: "PATCH",
+      body: details,
+    });
+  },
+  // getReport: async (caseId: string) => {
+  //   const response =
+  // },
+};
 
 const announcements = {
   get: async (): Promise<Announcement[]> => {
@@ -184,7 +444,7 @@ const announcements = {
     announcements.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
     return announcements;
   },
-  create: async (announcementInput: Announcement): Promise<Announcement> => {
+  create: async (announcementInput: AnnouncementUpdate): Promise<Announcement> => {
     const response = await fetch("/api/announcements", {
       method: "POST",
       headers: {
@@ -196,8 +456,8 @@ const announcements = {
     announcement.dateTime = dayjs(announcement.dateTime);
     return announcement;
   },
-  update: async (announcement: Announcement): Promise<void> => {
-    await fetch(`/api/announcements/${announcement.id}`, {
+  update: async (announcementId: string, announcement: AnnouncementUpdate): Promise<void> => {
+    await fetch(`/api/announcements/${announcementId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -123,6 +123,15 @@ namespace BilHealth.Utility
             return dto;
         }
 
+        public static CaseDto Map(Case _case, Patient patientUser, Doctor? doctorUser)
+        {
+            var dto = Map(_case);
+            dto.SimplePatientUser = MapSimpleUser(patientUser);
+            if (doctorUser is not null) dto.SimpleDoctorUser = MapSimpleUser(doctorUser);
+
+            return dto;
+        }
+
         public static SimpleCaseDto MapSimpleCase(Case _case)
         {
             var dto = new SimpleCaseDto
@@ -130,12 +139,23 @@ namespace BilHealth.Utility
                 Id = _case.Id,
                 DateTime = _case.DateTime,
                 State = _case.State,
+                Type = _case.Type,
                 PatientUserId = _case.PatientUserId,
-                DoctorUserId = _case.DoctorUserId
+                DoctorUserId = _case.DoctorUserId,
+                Title = _case.Title
             };
 
             if (_case.Messages is not null)
                 dto.MessageCount = _case.Messages.Count;
+
+            return dto;
+        }
+
+        public static SimpleCaseDto MapSimpleCase(Case _case, Patient patientUser, Doctor? doctorUser)
+        {
+            var dto = MapSimpleCase(_case);
+            dto.SimplePatientUser = MapSimpleUser(patientUser);
+            if (doctorUser is not null) dto.SimpleDoctorUser = MapSimpleUser(doctorUser);
 
             return dto;
         }

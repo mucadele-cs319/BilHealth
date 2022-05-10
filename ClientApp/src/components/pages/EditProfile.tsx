@@ -78,8 +78,8 @@ const EditProfile = () => {
 
   const handleSave = async () => {
     setIsSavePending(true);
-    await APIClient.profiles.update({
-      id: queryUser?.id,
+    if (queryUser === undefined) throw Error("User not loaded yet");
+    await APIClient.profiles.update(queryUser.id, {
       gender,
       dateOfBirth: dateOfBirth || undefined,
       bodyWeight,

@@ -48,7 +48,7 @@ const VaccinationRow = ({ readonly = false, patientId, vaccination, refreshHandl
     if (vaccination === undefined) throw Error("No existing vaccination");
     vaccination.type = newType;
     vaccination.dateTime = newDate;
-    await APIClient.profiles.vaccination.update(vaccination);
+    await APIClient.profiles.vaccination.update(vaccination.id, vaccination);
 
     setIsPending(false);
     setEditing(false);
@@ -67,7 +67,7 @@ const VaccinationRow = ({ readonly = false, patientId, vaccination, refreshHandl
   const handleCreate = async () => {
     setIsPending(true);
 
-    await APIClient.profiles.vaccination.add({ patientUserId: patientId, type: newType, dateTime: newDate });
+    await APIClient.profiles.vaccination.add(patientId, { type: newType, dateTime: newDate });
     setIsPending(false);
     handleCancel();
     refreshHandler();

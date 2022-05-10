@@ -45,9 +45,7 @@ const TestResultRow = ({ readonly = false, patientId, testResult, refreshHandler
     setIsPending(true);
 
     if (testResult === undefined) throw Error("No existing vaccination");
-    testResult.type = newType;
-    testResult.file = newFile;
-    await APIClient.testResults.update(testResult);
+    await APIClient.testResults.update(testResult.id, newType, newFile);
 
     setIsPending(false);
     setEditing(false);
@@ -67,7 +65,7 @@ const TestResultRow = ({ readonly = false, patientId, testResult, refreshHandler
     setIsPending(true);
 
     if (newType === undefined) throw Error("No type chosen");
-    await APIClient.testResults.add({ patientUserId: patientId, type: newType, file: newFile });
+    await APIClient.testResults.add(patientId, newType, newFile);
     setIsPending(false);
     handleCancel();
     refreshHandler();
