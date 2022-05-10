@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDocumentTitle } from "../../util/CustomHooks";
+import { titleify, useDocumentTitle } from "../../util/CustomHooks";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import Fade from "@mui/material/Fade";
@@ -15,7 +15,7 @@ import PrescriptionCard from "../case/PrescriptionCard";
 import AppointmentCard from "../case/AppointmentCard";
 
 const CasePage = () => {
-  useDocumentTitle(`Case View`);
+  useDocumentTitle("Case");
 
   const { user } = useUserContext();
 
@@ -28,6 +28,7 @@ const CasePage = () => {
     if (params.caseid === undefined) throw Error("No case ID?");
     Promise.all([APIClient.cases.get(params.caseid)]).then(([caseResponse]) => {
       setCase(caseResponse);
+      document.title = titleify(caseResponse.title);
       setIsLoaded(true);
     });
   };
@@ -43,7 +44,6 @@ const CasePage = () => {
           {isLoaded && _case ? (
             <>
               <CaseHeaderCard _case={_case} refreshHandler={refreshCase} />
-              <TriageRequestCard _case={_case} refreshHandler={refreshCase} />
               <CaseMessagesCard _case={_case} refreshHandler={refreshCase} />
               <PrescriptionCard
                 readonly={user?.userType !== UserType.Doctor}
@@ -51,6 +51,7 @@ const CasePage = () => {
                 refreshHandler={refreshCase}
               />
               <AppointmentCard refreshHandler={refreshCase} _case={_case} />
+              <TriageRequestCard _case={_case} refreshHandler={refreshCase} />
             </>
           ) : (
             <Stack alignItems="center" className="mt-8">
