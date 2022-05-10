@@ -21,7 +21,10 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseQueryStrings = true;
 });
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext"), o => o.UseNodaTime()));
+builder.Services.AddDbContext<AppDbContext>(options => {
+    options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext"), o => o.UseNodaTime());
+    // options.LogTo(Console.WriteLine);
+});
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<AppUser, Role>()
