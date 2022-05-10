@@ -5,13 +5,14 @@ import Grid from "@mui/material/Grid";
 import Fade from "@mui/material/Fade";
 import Stack from "@mui/material/Stack";
 import APIClient from "../../util/API/APIClient";
-import { Case, CaseState, UserType } from "../../util/API/APITypes";
+import { Case, UserType } from "../../util/API/APITypes";
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../UserContext";
 import CaseMessagesCard from "../case/CaseMessagesCard";
 import CaseHeaderCard from "../case/CaseHeaderCard";
 import TriageRequestCard from "../case/TriageRequestCard";
 import PrescriptionCard from "../case/PrescriptionCard";
+import AppointmentCard from "../case/AppointmentCard";
 
 const CasePage = () => {
   useDocumentTitle(`Case View`);
@@ -42,12 +43,14 @@ const CasePage = () => {
           {isLoaded && _case ? (
             <>
               <CaseHeaderCard _case={_case} refreshHandler={refreshCase} />
-              {_case.state === CaseState.WaitingTriage &&
-              [UserType.Nurse, UserType.Patient].some((type) => type === user?.userType) ? (
-                <TriageRequestCard _case={_case} refreshHandler={refreshCase} />
-              ) : null}
+              <TriageRequestCard _case={_case} refreshHandler={refreshCase} />
               <CaseMessagesCard _case={_case} refreshHandler={refreshCase} />
-              <PrescriptionCard _case={_case} refreshHandler={refreshCase} />
+              <PrescriptionCard
+                readonly={user?.userType !== UserType.Doctor}
+                _case={_case}
+                refreshHandler={refreshCase}
+              />
+              <AppointmentCard refreshHandler={refreshCase} _case={_case} />
             </>
           ) : (
             <Stack alignItems="center" className="mt-8">
