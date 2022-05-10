@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
 import { Case, CaseState, stringifyCaseState, stringifyCaseType } from "../../util/API/APITypes";
 import Dialog from "@mui/material/Dialog";
@@ -19,14 +19,37 @@ interface Props {
 }
 
 const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
-  const [isPending, setIsPending] = useState(false);
-  const [closing, setClosing] = useState(false);
+  const [isUnassignPending, setIsUnassignPending] = useState(false);
+  const [unassignAttempt, setUnassignAttempt] = useState(false);
 
-  const handleClose = async () => {
-    setIsPending(true);
-    await APIClient.cases.changeState(_case.id, CaseState.Closed);
-    setIsPending(false);
-    setClosing(false);
+  const [isStatePending, setIsStatePending] = useState(false);
+  const [togglingState, setTogglingState] = useState(false);
+
+  const [nextState, setNextState] = useState(CaseState.Closed);
+
+  const determineNextState = () => {
+    if (_case.state !== CaseState.Closed) setNextState(CaseState.Closed);
+    else if (_case.doctorUserId === null) setNextState(CaseState.WaitingTriage);
+    else setNextState(CaseState.Ongoing);
+  };
+
+  useEffect(() => {
+    determineNextState();
+  }, [_case]);
+
+  const handleStateChange = async () => {
+    setIsStatePending(true);
+    await APIClient.cases.changeState(_case.id, nextState);
+    setIsStatePending(false);
+    setTogglingState(false);
+    refreshHandler();
+  };
+
+  const handleUnassign = async () => {
+    setIsUnassignPending(true);
+    await APIClient.cases.unassign(_case.id);
+    setIsUnassignPending(false);
+    setUnassignAttempt(false);
     refreshHandler();
   };
 
@@ -47,27 +70,51 @@ const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
           Currently <strong>{stringifyCaseState(_case.state)}</strong>.
         </Typography>
 
-        <Stack direction="row" justifyContent="end">
+        <Stack direction="row" justifyContent="end" spacing={1}>
           <LoadingButton
-            loading={isPending}
-            disabled={_case.state === CaseState.Closed}
-            onClick={() => setClosing(true)}
+            disabled={_case.doctorUserId === null}
+            loading={isUnassignPending}
+            onClick={() => setUnassignAttempt(true)}
             variant="text"
             color="error"
             loadingPosition="center"
           >
-            Close Case
+            Unassign Doctor
+          </LoadingButton>
+          <LoadingButton
+            loading={isStatePending}
+            onClick={() => setTogglingState(true)}
+            variant="text"
+            color="error"
+            loadingPosition="center"
+          >
+            {nextState === CaseState.Closed ? "Close" : "Reopen"} Case
           </LoadingButton>
         </Stack>
 
-        <Dialog open={closing} onClose={() => setClosing(false)}>
-          <DialogTitle>Confirm Case Closure</DialogTitle>
+        <Dialog open={unassignAttempt} onClose={() => setUnassignAttempt(false)}>
+          <DialogTitle>Confirm Doctor Unassignment</DialogTitle>
           <DialogContent>
-            <DialogContentText>Are you sure you want to close this case?</DialogContentText>
+            <DialogContentText>Are you sure you want to unassign this case?</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setClosing(false)}>No</Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button onClick={() => setUnassignAttempt(false)}>No</Button>
+            <Button onClick={handleUnassign} autoFocus>
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={togglingState} onClose={() => setTogglingState(false)}>
+          <DialogTitle>Confirm Case State Change</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to {nextState === CaseState.Closed ? "close" : "reopen"} this case?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setTogglingState(false)}>No</Button>
+            <Button onClick={handleStateChange} autoFocus>
               Yes
             </Button>
           </DialogActions>
