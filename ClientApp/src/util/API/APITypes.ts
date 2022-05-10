@@ -185,6 +185,8 @@ export enum CaseType {
   Radiology,
 }
 
+export const stringifyCaseType = (caseType: CaseType | undefined) => CaseType[caseType || 0];
+
 export const getAllCaseTypes = () => [
   CaseType.Dental,
   CaseType.EarNoseThroat,
@@ -197,18 +199,22 @@ export const getAllCaseTypes = () => [
 ];
 
 export enum CaseState {
-  Open,
+  Ongoing,
   Closed,
   WaitingTriage,
   WaitingTriageApproval,
 }
+
+export const stringifyCaseState = (caseState: CaseState | undefined) => CaseState[caseState || 0];
 
 export interface Case {
   id: string;
   dateTime: Dayjs;
   title: string;
   patientUserId: string;
+  simplePatientUser?: SimpleUser;
   doctorUserId?: string;
+  simpleDoctorUser?: SimpleUser;
   type: CaseType;
   state: CaseState;
   messages: CaseMessage[];
@@ -227,9 +233,13 @@ export interface SimpleCase {
   id: string;
   dateTime: Dayjs;
   patientUserId: string;
+  simplePatientUser?: SimpleUser;
   doctorUserId?: string;
+  simpleDoctorUser?: SimpleUser;
   state: CaseState;
+  type: CaseType;
   messageCount: number;
+  title: string;
 }
 
 export enum Gender {

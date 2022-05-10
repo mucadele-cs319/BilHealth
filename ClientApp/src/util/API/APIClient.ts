@@ -100,6 +100,13 @@ const sortTestResults = (user: User) => {
   user.testResults?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
 };
 
+const sortTimedGrants = (user: User) => {
+  user.timedAccessGrants?.forEach((grant) => {
+    grant.expiryTime = dayjs(grant.expiryTime);
+  });
+  user.timedAccessGrants?.sort((a, b) => (a.expiryTime?.isAfter(b.expiryTime) ? -1 : 1));
+};
+
 const profiles = {
   all: async (): Promise<SimpleUser[]> => {
     const response = await fetch("/api/profiles");
@@ -113,6 +120,7 @@ const profiles = {
     sortVaccinations(user);
     sortTestResults(user);
     processDateOfBirth(user);
+    sortTimedGrants(user);
 
     return user;
   },
@@ -123,7 +131,13 @@ const profiles = {
     sortVaccinations(user);
     sortTestResults(user);
     processDateOfBirth(user);
+    sortTimedGrants(user);
 
+    return user;
+  },
+  getSimple: async (userId: string): Promise<SimpleUser> => {
+    const response = await fetch(`/api/profiles/${userId}/simple`);
+    const user: SimpleUser = await response.json();
     return user;
   },
   update: async (userId: string, newProfile: UserUpdate): Promise<void> => {
@@ -290,13 +304,18 @@ const processCaseTimes = (_case: Case) => {
   _case.messages.forEach((msg) => (msg.dateTime = dayjs(msg.dateTime)));
   _case.prescriptions.forEach((prescription) => (prescription.dateTime = dayjs(prescription.dateTime)));
   _case.systemMessages.forEach((msg) => (msg.dateTime = dayjs(msg.dateTime)));
+
+  _case.messages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
+  _case.systemMessages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
 };
 
 const cases = {
   getList: async (): Promise<SimpleCase[]> => {
     const response = await fetch(`/api/cases`);
     const cases: SimpleCase[] = await response.json();
+
     cases.forEach((_case) => (_case.dateTime = dayjs(_case.dateTime)));
+    cases.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
     return cases;
   },
   get: async (caseId: string): Promise<Case> => {
