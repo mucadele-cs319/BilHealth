@@ -337,7 +337,9 @@ const cases = {
     return _case;
   },
   changeState: async (caseId: string, state: CaseState) => {
-    await fetch(`/api/cases/${caseId}?state=${state.toString()}`);
+    await fetch(`/api/cases/${caseId}?state=${state.toString()}`, {
+      method: "PATCH",
+    });
   },
   messages: {
     add: async (caseId: string, details: CaseMessageUpdate): Promise<CaseMessage> => {
