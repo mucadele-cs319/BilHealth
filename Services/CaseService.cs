@@ -29,6 +29,7 @@ namespace BilHealth.Services
             await DbCtx.Entry(_case).Collection(c => c.SystemMessages).LoadAsync();
             await DbCtx.Entry(_case).Collection(c => c.Appointments).LoadAsync();
             await DbCtx.Entry(_case).Collection(c => c.Prescriptions).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.TriageRequests).LoadAsync();
 
             if (_case.Appointments is not null)
                 foreach (var appointment in _case.Appointments)
@@ -97,12 +98,19 @@ namespace BilHealth.Services
 
         public async Task<TriageRequest> CreateTriageRequest(Guid caseId, Guid requestingUserId, Guid doctorUserId)
         {
+            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+            if (_case.State != CaseState.WaitingTriage)
+                throw new InvalidOperationException("Cannot request triage without finalizing existing ones");
+
+            _case.State = CaseState.WaitingTriageApproval;
+
             var triageRequest = new TriageRequest
             {
                 ApprovalStatus = ApprovalStatus.Waiting,
                 CaseId = caseId,
                 DoctorUserId = doctorUserId,
-                RequestingUserId = requestingUserId
+                RequestingUserId = requestingUserId,
+                DateTime = Clock.GetCurrentInstant()
             };
 
             DbCtx.TriageRequests.Add(triageRequest);
@@ -146,7 +154,13 @@ namespace BilHealth.Services
             var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
 
             if (newState == CaseState.Closed)
+            {
+                await DbCtx.TriageRequests
+                    .Where(t => t.CaseId == caseId && t.ApprovalStatus == ApprovalStatus.Waiting)
+                    .ForEachAsync(t => t.ApprovalStatus = ApprovalStatus.Rejected);
+
                 NotificationService.AddCaseClosedNotification(_case.PatientUserId, _case);
+            }
 
             CreateSystemMessage(
                 _case.Id,
@@ -162,11 +176,18 @@ namespace BilHealth.Services
 
             triageRequest.ApprovalStatus = approval;
 
-            if (triageRequest.ApprovalStatus == ApprovalStatus.Approved)
+            switch (triageRequest.ApprovalStatus)
             {
-                triageRequest.Case.DoctorUserId = triageRequest.DoctorUserId;
-                triageRequest.Case.State = CaseState.Ongoing;
-                NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
+                case ApprovalStatus.Waiting:
+                    throw new ArgumentException("Unexpectedly received 'Waiting' approval", nameof(approval));
+                case ApprovalStatus.Approved:
+                    triageRequest.Case.DoctorUserId = triageRequest.DoctorUserId;
+                    triageRequest.Case.State = CaseState.Ongoing;
+                    NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
+                break;
+                case ApprovalStatus.Rejected:
+                    triageRequest.Case.State = CaseState.WaitingTriage;
+                break;
             }
 
             await DbCtx.SaveChangesAsync();

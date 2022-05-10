@@ -124,7 +124,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/triagerequest")]
-        [Authorize(Roles = $"{UserType.Nurse},{UserType.Patient}")]
+        [Authorize(Roles = $"{UserType.Nurse},{UserType.Patient},{UserType.Admin},{UserType.Staff}")]
         public async Task<TriageRequestDto> CreateTriageRequest(Guid caseId, [FromQuery] Guid doctorUserId)
         {
             var requestingUserId = (await AuthenticationService.GetUser(User)).Id;
