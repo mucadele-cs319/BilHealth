@@ -17,15 +17,27 @@ export const getAllUserTypes = () => [
 ];
 
 export interface Announcement {
-  id?: string;
-  dateTime?: Dayjs;
+  id: string;
+  dateTime: Dayjs;
+  title: string;
+  message: string;
+}
+
+export interface AnnouncementUpdate {
   title: string;
   message: string;
 }
 
 export interface AppointmentVisit {
-  id?: string;
-  appointmentId?: string;
+  id: string;
+  appointmentId: string;
+  notes?: string;
+  bpm?: number;
+  bloodPressure?: number;
+  bodyTemperature?: number;
+}
+
+export interface AppointmentVisitUpdate {
   notes?: string;
   bpm?: number;
   bloodPressure?: number;
@@ -39,16 +51,28 @@ export enum ApprovalStatus {
 }
 
 export interface Appointment {
-  id?: string;
+  id: string;
   requestedById: string;
-  caseId?: string;
-  createdAt?: Dayjs;
-  dateTime?: Dayjs;
+  caseId: string;
+  createdAt: Dayjs;
+  dateTime: Dayjs;
   description?: string;
   approvalStatus: ApprovalStatus;
   attended: boolean;
   cancelled: boolean;
   visit?: AppointmentVisit;
+}
+
+export interface AppointmentUpdate {
+  dateTime: Dayjs;
+  description?: string;
+}
+
+export interface AuditTrail {
+  id: string;
+  accessTime: Dayjs;
+  accessedPatientUserId: string;
+  userId: string;
 }
 
 export enum BloodType {
@@ -109,10 +133,14 @@ export const getAllCampusTypes = () => [Campus.Unspecified, Campus.Main, Campus.
 export const stringifyCampus = (campus: Campus | undefined) => Campus[campus || 0];
 
 export interface CaseMessage {
-  id?: string;
-  caseId?: string;
-  userId?: string;
-  dateTime?: Dayjs;
+  id: string;
+  caseId: string;
+  userId: string;
+  dateTime: Dayjs;
+  content: string;
+}
+
+export interface CaseMessageUpdate {
   content: string;
 }
 
@@ -135,10 +163,14 @@ export interface CaseSystemMessage {
 }
 
 export interface Prescription {
-  id?: string;
-  caseId?: string;
-  dateTime?: Dayjs;
-  doctorUserId?: string;
+  id: string;
+  caseId: string;
+  dateTime: Dayjs;
+  doctorUserId: string;
+  item: string;
+}
+
+export interface PrescriptionUpdate {
   item: string;
 }
 
@@ -172,22 +204,28 @@ export enum CaseState {
 }
 
 export interface Case {
-  id?: string;
-  dateTime?: string;
+  id: string;
+  dateTime: Dayjs;
   title: string;
   patientUserId: string;
   doctorUserId?: string;
   type: CaseType;
-  state?: CaseState;
-  messages?: CaseMessage[];
-  systemMessages?: CaseSystemMessage[];
-  prescriptions?: Prescription[];
-  appointments?: Appointment[];
+  state: CaseState;
+  messages: CaseMessage[];
+  systemMessages: CaseSystemMessage[];
+  prescriptions: Prescription[];
+  appointments: Appointment[];
+}
+
+export interface CaseCreate {
+  title: string;
+  patientUserId: string;
+  type: CaseType;
 }
 
 export interface SimpleCase {
-  id?: string;
-  dateTime?: Dayjs;
+  id: string;
+  dateTime: Dayjs;
   patientUserId: string;
   doctorUserId?: string;
   state: CaseState;
@@ -264,30 +302,36 @@ export interface Notification {
 }
 
 export interface Vaccination {
-  id?: string;
-  patientUserId?: string;
-  dateTime?: Dayjs;
+  id: string;
+  patientUserId: string;
+  dateTime: Dayjs;
+  type: string;
+}
+
+export interface VaccinationUpdate {
+  dateTime: Dayjs;
   type: string;
 }
 
 export interface TestResult {
-  id?: string;
+  id: string;
   patientUserId: string;
-  dateTime?: Dayjs;
-  type?: MedicalTestType;
-  file?: File;
+  dateTime: Dayjs;
+  type: MedicalTestType;
+  file: File;
 }
 
 export interface TriageRequest {
-  id?: string;
-  nurseUserId?: string;
+  id: string;
+  dateTime: Dayjs;
+  requestingUserId: string;
   doctorUserId: string;
-  caseId?: string;
+  caseId: string;
   approvalStatus: ApprovalStatus;
 }
 
 export interface SimpleUser {
-  id?: string;
+  id: string;
   userType: string;
   userName: string;
   email: string;
@@ -297,25 +341,54 @@ export interface SimpleUser {
 
 export interface User {
   // common
-  id?: string;
-  userType?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
+  id: string;
+  userType: string;
+  email: string;
+  firstName: string;
+  lastName: string;
   gender?: Gender;
   dateOfBirth?: Dayjs;
   // patient
   bodyWeight?: number;
   bodyHeight?: number;
   bloodType?: BloodType;
-  blacklisted?: boolean;
+  blacklisted: boolean;
   vaccinations?: Vaccination[];
   testResults?: TestResult[];
+  timedAccessGrants?: TimedAccessGrant[];
   // patient and doctor
   cases?: Case[];
   // doctor
   specialization?: string;
   campus?: Campus;
-  // nurse
-  triageRequests?: TriageRequest[];
+}
+
+export interface UserUpdate {
+  // common
+  // firstName?: string;
+  // lastName?: string;
+  gender?: Gender;
+  dateOfBirth?: Dayjs;
+  // patient
+  bodyWeight?: number;
+  bodyHeight?: number;
+  bloodType?: BloodType;
+  // doctor
+  specialization?: string;
+  campus?: Campus;
+}
+
+export interface TimedAccessGrantCreate {
+  period: string;
+  patientUserId: string;
+  userId: string;
+}
+
+export interface TimedAccessGrant {
+  id: string;
+  expiryTime: Dayjs;
+  period: string;
+  canceled: boolean;
+  patientUserId: string;
+  userId: string;
 }
