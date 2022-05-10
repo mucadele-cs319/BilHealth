@@ -75,31 +75,47 @@
 
   \subsection{Current Implementation State}
   
-  
+  \begin{itemize}
+    \item The calculator page was not implemented. It would consist of simple BMI and such calculations.
+    \item The report generation feature was not fully developed and does not exist in the UI.
+    \item Email notifications were not implemented. A rudimentary notification system was though.
+    \item Some rough edges exist in many parts of the back-end and front-end implementation.
+      Polish would definitely be required before actual production use.
+    \item Some of the access security is lacking granularity to be per-user.
+    \item Some of the UI has not been hooked up to the implementation on the back-end.
+    \item The UI should be using more human-readable representations in some places where user IDs are currently used.
+      This may require certain input fields to support searching through users in an auto-complete fashion.
+  \end{itemize}
   
   \section{Lessons Learned}
   
-  First, we learned difficulties to find a team. 
-  Finding teammates with qualities enough was a hard job, although it was made easier with peerpanda.net. 
-  We do believe we have now more experience to finding requirements for a given task. 
-  We see that going out there and dealing with real-life problems were different than given academic tasks. 
-  We do we believe the hardship of getting requirements were environment problems, 
+  First, we learned the difficulties of finding a team. 
+  Finding teammates with appropriate qualities was a hard job, although it was made easier by Peerpanda. 
+  We do believe we now have more experience in finding requirements for a given software system. 
+  We see that going out there and dealing with real-life problems was different from given academic tasks. 
+  We believe the hardship of getting requirements were communication problems, 
   such as the barrier between engineers and current users. 
-  Not always users help and not always engineers understand their help.
+  Not always do users help and not always do engineers understand their help.
 
-  In terms of code, we learned how difficult it might to be entering a totally different style of coding. 
-  Most of us didn’t used .NET up until now which made it harder to work. 
-  Most of us didn’t know C# which made it hard for all of us. 
-  We do believe some of us learned how to approach those new fields and some of us learned not to underestimate learning new fields and should allocate enough time.
-  Design patterns were another important topic to be considered, 
-  We do believe some of us learned the difficulties to execute rules of design patterns to an actual project code.
+  In terms of code, we learned how difficult it might be to enter a totally different style of coding. 
+  Most of us had not used .NET and C\# up until now which made it harder to get started. 
+  Some of us learned how to approach these new fields and learned not to underestimate learning new fields and allocating enough time.
+  Design patterns were another important topic of consideration, 
+  and we observed the added difficulty of integrating design patterns,
+  along with their benefits.
 
-  We also had a little experience about how does a group project plays out. 
-  Communicating with people has its difficulties and we do believe a decentralized group can be a problem to decide and do actions. 
-  Since all of us had almost same background it might sometimes be hard to convince one of us sometimes when we think what we are doing is right.
+  We also gained a little experience about how a group project plays out. 
+  Communicating with people has its difficulties and a decentralized group can be a problem when deciding and acting. 
+  Since all of us had similar backgrounds it might sometimes be hard to convince a teammate when we think what we are doing is right.
   
   Lastly given a small amount of time we find out that not everything works out as we planned it be. 
-  Problems accord and it was best to do something that fits into environment and time rather than what we think is the best solution.
+  We had to make compromises as a result.
+  
+  In terms of the engineering that went into the implementation, there have been numerous refactors.
+  Some of these had to do with integrating design patterns.
+  Another problem was the existing implementation becoming rigid and hard to extend over time,
+  which ended up requiring us to create more classes.
+  In other words, we observed the trade-offs between concise and rigid code against complex and lengthened code.
   
   \pagebreak
   \section{Build \& Execution Instructions}
@@ -187,7 +203,58 @@ docker-compose -d -f docker-compose.prod.yml up
   \pagebreak
   \section{User's Guide}
 
+  The overall user interface design of the system is actually parallel between the several actors.
+  This means that the shown components have slight variations depending on the logged in user type.
+  The overall page and URL remain mostly the same.
+  There are a few pages that are specific to users of elevated privilege, such as the staff panel.
   
+  \subsection{Login Page}
+  
+  This is the \textbf{only} page accessible by non-authenticated users
+  that fall outside our actor type range.
+  These guests can view the announcements made on the system.
+  The only other functionality is to log in.
+  
+  \subsection{Profile Page}
+  
+  This page is basically a record of the user and their medical interactions on the system.
+  The test results are accessed from this page.
+  The vaccination history and physical measurements of the patient are found here.
+  Some typical settings such as changing passwords are presented as well.
+  
+  The user's profile can be modified on this page, but some of the sensitive properties
+  are limited to modification by a privileged user.
+  
+  The user can grant temporary profile access to other users on their profile.
+  This is one of the forms of access control on the system.
+  The staff can manually blacklist the user on this page.
+  
+  \subsection{Notifications Page}
+  
+  This page lists all of the notifications the user has received as a result of interactions.
+  The user can mark notifications as \textit{read}.
+  
+  \subsection{Announcements Page}
+  
+  User actors other than the patients can add, modify, and remove announcements on this page.
+  
+  \subsection{Cases Page}
+  
+  The case list on this page displays only the cases to which the user has access permissions.
+  For example, a doctor will only see cases to which they have been assigned.
+  Some overall details about a case are presented in the form of cards.
+  
+  \subsection{Staff Panel Page}
+  
+  This page is only visible to the staff and admin users.
+  Several cards exist for distinct functionalities.
+  New users of all actor types are registered on this page.
+  The user list is how the staff members access patient profiles on the system.
+  It is searchable by username, full name, and user ID.
+  
+  Lastly, there is an audit trail card, which is one of our access control strategies.
+  This is a common feature in health record systems around the globe.
+  It displays the logs of whoever accessed a patient's profile.
   
   \pagebreak
   \section{Work Allocation}
