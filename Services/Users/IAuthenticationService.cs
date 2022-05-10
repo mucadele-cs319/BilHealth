@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using BilHealth.Model;
+using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
 using Microsoft.AspNetCore.Identity;
 
@@ -27,6 +28,7 @@ namespace BilHealth.Services.Users
         Task<DomainUser> GetUser(ClaimsPrincipal principal);
         Task<DomainUser> GetUser(Guid userId);
         Task<string> GetUserType(Guid userId);
+        Task<DomainUser> GetBareUser(Guid userId);
         Task<List<DomainUser>> GetAllUsers();
     }
 }

@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using BilHealth.Data;
 using BilHealth.Model;
+using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
+using BilHealth.Utility;
 using BilHealth.Utility.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -126,5 +128,7 @@ namespace BilHealth.Services.Users
         /// </remarks>
         /// <returns>List of all <see cref="DomainUser"/>s</returns>
         public Task<List<DomainUser>> GetAllUsers() => DbCtx.DomainUsers.ToListAsync();
+
+        public Task<DomainUser> GetBareUser(Guid userId) => DbCtx.DomainUsers.FindOrThrowAsync(userId);
     }
 }
