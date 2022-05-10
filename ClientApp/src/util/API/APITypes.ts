@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { separateCapitalized } from "../StringUtil";
 
 export enum UserType {
   Patient = "Patient",
@@ -189,7 +190,7 @@ export enum CaseType {
   Radiology,
 }
 
-export const stringifyCaseType = (caseType: CaseType | undefined) => CaseType[caseType || 0];
+export const stringifyCaseType = (caseType: CaseType | undefined) => separateCapitalized(CaseType[caseType || 0]);
 
 export const getAllCaseTypes = () => [
   CaseType.Dental,
@@ -209,7 +210,7 @@ export enum CaseState {
   WaitingTriageApproval,
 }
 
-export const stringifyCaseState = (caseState: CaseState | undefined) => CaseState[caseState || 0];
+export const stringifyCaseState = (caseState: CaseState | undefined) => separateCapitalized(CaseState[caseState || 0]);
 
 export interface Case {
   id: string;
