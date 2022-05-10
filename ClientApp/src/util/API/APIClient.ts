@@ -304,9 +304,11 @@ const processCaseTimes = (_case: Case) => {
   _case.messages.forEach((msg) => (msg.dateTime = dayjs(msg.dateTime)));
   _case.prescriptions.forEach((prescription) => (prescription.dateTime = dayjs(prescription.dateTime)));
   _case.systemMessages.forEach((msg) => (msg.dateTime = dayjs(msg.dateTime)));
+  _case.triageRequests.forEach((req) => (req.dateTime = dayjs(req.dateTime)));
 
   _case.messages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
   _case.systemMessages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
+  _case.triageRequests.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
 };
 
 const cases = {

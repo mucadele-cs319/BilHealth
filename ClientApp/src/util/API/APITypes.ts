@@ -50,6 +50,10 @@ export enum ApprovalStatus {
   Rejected,
 }
 
+export const stringifyApproval = (approval: ApprovalStatus | undefined) => ApprovalStatus[approval || 0];
+
+export const getAllApprovalTypes = () => [ApprovalStatus.Approved, ApprovalStatus.Rejected, ApprovalStatus.Waiting];
+
 export interface Appointment {
   id: string;
   requestedById: string;
@@ -221,6 +225,7 @@ export interface Case {
   systemMessages: CaseSystemMessage[];
   prescriptions: Prescription[];
   appointments: Appointment[];
+  triageRequests: TriageRequest[];
 }
 
 export interface CaseCreate {
