@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import Fade from "@mui/material/Fade";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
-import { User } from "../../util/API/APITypes";
+import { TimedAccessGrant, User } from "../../util/API/APITypes";
 import APIClient from "../../util/API/APIClient";
 import { useParams } from "react-router-dom";
 import ProfileDetails from "../profile/ProfileDetails";
@@ -14,6 +14,7 @@ import BlacklistCard from "../profile/BlacklistCard";
 import PasswordCard from "../profile/PasswordCard";
 import TestResultLinkerCard from "../profile/TestResultLinkerCard";
 import { isPatient, isStaff } from "../../util/UserTypeUtil";
+import TimedGrantCard from "../profile/TimedGrantCard";
 
 const Profile = () => {
   useDocumentTitle("Profile");
@@ -60,6 +61,13 @@ const Profile = () => {
                   refreshHandler={refreshUser}
                 />
               )}
+              {isPatient(queryUser) && (user?.id === queryUser.id || isStaff(user)) ? (
+                <TimedGrantCard
+                  patientId={queryUser.id}
+                  refreshHandler={refreshUser}
+                  grants={queryUser.timedAccessGrants as TimedAccessGrant[]}
+                />
+              ) : null}
               {user?.id === queryUser.id ? <PasswordCard /> : null}
             </>
           ) : (
