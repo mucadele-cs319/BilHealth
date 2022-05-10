@@ -17,6 +17,7 @@ import FullLayout from "./components/FullLayout";
 import StaffPanel from "./components/pages/StaffPanel";
 import CalculatorsPage from "./components/pages/CalculatorsPage";
 import EditProfile from "./components/pages/EditProfile";
+import CaseNewPage from "./components/pages/CaseNewPage";
 
 const LoadingPage = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
           <Route element={user !== null ? <FullLayout mobile={mobile} /> : <Navigate to="/login" />}>
             <Route path="/" element={<Announcements />} />
             <Route path="/cases" element={<CaseList />} />
+            <Route path="/cases/new" element={<CaseNewPage />} />
             <Route path="/cases/:caseid" element={<CasePage />} />
             <Route path="/notifications" element={<NotificationsListPage />} />
             <Route path="/profiles/:userid" element={<Profile />} />
