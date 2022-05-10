@@ -34,15 +34,15 @@ const TimedGrantCard = ({ refreshHandler, patientId, grants }: Props) => {
             Timed Access Grants
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-              <Button
-                onClick={() => {
-                  setCreating(true);
-                }}
-                variant="text"
-                disabled={creating}
-              >
-                Add
-              </Button>
+            <Button
+              onClick={() => {
+                setCreating(true);
+              }}
+              variant="text"
+              disabled={creating}
+            >
+              Add
+            </Button>
           </Stack>
         </Stack>
 
@@ -64,12 +64,7 @@ const TimedGrantCard = ({ refreshHandler, patientId, grants }: Props) => {
                 />
               ) : null}
               {grants?.map((grant) => (
-                <TimedGrantRow
-                  key={grant.id}
-                  patientId={patientId}
-                  grant={grant}
-                  refreshHandler={refreshTimedGrants}
-                />
+                <TimedGrantRow key={grant.id} patientId={patientId} grant={grant} refreshHandler={refreshTimedGrants} />
               ))}
             </TableBody>
           </Table>

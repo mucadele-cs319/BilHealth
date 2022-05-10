@@ -13,17 +13,12 @@ interface Props {
 }
 
 const AppointmentCard = ({ _case }: Props) => {
-
-
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
         <Typography variant="h5" gutterBottom>
           Appointments
         </Typography>
-
-
-
       </CardContent>
     </Card>
   );

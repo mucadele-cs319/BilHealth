@@ -13,17 +13,12 @@ interface Props {
 }
 
 const PrescriptionCard = ({ _case }: Props) => {
-
-
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
         <Typography variant="h5" gutterBottom>
           Prescriptions
         </Typography>
-
-
-
       </CardContent>
     </Card>
   );

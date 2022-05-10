@@ -12,7 +12,7 @@ import duration from "dayjs/plugin/duration";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Europe/Istanbul");
-dayjs.extend(duration)
+dayjs.extend(duration);
 
 ReactDOM.render(
   <React.StrictMode>
