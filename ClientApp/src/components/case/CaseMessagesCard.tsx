@@ -26,6 +26,7 @@ const CaseMessagesCard = ({ _case, refreshHandler }: Props) => {
     setIsPending(true);
     await APIClient.cases.messages.add(_case.id, { content: newMessage });
     setIsPending(false);
+    setNewMessage("");
     refreshHandler();
   };
 
