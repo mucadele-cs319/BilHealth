@@ -1,5 +1,4 @@
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Button, MenuItem, TextField } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
@@ -18,6 +17,10 @@ import {
 import { isStaff } from "../../util/UserTypeUtil";
 import AddIcon from "@mui/icons-material/Add";
 import { useUserContext } from "../UserContext";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 
 interface Props {
   _case: Case;
@@ -39,7 +42,7 @@ const TriageRequestCard = ({ _case }: Props) => {
     await APIClient.cases.triageRequests.setApproval(_case.id, approval);
     setIsApprovalPending(false);
   };
-  
+
   const handleCreate = async () => {
     setIsApprovalPending(true);
     await APIClient.cases.triageRequests.create(_case.id, doctorUserId);
@@ -55,7 +58,7 @@ const TriageRequestCard = ({ _case }: Props) => {
   }, []);
 
   const validate = () => doctorUserId.length > 0;
-  
+
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
