@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import APIClient from "../../util/API/APIClient";
 import { Case, CaseMessage, CaseSystemMessage } from "../../util/API/APITypes";
+import { isStaff } from "../../util/UserTypeUtil";
+import { useUserContext } from "../UserContext";
 import CaseMessageItem from "./CaseMessageItem";
 import CaseSystemMessageItem from "./CaseSystemMessageItem";
 
@@ -19,6 +21,8 @@ interface Props {
 }
 
 const CaseMessagesCard = ({ _case, refreshHandler }: Props) => {
+  const { user } = useUserContext();
+
   const [isPending, setIsPending] = useState(false);
   const [newMessage, setNewMessage] = useState("");
 
@@ -30,7 +34,7 @@ const CaseMessagesCard = ({ _case, refreshHandler }: Props) => {
     refreshHandler();
   };
 
-  const validate = () => newMessage.length > 0;
+  const validate = () => 0 < newMessage.length && newMessage.length < 2000;
 
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
@@ -44,11 +48,16 @@ const CaseMessagesCard = ({ _case, refreshHandler }: Props) => {
             .sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1))
             .map((msg) => {
               const isSystemMessage = (msg as CaseMessage).userId === undefined;
-              if (isSystemMessage) {
-                return <CaseSystemMessageItem message={msg as CaseSystemMessage} key={msg.id} />;
-              } else {
-                return <CaseMessageItem message={msg as CaseMessage} key={msg.id} />;
-              }
+              if (isSystemMessage) return <CaseSystemMessageItem message={msg as CaseSystemMessage} key={msg.id} />;
+              else
+                return (
+                  <CaseMessageItem
+                    readonly={(msg as CaseMessage).userId !== user?.id && !isStaff(user)}
+                    message={msg as CaseMessage}
+                    refreshHandler={refreshHandler}
+                    key={msg.id}
+                  />
+                );
             })
         ) : (
           <Stack alignItems="center" className="my-8">
