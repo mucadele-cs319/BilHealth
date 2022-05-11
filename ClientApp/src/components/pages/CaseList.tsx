@@ -44,6 +44,9 @@ const CaseList = () => {
               <Stack direction="row" sx={{ mb: 3 }}>
                 <Typography variant="h5" gutterBottom>
                   Cases
+                  <Typography variant="body2">
+                    You are only able to view cases for which you have the required authorization.
+                  </Typography>
                 </Typography>
                 <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
                   <Button onClick={() => navigate("/cases/new")} variant="text" startIcon={<AddIcon />}>
@@ -53,7 +56,13 @@ const CaseList = () => {
               </Stack>
 
               {isLoaded ? (
-                cases.map((_case) => <CaseItemCard key={_case.id} _case={_case} />)
+                cases.length > 0 ? (
+                  cases.map((_case) => <CaseItemCard key={_case.id} _case={_case} />)
+                ) : (
+                  <Stack alignItems="center" className="mt-8">
+                    <Typography color="text.secondary">No viewable cases for you at this time.</Typography>
+                  </Stack>
+                )
               ) : (
                 <Stack alignItems="center" className="mt-8">
                   <CircularProgress />
