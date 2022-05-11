@@ -10,6 +10,7 @@ import {
   AuditTrail,
   Case,
   CaseCreate,
+  CaseDiagnosisUpdate,
   CaseMessage,
   CaseMessageUpdate,
   CaseState,
@@ -425,10 +426,13 @@ const cases = {
       method: "PATCH",
     });
   },
-  diagnosis: async (caseId: string, details: string) => {
+  diagnosis: async (caseId: string, details: CaseDiagnosisUpdate) => {
     await fetch(`/api/cases/${caseId}/diagnosis`, {
       method: "PATCH",
-      body: details,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(details),
     });
   },
   // getReport: async (caseId: string) => {

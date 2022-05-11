@@ -202,12 +202,17 @@ namespace BilHealth.Services
             return prescription;
         }
 
-        public async Task<Case> SetDiagnosis(Guid caseId, string diagnosis)
+        public async Task<bool> SetDiagnosis(Guid caseId, CaseDiagnosisUpdateDto details)
         {
-            var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
-            _case.Diagnosis = diagnosis;
+            Case _case;
+            try
+            {
+                _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
+            }
+            catch (IdNotFoundException) { return false; }
+            _case.Diagnosis = details.Content;
             await DbCtx.SaveChangesAsync();
-            return _case;
+            return true;
         }
 
         public async Task<bool> UnassignDoctor(Guid caseId)

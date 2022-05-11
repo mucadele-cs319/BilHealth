@@ -227,12 +227,17 @@ export interface Case {
   prescriptions: Prescription[];
   appointments: Appointment[];
   triageRequests: TriageRequest[];
+  diagnosis: string | null;
 }
 
 export interface CaseCreate {
   title: string;
   patientUserId: string;
   type: CaseType;
+}
+
+export interface CaseDiagnosisUpdate {
+  content: string | null;
 }
 
 export interface SimpleCase {

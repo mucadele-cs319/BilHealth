@@ -23,7 +23,7 @@ namespace BilHealth.Services
         Task<TriageRequest> CreateTriageRequest(Guid caseId, Guid requestingUserId, Guid doctorUserId);
         Task SetTriageRequestApproval(Guid caseId, ApprovalStatus approval);
 
-        Task<Case> SetDiagnosis(Guid caseId, string diagnosis);
+        Task<bool> SetDiagnosis(Guid caseId, CaseDiagnosisUpdateDto details);
         Task<bool> UnassignDoctor(Guid caseId);
     }
 }

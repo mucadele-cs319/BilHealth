@@ -142,10 +142,10 @@ namespace BilHealth.Controllers
 
         [HttpPatch("{caseId:guid}/diagnosis")]
         [Authorize(Roles = UserType.Doctor)]
-        public async Task<CaseDto> SetDiagnosis(Guid caseId, [FromBody] string diagnosis)
+        public async Task<IActionResult> SetDiagnosis(Guid caseId, CaseDiagnosisUpdateDto details)
         {
-
-            return DtoMapper.Map(await CaseService.SetDiagnosis(caseId, diagnosis));
+            await CaseService.SetDiagnosis(caseId, details);
+            return Ok();
         }
 
         [HttpPatch("{caseId:guid}/unassign")]
