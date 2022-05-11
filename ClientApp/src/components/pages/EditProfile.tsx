@@ -13,7 +13,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import APIClient from "../../util/API/APIClient";
 import {
   BloodType,
@@ -104,7 +104,7 @@ const EditProfile = () => {
                     {`Editing ${queryUser.firstName} ${queryUser.lastName}'s profile`}
                   </Typography>
                   <Stack direction="row" justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                    <Button onClick={() => navigate("./..")} variant="text">
+                    <Button component={Link} to="./.." variant="text">
                       Cancel
                     </Button>
                     <LoadingButton loading={isSavePending} onClick={handleSave} variant="text">

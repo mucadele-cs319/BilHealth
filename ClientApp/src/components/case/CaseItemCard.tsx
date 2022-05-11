@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SimpleCase, stringifyCaseState, stringifyCaseType } from "../../util/API/APITypes";
 
 interface Props {
@@ -14,8 +14,6 @@ interface Props {
 }
 
 const CaseItemCard = ({ _case }: Props) => {
-  const navigate = useNavigate();
-
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
@@ -32,7 +30,7 @@ const CaseItemCard = ({ _case }: Props) => {
             </Typography>
           </Box>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-            <Button onClick={() => navigate(`/cases/${_case.id}`)} variant="text">
+            <Button component={Link} to={`/cases/${_case.id}`} variant="text">
               View Case
             </Button>
           </Stack>
@@ -44,8 +42,6 @@ const CaseItemCard = ({ _case }: Props) => {
             ? "N/A"
             : `${_case.simpleDoctorUser?.firstName} ${_case.simpleDoctorUser?.lastName}`}
         </Typography>
-
-        <Stack direction="row" justifyContent="end"></Stack>
       </CardContent>
     </Card>
   );

@@ -9,7 +9,7 @@ import { stringifyBloodType, stringifyCampus, stringifyGender, User, UserType } 
 import ProfileDetailsItem from "./ProfileDetailsItem";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface Props {
   data: User;
@@ -23,8 +23,6 @@ const failsafe = (content: string | number | undefined, suffix?: string) => {
 };
 
 const ProfileDetails = ({ data, editable = false }: Props) => {
-  const navigate = useNavigate();
-
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
@@ -34,7 +32,7 @@ const ProfileDetails = ({ data, editable = false }: Props) => {
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
             {editable ? (
-              <Button onClick={() => navigate("edit")} variant="text">
+              <Button component={Link} to="edit" variant="text">
                 Edit
               </Button>
             ) : null}

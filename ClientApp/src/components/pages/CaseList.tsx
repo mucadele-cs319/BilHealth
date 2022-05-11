@@ -11,15 +11,11 @@ import CardContent from "@mui/material/CardContent";
 import { SimpleCase } from "../../util/API/APITypes";
 import CaseItemCard from "../case/CaseItemCard";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
 const CaseList = () => {
   useDocumentTitle("Cases");
-
-  const navigate = useNavigate();
-
-  // const { user } = useUserContext();
 
   const [cases, setCases] = useState<SimpleCase[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -49,7 +45,7 @@ const CaseList = () => {
                   </Typography>
                 </Typography>
                 <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                  <Button onClick={() => navigate("/cases/new")} variant="text" startIcon={<AddIcon />}>
+                  <Button component={Link} to="/cases/new" variant="text" startIcon={<AddIcon />}>
                     Create
                   </Button>
                 </Stack>
