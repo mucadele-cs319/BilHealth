@@ -5,20 +5,30 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import APIClient from "../../util/API/APIClient";
-import { Case, CaseState, stringifyCaseState, stringifyCaseType } from "../../util/API/APITypes";
+import { Case, CaseState, stringifyCaseState, stringifyCaseType, UserType } from "../../util/API/APITypes";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import { useUserContext } from "../UserContext";
 
 interface Props {
   _case: Case;
+  readonly: boolean;
   refreshHandler: () => void;
 }
 
-const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
+const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
+  const { user } = useUserContext();
+
+  const [isDiagnosisPending, setIsDiagnosisPending] = useState(false);
+  const [makingDiagnosis, setMakingDiagnosis] = useState(false);
+  const [diagnosis, setDiagnosis] = useState(_case.diagnosis);
+
   const [isUnassignPending, setIsUnassignPending] = useState(false);
   const [unassignAttempt, setUnassignAttempt] = useState(false);
 
@@ -42,6 +52,8 @@ const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
     await APIClient.cases.changeState(_case.id, nextState);
     setIsStatePending(false);
     setTogglingState(false);
+    setUnassignAttempt(false);
+    setMakingDiagnosis(false);
     refreshHandler();
   };
 
@@ -50,6 +62,14 @@ const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
     await APIClient.cases.unassign(_case.id);
     setIsUnassignPending(false);
     setUnassignAttempt(false);
+    refreshHandler();
+  };
+
+  const handleDiagnosis = async () => {
+    setIsDiagnosisPending(true);
+    await APIClient.cases.diagnosis(_case.id, { content: diagnosis });
+    setIsDiagnosisPending(false);
+    setMakingDiagnosis(false);
     refreshHandler();
   };
 
@@ -67,12 +87,28 @@ const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
           Medically related to <strong>{stringifyCaseType(_case.type)}</strong>.
         </Typography>
         <Typography variant="body2" gutterBottom>
-          Currently <strong>{stringifyCaseState(_case.state)}</strong>.
+          The case is <strong>{stringifyCaseState(_case.state)}</strong>.
+        </Typography>
+        <Typography variant="body2" gutterBottom>
+          {_case.diagnosis === null || _case.diagnosis.length === 0 ? (
+            <>
+              Currently <strong>undiagnosed</strong>.
+            </>
+          ) : (
+            <>
+              Diagnosed with: <strong>{_case.diagnosis}</strong>.
+            </>
+          )}
         </Typography>
 
         <Stack direction="row" justifyContent="end" spacing={1}>
+          {user?.userType === UserType.Doctor && !readonly ? (
+            <Button disabled={makingDiagnosis || _case.state === CaseState.Closed} onClick={() => setMakingDiagnosis(true)} variant="text">
+              Make Diagnosis
+            </Button>
+          ) : null}
           <LoadingButton
-            disabled={_case.doctorUserId === null}
+            disabled={_case.doctorUserId === null || _case.state === CaseState.Closed || readonly}
             loading={isUnassignPending}
             onClick={() => setUnassignAttempt(true)}
             variant="text"
@@ -83,6 +119,7 @@ const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
           </LoadingButton>
           <LoadingButton
             loading={isStatePending}
+            disabled={readonly}
             onClick={() => setTogglingState(true)}
             variant="text"
             color="error"
@@ -91,6 +128,38 @@ const CaseHeaderCard = ({ _case, refreshHandler }: Props) => {
             {nextState === CaseState.Closed ? "Close" : "Reopen"} Case
           </LoadingButton>
         </Stack>
+
+        {!makingDiagnosis ? null : (
+          <Box>
+            <Stack direction="row" justifyContent="end" spacing={1}>
+              <TextField
+                id="case-diag-input"
+                label="Diagnosis"
+                variant="outlined"
+                margin="dense"
+                value={diagnosis}
+                onChange={(e) => setDiagnosis(e.target.value)}
+              />
+              <Button
+                onClick={() => {
+                  setMakingDiagnosis(false);
+                  setDiagnosis(_case.diagnosis);
+                }}
+                variant="text"
+              >
+                Cancel
+              </Button>
+              <LoadingButton
+                loading={isDiagnosisPending}
+                onClick={handleDiagnosis}
+                variant="text"
+                loadingPosition="center"
+              >
+                Save
+              </LoadingButton>
+            </Stack>
+          </Box>
+        )}
 
         <Dialog open={unassignAttempt} onClose={() => setUnassignAttempt(false)}>
           <DialogTitle>Confirm Doctor Unassignment</DialogTitle>
