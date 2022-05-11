@@ -20,6 +20,7 @@ import TableHead from "@mui/material/TableHead";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
+import { fullNameify } from "../../util/StringUtil";
 
 const TestResultList = () => {
   useDocumentTitle("Test Results");
@@ -55,7 +56,7 @@ const TestResultList = () => {
               <CardContent>
                 <Stack direction="row" justifyContent="center">
                   <Typography variant="h5" gutterBottom>
-                    {`${queryUser.firstName} ${queryUser.lastName}'s Test Results`}
+                    {`${fullNameify(queryUser)}'s Test Results`}
                   </Typography>
                   <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
                     {readonly ? null : (

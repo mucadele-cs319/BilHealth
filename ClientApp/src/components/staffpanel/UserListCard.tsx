@@ -20,6 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { fullNameify } from "../../util/StringUtil";
 
 const UserListCard = () => {
   const [userList, setUserList] = useState<SimpleUser[]>([]);
@@ -85,7 +86,7 @@ const UserListCard = () => {
                     .filter(
                       (user) =>
                         searchString.length === 0 ||
-                        [user.userName, user.email, `${user.firstName} ${user.lastName}`, user.id].some((prop) =>
+                        [user.userName, user.email, fullNameify(user), user.id].some((prop) =>
                           prop.toLowerCase().includes(searchString.toLowerCase()),
                         ),
                     )

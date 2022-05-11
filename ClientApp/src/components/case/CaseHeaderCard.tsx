@@ -15,6 +15,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { useUserContext } from "../UserContext";
+import { fullNameify } from "../../util/StringUtil";
 
 interface Props {
   _case: Case;
@@ -80,8 +81,7 @@ const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
           Case: {_case.title}
         </Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by{" "}
-          {`${_case.simplePatientUser?.firstName} ${_case.simplePatientUser?.lastName}`}
+          Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by {fullNameify(_case.simplePatientUser)}
         </Typography>
         <Typography variant="body2" gutterBottom>
           Medically related to <strong>{stringifyCaseType(_case.type)}</strong>.
@@ -103,7 +103,11 @@ const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
 
         <Stack direction="row" justifyContent="end" spacing={1}>
           {user?.userType === UserType.Doctor && !readonly ? (
-            <Button disabled={makingDiagnosis || _case.state === CaseState.Closed} onClick={() => setMakingDiagnosis(true)} variant="text">
+            <Button
+              disabled={makingDiagnosis || _case.state === CaseState.Closed}
+              onClick={() => setMakingDiagnosis(true)}
+              variant="text"
+            >
               Make Diagnosis
             </Button>
           ) : null}

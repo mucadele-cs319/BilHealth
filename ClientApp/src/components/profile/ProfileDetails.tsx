@@ -10,6 +10,7 @@ import ProfileDetailsItem from "./ProfileDetailsItem";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { fullNameify } from "../../util/StringUtil";
 
 interface Props {
   data: User;
@@ -28,7 +29,7 @@ const ProfileDetails = ({ data, editable = false }: Props) => {
       <CardContent>
         <Stack direction="row" justifyContent="center">
           <Typography variant="h5" gutterBottom>
-            {`${data.firstName} ${data.lastName}`} <Chip className="ml-2" size="small" label={data.userType} />
+            {fullNameify(data)} <Chip className="ml-2" size="small" label={data.userType} />
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
             {editable ? (

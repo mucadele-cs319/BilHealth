@@ -59,7 +59,7 @@ const TriageRequestItem = ({ triageRequest, readonly = false, refreshHandler }: 
       {active ? (
         <Stack direction="row" spacing={1}>
           <LoadingButton
-          disabled={readonly}
+            disabled={readonly}
             loading={isPending}
             onClick={() => handleAttempt(ApprovalStatus.Rejected)}
             variant="text"

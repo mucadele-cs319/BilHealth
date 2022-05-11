@@ -50,7 +50,11 @@ const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
             Triage Requests
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-            <Button disabled={_case.state !== CaseState.WaitingTriage || readonly} onClick={() => setCreating(true)} variant="text">
+            <Button
+              disabled={_case.state !== CaseState.WaitingTriage || readonly}
+              onClick={() => setCreating(true)}
+              variant="text"
+            >
               Add Request
             </Button>
           </Stack>
@@ -94,7 +98,11 @@ const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
           </Stack>
         ) : (
           <Box>
-            <TriageRequestItem triageRequest={_case.triageRequests[0]} refreshHandler={refreshHandler} readonly={readonly} />
+            <TriageRequestItem
+              triageRequest={_case.triageRequests[0]}
+              refreshHandler={refreshHandler}
+              readonly={readonly}
+            />
           </Box>
         )}
 

@@ -34,6 +34,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Divider from "@mui/material/Divider";
 import LoadingButton from "@mui/lab/LoadingButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import { fullNameify } from "../../util/StringUtil";
 
 const EditProfile = () => {
   useDocumentTitle("Editing Profile");
@@ -101,7 +102,7 @@ const EditProfile = () => {
               <CardContent>
                 <Stack direction="row" justifyContent="center">
                   <Typography variant="h5" gutterBottom>
-                    {`Editing ${queryUser.firstName} ${queryUser.lastName}'s profile`}
+                    {`Editing ${fullNameify(queryUser)}'s profile`}
                   </Typography>
                   <Stack direction="row" justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
                     <Button component={Link} to="./.." variant="text">
