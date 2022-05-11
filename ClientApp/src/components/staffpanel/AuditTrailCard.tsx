@@ -34,9 +34,7 @@ const AuditTrailCard = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
           Audit Trails
-          <Typography variant="body2">
-            An audit trail allows keeping a record of who visited whose profile.
-          </Typography>
+          <Typography variant="body2">An audit trail allows keeping a record of who visited whose profile.</Typography>
         </Typography>
 
         <TableContainer className="mt-3 max-h-96 overflow-auto">
