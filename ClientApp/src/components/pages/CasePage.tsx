@@ -23,11 +23,13 @@ const CasePage = () => {
 
   const [_case, setCase] = useState<Case>();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isUnassignedDoctor, setIsUnassignedDoctor] = useState(true);
 
   const refreshCase = () => {
     if (params.caseid === undefined) throw Error("No case ID?");
     Promise.all([APIClient.cases.get(params.caseid)]).then(([caseResponse]) => {
       setCase(caseResponse);
+      setIsUnassignedDoctor(user?.userType === UserType.Doctor && caseResponse.doctorUserId !== user.id);
       document.title = titleify(caseResponse.title);
       setIsLoaded(true);
     });
@@ -43,15 +45,15 @@ const CasePage = () => {
         <Grid item lg={10} xs={11}>
           {isLoaded && _case ? (
             <>
-              <CaseHeaderCard _case={_case} refreshHandler={refreshCase} />
-              <CaseMessagesCard _case={_case} refreshHandler={refreshCase} />
+              <CaseHeaderCard _case={_case} refreshHandler={refreshCase} readonly={isUnassignedDoctor} />
+              <CaseMessagesCard _case={_case} refreshHandler={refreshCase} readonly={isUnassignedDoctor} />
               <PrescriptionCard
-                readonly={user?.userType !== UserType.Doctor}
+                readonly={user?.userType !== UserType.Doctor || isUnassignedDoctor}
                 _case={_case}
                 refreshHandler={refreshCase}
               />
               <AppointmentCard refreshHandler={refreshCase} _case={_case} />
-              <TriageRequestCard _case={_case} refreshHandler={refreshCase} />
+              <TriageRequestCard _case={_case} refreshHandler={refreshCase} readonly={isUnassignedDoctor} />
             </>
           ) : (
             <Stack alignItems="center" className="mt-8">

@@ -16,10 +16,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 
 interface Props {
   triageRequest: TriageRequest;
+  readonly?: boolean;
   refreshHandler: () => void;
 }
 
-const TriageRequestItem = ({ triageRequest, refreshHandler }: Props) => {
+const TriageRequestItem = ({ triageRequest, readonly = false, refreshHandler }: Props) => {
   const active = triageRequest.approvalStatus === ApprovalStatus.Waiting;
 
   const { user } = useUserContext();
@@ -58,6 +59,7 @@ const TriageRequestItem = ({ triageRequest, refreshHandler }: Props) => {
       {active ? (
         <Stack direction="row" spacing={1}>
           <LoadingButton
+          disabled={readonly}
             loading={isPending}
             onClick={() => handleAttempt(ApprovalStatus.Rejected)}
             variant="text"

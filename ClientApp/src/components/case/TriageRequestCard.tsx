@@ -17,10 +17,11 @@ import Divider from "@mui/material/Divider";
 
 interface Props {
   _case: Case;
+  readonly: boolean;
   refreshHandler: () => void;
 }
 
-const TriageRequestCard = ({ _case, refreshHandler }: Props) => {
+const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
   const [creating, setCreating] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
@@ -49,7 +50,7 @@ const TriageRequestCard = ({ _case, refreshHandler }: Props) => {
             Triage Requests
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-            <Button disabled={_case.state !== CaseState.WaitingTriage} onClick={() => setCreating(true)} variant="text">
+            <Button disabled={_case.state !== CaseState.WaitingTriage || readonly} onClick={() => setCreating(true)} variant="text">
               Add Request
             </Button>
           </Stack>
@@ -93,7 +94,7 @@ const TriageRequestCard = ({ _case, refreshHandler }: Props) => {
           </Stack>
         ) : (
           <Box>
-            <TriageRequestItem triageRequest={_case.triageRequests[0]} refreshHandler={refreshHandler} />
+            <TriageRequestItem triageRequest={_case.triageRequests[0]} refreshHandler={refreshHandler} readonly={readonly} />
           </Box>
         )}
 

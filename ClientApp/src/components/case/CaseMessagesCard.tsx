@@ -17,10 +17,11 @@ import CaseSystemMessageItem from "./CaseSystemMessageItem";
 
 interface Props {
   _case: Case;
+  readonly: boolean;
   refreshHandler: () => void;
 }
 
-const CaseMessagesCard = ({ _case, refreshHandler }: Props) => {
+const CaseMessagesCard = ({ _case, readonly, refreshHandler }: Props) => {
   const { user } = useUserContext();
 
   const [isPending, setIsPending] = useState(false);
@@ -65,35 +66,38 @@ const CaseMessagesCard = ({ _case, refreshHandler }: Props) => {
           </Stack>
         )}
 
-        <Divider />
-
-        <Box>
-          <TextField
-            id="case-message-input"
-            label="Message"
-            variant="filled"
-            multiline
-            fullWidth
-            margin="dense"
-            minRows={4}
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
-          <Stack direction="row" justifyContent="end">
-            <Button variant="text" onClick={() => setNewMessage("")}>
-              Cancel
-            </Button>
-            <LoadingButton
-              loading={isPending}
-              disabled={!validate()}
-              onClick={handleNewMessage}
-              variant="text"
-              loadingPosition="center"
-            >
-              Send
-            </LoadingButton>
-          </Stack>
-        </Box>
+        {readonly ? null : (
+          <>
+            <Divider />
+            <Box>
+              <TextField
+                id="case-message-input"
+                label="Message"
+                variant="filled"
+                multiline
+                fullWidth
+                margin="dense"
+                minRows={4}
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+              />
+              <Stack direction="row" justifyContent="end">
+                <Button variant="text" onClick={() => setNewMessage("")}>
+                  Cancel
+                </Button>
+                <LoadingButton
+                  loading={isPending}
+                  disabled={!validate()}
+                  onClick={handleNewMessage}
+                  variant="text"
+                  loadingPosition="center"
+                >
+                  Send
+                </LoadingButton>
+              </Stack>
+            </Box>
+          </>
+        )}
       </CardContent>
     </Card>
   );
