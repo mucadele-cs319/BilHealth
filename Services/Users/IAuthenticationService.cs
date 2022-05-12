@@ -25,10 +25,9 @@ namespace BilHealth.Services.Users
         Task<IdentityResult> DeleteUser(string userName);
         Task<IdentityResult> ChangePassword(AppUser user, string currentPassword, string newPassword);
 
-        Task<DomainUser> GetUser(ClaimsPrincipal principal);
-        Task<DomainUser> GetUser(Guid userId);
+        Task<DomainUser> GetUser(ClaimsPrincipal principal, bool bare = false);
+        Task<DomainUser> GetUser(Guid userId, bool bare = false);
         Task<string> GetUserType(Guid userId);
-        Task<DomainUser> GetBareUser(Guid userId);
         Task<List<DomainUser>> GetAllUsers();
     }
 }

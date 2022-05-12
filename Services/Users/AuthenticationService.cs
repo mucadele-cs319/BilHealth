@@ -108,14 +108,17 @@ namespace BilHealth.Services.Users
             return user;
         }
 
-        public async Task<DomainUser> GetUser(ClaimsPrincipal principal)
+        public async Task<DomainUser> GetUser(ClaimsPrincipal principal, bool bare)
         {
             var user = await UserManager.GetUserAsync(principal);
-            return await LoadUserNavigationProps(user.DomainUser);
+            return bare ? user.DomainUser : await LoadUserNavigationProps(user.DomainUser);
         }
 
-        public async Task<DomainUser> GetUser(Guid userId) =>
-            await LoadUserNavigationProps(await DbCtx.DomainUsers.FindOrThrowAsync(userId));
+        public async Task<DomainUser> GetUser(Guid userId, bool bare)
+        {
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
+            return bare ? user : await LoadUserNavigationProps(user);
+        }
 
         public Task<string> GetUserType(Guid userId) =>
             DbCtx.DomainUsers.Where(u => u.Id == userId).Select(u => u.Discriminator).SingleOrDefaultAsync()!;
