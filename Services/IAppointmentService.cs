@@ -10,7 +10,7 @@ namespace BilHealth.Services
         Task<bool> CancelAppointment(Guid appointmentId);
         Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval);
 
-        Task<AppointmentVisit> CreateVisit(Guid appointmentId, AppointmentVisitUpdateDto details);
-        Task<AppointmentVisit> UpdatePatientVisitDetails(Guid appointmentId, AppointmentVisitUpdateDto details);
+        Task CreateVisit(Guid appointmentId);
+        Task<AppointmentVisit> UpdateVisit(Guid appointmentId, AppointmentVisitUpdateDto details);
     }
 }

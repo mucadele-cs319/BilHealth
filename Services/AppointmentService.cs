@@ -3,6 +3,7 @@ using BilHealth.Model;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
 namespace BilHealth.Services
@@ -56,20 +57,21 @@ namespace BilHealth.Services
             return true;
         }
 
-        public async Task<AppointmentVisit> CreateVisit(Guid appointmentId, AppointmentVisitUpdateDto details)
+        public async Task CreateVisit(Guid appointmentId)
         {
+            var visitExists = await DbCtx.AppointmentVisits.Where(v => v.AppointmentId == appointmentId).AnyAsync();
+            if (visitExists) return;
+
+            var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
+            appointment.Attended = true;
+
             var visit = new AppointmentVisit
             {
                 AppointmentId = appointmentId,
-                BloodPressure = details.BloodPressure,
-                BodyTemperature = details.BodyTemperature,
-                BPM = details.BPM,
-                Notes = details.Notes ?? String.Empty,
                 DateTime = Clock.GetCurrentInstant()
             };
             DbCtx.AppointmentVisits.Add(visit);
             await DbCtx.SaveChangesAsync();
-            return visit;
         }
 
         public async Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval)
@@ -80,20 +82,21 @@ namespace BilHealth.Services
             await DbCtx.SaveChangesAsync();
         }
 
-        public async Task<AppointmentVisit> UpdatePatientVisitDetails(Guid appointmentId, AppointmentVisitUpdateDto details)
+        public async Task<AppointmentVisit> UpdateVisit(Guid appointmentId, AppointmentVisitUpdateDto details)
         {
             var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
             await DbCtx.Entry(appointment).Reference(a => a.Visit).LoadAsync();
 
-            var visit = appointment.Visit;
-            if (visit is null) throw new InvalidOperationException($"Cannot update nonexisting visit on appointment {appointmentId}");
+            if (appointment.Visit is null)
+                throw new InvalidOperationException($"Cannot update nonexisting visit on appointment {appointmentId}");
 
-            visit.Notes = details.Notes ?? visit.Notes;
-            visit.BloodPressure = details.BloodPressure ?? visit.BloodPressure;
-            visit.BodyTemperature = details.BodyTemperature ?? visit.BodyTemperature;
-            visit.BPM = details.BPM ?? visit.BPM;
+            appointment.Visit.Notes = details.Notes ?? String.Empty;
+            appointment.Visit.BodyTemperature = details.BodyTemperature;
+            appointment.Visit.BloodPressure = details.BloodPressure;
+            appointment.Visit.BPM = details.BPM;
+
             await DbCtx.SaveChangesAsync();
-            return visit;
+            return appointment.Visit;
         }
     }
 }
