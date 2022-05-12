@@ -24,7 +24,7 @@ const CaseNewPage = () => {
 
   const [isPending, setIsPending] = useState(false);
 
-  const [caseType, setCaseType] = useState<number>(CaseType.Dermatology);
+  const [caseType, setCaseType] = useState<number>(CaseType.Dental);
   const [title, setTitle] = useState("");
   const [patientUserId, setPatientUserId] = useState(isPatient(user) ? user.id : "");
 
