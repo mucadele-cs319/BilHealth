@@ -227,6 +227,7 @@ namespace BilHealth.Services
 
             _case.DoctorUserId = null;
             _case.State = CaseState.WaitingTriage;
+            NotificationService.AddCaseDoctorResignedNotification(_case.PatientUserId, _case);
             await DbCtx.SaveChangesAsync();
             return true;
         }
