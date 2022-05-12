@@ -4,7 +4,6 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import APIClient from "../../util/API/APIClient";
 import { CaseMessage } from "../../util/API/APITypes";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -77,10 +76,7 @@ const CaseMessageItem = ({ message, readonly = false, refreshHandler }: Props) =
       <Stack direction="row" py={1}>
         <Box sx={{ width: "100%" }}>
           <Typography variant="caption" gutterBottom>
-            <Link style={{ fontWeight: "bold" }} to={`/profiles/${message.user.id}`}>
-              {linkUser(message.user)}
-            </Link>{" "}
-            on {message.dateTime.format("D MMM YYYY [at] H:mm")}
+            <strong>{linkUser(message.user)}</strong> on {message.dateTime.format("D MMM YYYY [at] H:mm")}
           </Typography>
           {editing ? (
             <>
