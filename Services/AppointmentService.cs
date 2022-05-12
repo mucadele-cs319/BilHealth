@@ -43,22 +43,6 @@ namespace BilHealth.Services
             return appointment;
         }
 
-        public async Task<Appointment> UpdateAppointment(Guid appointmentId, AppointmentUpdateDto details)
-        {
-            var appointment = await DbCtx.Appointments.FindOrThrowAsync(appointmentId);
-            await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
-
-            if (appointment.DateTime != details.DateTime)
-                NotificationService.AddAppointmentTimeChangeNotification(appointment.Case!.PatientUserId, appointment);
-
-            appointment.DateTime = details.DateTime;
-            appointment.Description = details.Description;
-
-            await DbCtx.SaveChangesAsync();
-            await DbCtx.Entry(appointment).Reference(a => a.RequestingUser).LoadAsync();
-            return appointment;
-        }
-
         public async Task<bool> CancelAppointment(Guid appointmentId)
         {
             var appointment = await DbCtx.Appointments.FindAsync(appointmentId);
@@ -68,6 +52,7 @@ namespace BilHealth.Services
             appointment.Cancelled = true;
             NotificationService.AddAppointmentCancellationNotification(appointment.Case!.PatientUserId, appointment);
 
+            await DbCtx.SaveChangesAsync();
             return true;
         }
 

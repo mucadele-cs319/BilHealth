@@ -7,7 +7,6 @@ namespace BilHealth.Services
     public interface IAppointmentService
     {
         Task<Appointment> CreateAppointment(Guid caseId, Guid requestingUserId, AppointmentUpdateDto details);
-        Task<Appointment> UpdateAppointment(Guid appointmentId, AppointmentUpdateDto details);
         Task<bool> CancelAppointment(Guid appointmentId);
         Task SetAppointmentApproval(Guid appointmentId, ApprovalStatus approval);
 
