@@ -35,7 +35,7 @@ const PrescriptionCardRow = ({ _case, prescription, readonly = false, refreshHan
   const [deleting, setDeleting] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  const [newItem, setNewItem] = useState("");
+  const [newItem, setNewItem] = useState(prescription?.item || "");
 
   const handleDelete = async () => {
     setIsPending(true);
@@ -113,9 +113,9 @@ const PrescriptionCardRow = ({ _case, prescription, readonly = false, refreshHan
         <>
           <TableCell>{prescription?.dateTime.format("DD/MM/YYYY, HH:mm")}</TableCell>
           <TableCell>{prescription?.item}</TableCell>
-          {readonly ? null : (
-            <>
-              <TableCell align="right">
+          <TableCell align="right">
+            {readonly ? null : (
+              <>
                 <Tooltip arrow title="Edit">
                   <IconButton onClick={() => setEditing(true)}>
                     <EditIcon />
@@ -126,21 +126,22 @@ const PrescriptionCardRow = ({ _case, prescription, readonly = false, refreshHan
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
-              </TableCell>
-              <Dialog open={deleting} onClose={() => setDeleting(false)}>
-                <DialogTitle>Confirm Deletion</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>Are you sure you want to delete the prescription?</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={() => setDeleting(false)}>No</Button>
-                  <Button onClick={handleDelete} autoFocus>
-                    Yes
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </>
-          )}
+              </>
+            )}
+          </TableCell>
+
+          <Dialog open={deleting} onClose={() => setDeleting(false)}>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Are you sure you want to delete the prescription?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleting(false)}>No</Button>
+              <Button onClick={handleDelete} autoFocus>
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       )}
     </TableRow>
