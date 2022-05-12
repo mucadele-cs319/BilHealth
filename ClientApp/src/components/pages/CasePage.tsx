@@ -13,6 +13,7 @@ import CaseHeaderCard from "../case/CaseHeaderCard";
 import TriageRequestCard from "../case/TriageRequestCard";
 import PrescriptionCard from "../case/PrescriptionCard";
 import AppointmentCard from "../case/AppointmentCard";
+import ForbiddenAccess from "../ForbiddenAccess";
 
 const CasePage = () => {
   useDocumentTitle("Case");
@@ -23,16 +24,21 @@ const CasePage = () => {
 
   const [_case, setCase] = useState<Case>();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [forbidden, setForbidden] = useState(false);
   const [isUnassignedDoctor, setIsUnassignedDoctor] = useState(true);
 
   const refreshCase = () => {
     if (params.caseid === undefined) throw Error("No case ID?");
-    Promise.all([APIClient.cases.get(params.caseid)]).then(([caseResponse]) => {
-      setCase(caseResponse);
-      setIsUnassignedDoctor(user?.userType === UserType.Doctor && caseResponse.doctorUser?.id !== user.id);
-      document.title = titleify(caseResponse.title);
-      setIsLoaded(true);
-    });
+    Promise.all([APIClient.cases.get(params.caseid)])
+      .then(([caseResponse]) => {
+        setCase(caseResponse);
+        setIsUnassignedDoctor(user?.userType === UserType.Doctor && caseResponse.doctorUser?.id !== user.id);
+        document.title = titleify(caseResponse.title);
+        setIsLoaded(true);
+      })
+      .catch(() => {
+        setForbidden(true);
+      });
   };
 
   useEffect(() => {
@@ -43,7 +49,9 @@ const CasePage = () => {
     <Grid container justifyContent="center">
       <Fade in={true}>
         <Grid item lg={10} xs={11}>
-          {isLoaded && _case ? (
+          {forbidden ? (
+            <ForbiddenAccess />
+          ) : isLoaded && _case ? (
             <>
               <CaseHeaderCard _case={_case} refreshHandler={refreshCase} readonly={isUnassignedDoctor} />
               <CaseMessagesCard _case={_case} refreshHandler={refreshCase} readonly={isUnassignedDoctor} />
