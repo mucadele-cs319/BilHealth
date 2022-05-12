@@ -57,7 +57,7 @@ export const getAllApprovalTypes = () => [ApprovalStatus.Approved, ApprovalStatu
 
 export interface Appointment {
   id: string;
-  requestedById: string;
+  requestingUser: SimpleUser;
   caseId: string;
   createdAt: Dayjs;
   dateTime: Dayjs;

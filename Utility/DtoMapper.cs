@@ -159,7 +159,7 @@ namespace BilHealth.Utility
             var dto = new AppointmentDto
             {
                 Id = appointment.Id,
-                RequestedById = appointment.RequestingUserId,
+                RequestingUser = MapSimpleUser(appointment.RequestingUser),
                 CaseId = appointment.CaseId,
                 ApprovalStatus = appointment.ApprovalStatus,
                 Attended = appointment.Attended,
@@ -167,7 +167,7 @@ namespace BilHealth.Utility
                 CreatedAt = appointment.CreatedAt,
                 DateTime = appointment.DateTime,
                 Description = appointment.Description,
-                Visit = appointment.Visit is not null ? Map(appointment.Visit) : null
+                Visit = appointment.Visit is null ? null : Map(appointment.Visit)
             };
             return dto;
         }

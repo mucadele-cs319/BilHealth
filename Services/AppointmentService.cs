@@ -1,6 +1,5 @@
 using BilHealth.Data;
 using BilHealth.Model;
-using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility.Enum;
@@ -40,6 +39,7 @@ namespace BilHealth.Services
             DbCtx.Appointments.Add(appointment);
             await NotificationService.AddNewAppointmentNotification(appointment);
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(appointment).Reference(a => a.RequestingUser).LoadAsync();
             return appointment;
         }
 
@@ -55,6 +55,7 @@ namespace BilHealth.Services
             appointment.Description = details.Description;
 
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(appointment).Reference(a => a.RequestingUser).LoadAsync();
             return appointment;
         }
 

@@ -29,7 +29,7 @@ namespace BilHealth.Services
 
             await DbCtx.Entry(_case).Collection(c => c.Messages!).Query().Include(m => m.User).LoadAsync();
             await DbCtx.Entry(_case).Collection(c => c.SystemMessages!).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.Appointments!).Query().Include(a => a.Visit).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Appointments!).Query().Include(a => a.Visit).Include(a => a.RequestingUser).LoadAsync();
             await DbCtx.Entry(_case).Collection(c => c.Prescriptions!).Query().Include(p => p.DoctorUser).LoadAsync();
             await DbCtx.Entry(_case).Collection(c => c.TriageRequests!).Query().Include(t => t.RequestingUser).Include(t => t.DoctorUser).LoadAsync();
 
