@@ -120,7 +120,6 @@ namespace BilHealth.Controllers
         [HttpPatch("{caseId:guid}/triagerequest")]
         public async Task<IActionResult> SetTriageRequestApproval(Guid caseId, ApprovalStatus approval)
         {
-
             var requestingUserType = (await AuthenticationService.GetUser(User, bare: true)).Discriminator;
             if (approval == ApprovalStatus.Approved && (requestingUserType == UserType.Patient || requestingUserType == UserType.Nurse))
                 return Forbid();

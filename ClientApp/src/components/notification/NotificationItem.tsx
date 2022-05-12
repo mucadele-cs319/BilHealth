@@ -13,7 +13,11 @@ import Link from "@mui/material/Link";
 import { Link as RLink } from "react-router-dom";
 
 const describeNotification = ({ type, referenceId1, userId }: Notification) => {
-  const linkify = (str: string, to: string) => <Link component={RLink} to={to}>{str}</Link>;
+  const linkify = (str: string, to: string) => (
+    <Link component={RLink} to={to}>
+      {str}
+    </Link>
+  );
   const cLink = (caseId?: string) => `/cases/${caseId}`;
   const tLink = () => `/profiles/${userId}/test-results`;
 

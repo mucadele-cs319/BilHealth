@@ -8,8 +8,11 @@ export const separateCapitalized = (input: string): string => input.split(/(?=[A
 export const fullNameify = (user?: User | SimpleUser): string =>
   user ? `${user.firstName} ${user.lastName}` : ".....";
 
-export const linkUser = (user?: User | SimpleUser, content?: string) =>
-  <Link component={RLink} to={`/profiles/${user?.id}`}>{content || fullNameify(user)}</Link>;
+export const linkUser = (user?: User | SimpleUser, content?: string) => (
+  <Link component={RLink} to={`/profiles/${user?.id}`}>
+    {content || fullNameify(user)}
+  </Link>
+);
 
 export const fmtDateOnly = "DD/MM/YYYY";
 export const fmtConcise = "DD/MM/YYYY, HH:mm";

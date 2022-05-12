@@ -60,8 +60,8 @@ const CasePage = () => {
                 _case={_case}
                 refreshHandler={refreshCase}
               />
-              <AppointmentCard refreshHandler={refreshCase} _case={_case} />
-              <TriageRequestCard _case={_case} refreshHandler={refreshCase} readonly={isUnassignedDoctor} />
+              <AppointmentCard refreshHandler={refreshCase} readonly={isUnassignedDoctor} _case={_case} />
+              <TriageRequestCard refreshHandler={refreshCase} readonly={isUnassignedDoctor} _case={_case} />
             </>
           ) : (
             <Stack alignItems="center" className="mt-8">

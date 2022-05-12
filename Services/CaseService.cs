@@ -190,10 +190,10 @@ namespace BilHealth.Services
                     triageRequest.Case.DoctorUserId = triageRequest.DoctorUserId;
                     triageRequest.Case.State = CaseState.Ongoing;
                     NotificationService.AddCaseTriagedNotification(triageRequest.Case.PatientUserId, triageRequest.Case!);
-                break;
+                    break;
                 case ApprovalStatus.Rejected:
                     triageRequest.Case.State = CaseState.WaitingTriage;
-                break;
+                    break;
             }
 
             await DbCtx.SaveChangesAsync();
