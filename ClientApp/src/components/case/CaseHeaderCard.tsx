@@ -40,7 +40,7 @@ const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
 
   const determineNextState = () => {
     if (_case.state !== CaseState.Closed) setNextState(CaseState.Closed);
-    else if (_case.doctorUserId === null) setNextState(CaseState.WaitingTriage);
+    else if (_case.doctorUser === null) setNextState(CaseState.WaitingTriage);
     else setNextState(CaseState.Ongoing);
   };
 
@@ -81,7 +81,7 @@ const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
           Case: {_case.title}
         </Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by {fullNameify(_case.simplePatientUser)}
+          Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by {fullNameify(_case.patientUser)}
         </Typography>
         <Typography variant="body2" gutterBottom>
           Medically related to <strong>{stringifyCaseType(_case.type)}</strong>.
@@ -112,7 +112,7 @@ const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
             </Button>
           ) : null}
           <LoadingButton
-            disabled={_case.doctorUserId === null || _case.state === CaseState.Closed || readonly}
+            disabled={_case.doctorUser === null || _case.state === CaseState.Closed || readonly}
             loading={isUnassignPending}
             onClick={() => setUnassignAttempt(true)}
             variant="text"

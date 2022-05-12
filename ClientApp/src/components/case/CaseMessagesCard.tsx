@@ -48,12 +48,12 @@ const CaseMessagesCard = ({ _case, readonly, refreshHandler }: Props) => {
           [..._case.messages, ..._case.systemMessages]
             .sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1))
             .map((msg) => {
-              const isSystemMessage = (msg as CaseMessage).userId === undefined;
+              const isSystemMessage = (msg as CaseMessage).user === undefined;
               if (isSystemMessage) return <CaseSystemMessageItem message={msg as CaseSystemMessage} key={msg.id} />;
               else
                 return (
                   <CaseMessageItem
-                    readonly={(msg as CaseMessage).userId !== user?.id && !isStaff(user)}
+                    readonly={(msg as CaseMessage).user.id !== user?.id && !isStaff(user)}
                     message={msg as CaseMessage}
                     refreshHandler={refreshHandler}
                     key={msg.id}

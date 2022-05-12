@@ -29,7 +29,7 @@ const CasePage = () => {
     if (params.caseid === undefined) throw Error("No case ID?");
     Promise.all([APIClient.cases.get(params.caseid)]).then(([caseResponse]) => {
       setCase(caseResponse);
-      setIsUnassignedDoctor(user?.userType === UserType.Doctor && caseResponse.doctorUserId !== user.id);
+      setIsUnassignedDoctor(user?.userType === UserType.Doctor && caseResponse.doctorUser?.id !== user.id);
       document.title = titleify(caseResponse.title);
       setIsLoaded(true);
     });

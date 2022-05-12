@@ -12,6 +12,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { fullNameify } from "../../util/StringUtil";
 
 const AuditTrailCard = () => {
   const [trailList, setTrailList] = useState<AuditTrail[]>([]);
@@ -42,8 +43,8 @@ const AuditTrailCard = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>Accessed User ID</TableCell>
-                <TableCell>Accessing User ID</TableCell>
+                <TableCell>Accessed User</TableCell>
+                <TableCell>Accessing User</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -51,8 +52,8 @@ const AuditTrailCard = () => {
                 ? trailList.map((trail) => (
                     <TableRow key={trail.id} hover>
                       <TableCell>{trail.accessTime.format("DD/MM/YYYY, HH:mm")}</TableCell>
-                      <TableCell>{trail.accessedPatientUserId}</TableCell>
-                      <TableCell>{trail.userId}</TableCell>
+                      <TableCell>{`${fullNameify(trail.accessedUser)} (${trail.accessedUser.userName})`}</TableCell>
+                      <TableCell>{`${fullNameify(trail.accessingUser)} (${trail.accessingUser.userName})`}</TableCell>
                     </TableRow>
                   ))
                 : null}

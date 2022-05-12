@@ -26,7 +26,7 @@ const CaseItemCard = ({ _case }: Props) => {
               <Chip className="ml-2" size="small" label={stringifyCaseType(_case.type)} />
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by {fullNameify(_case.simplePatientUser)}
+              Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by {fullNameify(_case.patientUser)}
             </Typography>
           </Box>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
@@ -37,7 +37,7 @@ const CaseItemCard = ({ _case }: Props) => {
         </Stack>
         <Typography variant="body2">Message Count: {_case.messageCount}</Typography>
         <Typography variant="body2">
-          Doctor Assigned: {_case.doctorUserId === null ? "N/A" : fullNameify(_case.simpleDoctorUser)}
+          Doctor Assigned: {_case.doctorUser === null ? "N/A" : fullNameify(_case.doctorUser)}
         </Typography>
       </CardContent>
     </Card>

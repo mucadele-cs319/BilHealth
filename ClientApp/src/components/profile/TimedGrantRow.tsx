@@ -17,6 +17,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
+import { fullNameify } from "../../util/StringUtil";
 
 interface Props {
   patientId: string;
@@ -106,7 +107,7 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
               {grant?.expiryTime.format("DD/MM/YYYY, HH:mm")}
             </TableCell>
           </Tooltip>
-          <TableCell>{grant?.userId}</TableCell>
+          <TableCell>{`${fullNameify(grant?.grantedUser)} (${grant?.grantedUser.userName})`}</TableCell>
           <TableCell align="right">
             <Tooltip arrow title={isInactive(grant) ? "Already canceled" : "Cancel"}>
               <span>

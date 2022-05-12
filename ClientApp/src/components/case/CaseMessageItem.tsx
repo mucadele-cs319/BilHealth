@@ -3,10 +3,10 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import APIClient from "../../util/API/APIClient";
-import { CaseMessage, SimpleUser } from "../../util/API/APITypes";
+import { CaseMessage } from "../../util/API/APITypes";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -30,8 +30,6 @@ interface Props {
 }
 
 const CaseMessageItem = ({ message, readonly = false, refreshHandler }: Props) => {
-  const [author, setAuthor] = useState<SimpleUser>();
-  const [isLoaded, setIsLoaded] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
 
   const [attemptingDelete, setAttemptingDelete] = useState(false);
@@ -49,18 +47,6 @@ const CaseMessageItem = ({ message, readonly = false, refreshHandler }: Props) =
     handleCloseMenu();
     setAttemptingDelete(true);
   };
-
-  const getAuthor = async () => {
-    APIClient.profiles.getSimple(message.userId).then((user) => {
-      setAuthor(user);
-      setIsLoaded(true);
-    });
-  };
-
-  // TODO: DONT FETCH FOR EVERY COMPONENT
-  useEffect(() => {
-    getAuthor();
-  }, []);
 
   const handleCloseMenu = () => {
     setMenuAnchor(null);
@@ -91,8 +77,8 @@ const CaseMessageItem = ({ message, readonly = false, refreshHandler }: Props) =
       <Stack direction="row" py={1}>
         <Box sx={{ width: "100%" }}>
           <Typography variant="caption" gutterBottom>
-            <Link style={{ fontWeight: "bold" }} to={`/profiles/${author?.id}`}>
-              {isLoaded ? fullNameify(author) : "loading user"}
+            <Link style={{ fontWeight: "bold" }} to={`/profiles/${message.user.id}`}>
+              {fullNameify(message.user)}
             </Link>{" "}
             on {message.dateTime.format("D MMM YYYY [at] H:mm")}
           </Typography>
