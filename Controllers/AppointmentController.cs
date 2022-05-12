@@ -25,14 +25,23 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("/api/cases/{caseId:guid}/appointment")]
-        public async Task<AppointmentDto> Create(Guid caseId, AppointmentUpdateDto details)
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Patient},{UserType.Doctor}")]
+        public async Task<IActionResult> Create(Guid caseId, AppointmentUpdateDto details)
         {
             var requestingUserId = (await AuthenticationService.GetUser(User)).Id;
-            var appointment = await AppointmentService.CreateAppointment(caseId, requestingUserId, details);
-            return DtoMapper.Map(appointment);
+            try
+            {
+                var appointment = await AppointmentService.CreateAppointment(caseId, requestingUserId, details);
+                return Ok(DtoMapper.Map(appointment));
+            }
+            catch (InvalidOperationException)
+            {
+                return Forbid("You are probably blacklisted.");
+            }
         }
 
         [HttpPatch("{appointmentId:guid}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Doctor}")]
         public async Task<AppointmentDto> Update(Guid appointmentId, AppointmentUpdateDto details)
         {
             var appointment = await AppointmentService.UpdateAppointment(appointmentId, details);
@@ -40,6 +49,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPut("{appointmentId:guid}/cancel")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Patient},{UserType.Doctor}")]
         public async Task<IActionResult> Cancel(Guid appointmentId)
         {
             var success = await AppointmentService.CancelAppointment(appointmentId);
@@ -47,7 +57,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPut("{appointmentId:guid}/approval")]
-        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Doctor}")]
         public async Task SetApproval(Guid appointmentId, ApprovalStatus approval)
         {
             await AppointmentService.SetAppointmentApproval(appointmentId, approval);
@@ -62,7 +72,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPut("{appointmentId:guid}/visit")]
-        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff},{UserType.Nurse},{UserType.Doctor}")]
+        [Authorize(Roles = $"{UserType.Admin},{UserType.Nurse},{UserType.Doctor}")]
         public async Task UpdateVisit(Guid appointmentId, AppointmentVisitUpdateDto details)
         {
             await AppointmentService.UpdatePatientVisitDetails(appointmentId, details);
