@@ -10,7 +10,7 @@ import ProfileDetailsItem from "./ProfileDetailsItem";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { fullNameify } from "../../util/StringUtil";
+import { fmtDateOnly, fullNameify } from "../../util/StringUtil";
 
 interface Props {
   data: User;
@@ -48,7 +48,7 @@ const ProfileDetails = ({ data, editable = false }: Props) => {
             <ProfileDetailsItem title="Gender" content={stringifyGender(data.gender)} />
           </Grid>
           <Grid item>
-            <ProfileDetailsItem title="Date of Birth" content={failsafe(data.dateOfBirth?.format("DD/MM/YYYY"))} />
+            <ProfileDetailsItem title="Date of Birth" content={failsafe(data.dateOfBirth?.format(fmtDateOnly))} />
           </Grid>
         </Grid>
 

@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { fmtConcise } from "../../util/StringUtil";
 
 interface Props {
   _case: Case;
@@ -35,10 +36,10 @@ const AppointmentItemCard = ({ _case, appointment, refreshHandler }: Props) => {
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
         <Typography variant="h5" gutterBottom>
-          On {appointment.dateTime.format("DD/MM/YYYY, HH:mm")}
+          On {appointment.dateTime.format(fmtConcise)}
         </Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          Created on {appointment.createdAt.format("DD/MM/YYYY, HH:mm")}
+          Created on {appointment.createdAt.format(fmtConcise)}
         </Typography>
         <Typography variant="body2" gutterBottom>
           Medically related to <strong>{stringifyCaseType(_case.type)}</strong>.

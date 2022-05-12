@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { Link } from "react-router-dom";
 import { SimpleCase, stringifyCaseState, stringifyCaseType } from "../../util/API/APITypes";
-import { fullNameify } from "../../util/StringUtil";
+import { fmtConcise, fullNameify } from "../../util/StringUtil";
 
 interface Props {
   _case: SimpleCase;
@@ -26,7 +26,7 @@ const CaseItemCard = ({ _case }: Props) => {
               <Chip className="ml-2" size="small" label={stringifyCaseType(_case.type)} />
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Opened on {_case.dateTime.format("DD/MM/YYYY, HH:mm")} by {fullNameify(_case.patientUser)}
+              Opened on {_case.dateTime.format(fmtConcise)} by {fullNameify(_case.patientUser)}
             </Typography>
           </Box>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>

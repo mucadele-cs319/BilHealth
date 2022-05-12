@@ -19,6 +19,7 @@ import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { fmtConcise } from "../../util/StringUtil";
 
 interface Props {
   _case: Case;
@@ -80,7 +81,7 @@ const PrescriptionCardRow = ({ _case, prescription, readonly = false, refreshHan
     <TableRow hover>
       {editing ? (
         <>
-          <TableCell>{dayjs().format("DD/MM/YYYY, HH:mm")}</TableCell>
+          <TableCell>{dayjs().format(fmtConcise)}</TableCell>
           <TableCell>
             <TextField
               id="presc-user-input"
@@ -111,7 +112,7 @@ const PrescriptionCardRow = ({ _case, prescription, readonly = false, refreshHan
         </>
       ) : (
         <>
-          <TableCell>{prescription?.dateTime.format("DD/MM/YYYY, HH:mm")}</TableCell>
+          <TableCell>{prescription?.dateTime.format(fmtConcise)}</TableCell>
           <TableCell>{prescription?.item}</TableCell>
           <TableCell align="right">
             {readonly ? null : (

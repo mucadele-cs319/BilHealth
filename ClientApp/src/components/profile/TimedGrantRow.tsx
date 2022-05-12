@@ -17,7 +17,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
-import { fullNameify } from "../../util/StringUtil";
+import { fmtConcise, fullNameify } from "../../util/StringUtil";
 
 interface Props {
   patientId: string;
@@ -71,7 +71,7 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
     <TableRow hover>
       {editing ? (
         <>
-          <TableCell>{dayjs().add(dayjs.duration("P1D")).format("DD/MM/YYYY, HH:mm")}</TableCell>
+          <TableCell>{dayjs().add(dayjs.duration("P1D")).format(fmtConcise)}</TableCell>
           <TableCell>
             <TextField
               id="grant-user-input"
@@ -104,7 +104,7 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
         <>
           <Tooltip arrow title={isInactive(grant) ? "Expired" : "Active"}>
             <TableCell sx={{ color: isInactive(grant) ? "#d90900" : "inherit" }}>
-              {grant?.expiryTime.format("DD/MM/YYYY, HH:mm")}
+              {grant?.expiryTime.format(fmtConcise)}
             </TableCell>
           </Tooltip>
           <TableCell>{`${fullNameify(grant?.grantedUser)} (${grant?.grantedUser.userName})`}</TableCell>
