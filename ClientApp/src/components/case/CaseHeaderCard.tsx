@@ -15,7 +15,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { useUserContext } from "../UserContext";
-import { fmtConcise, fullNameify } from "../../util/StringUtil";
+import { fmtConcise, linkUser } from "../../util/StringUtil";
 
 interface Props {
   _case: Case;
@@ -81,7 +81,7 @@ const CaseHeaderCard = ({ _case, readonly, refreshHandler }: Props) => {
           Case: {_case.title}
         </Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          Opened on {_case.dateTime.format(fmtConcise)} by {fullNameify(_case.patientUser)}
+          Opened on {_case.dateTime.format(fmtConcise)} by {linkUser(_case.patientUser)}
         </Typography>
         <Typography variant="body2" gutterBottom>
           Medically related to <strong>{stringifyCaseType(_case.type)}</strong>.

@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import { fmtConcise, fullNameify } from "../../util/StringUtil";
+import { fmtConcise, linkUser } from "../../util/StringUtil";
 
 interface Props {
   triageRequest: TriageRequest;
@@ -51,11 +51,11 @@ const TriageRequestItem = ({ triageRequest, readonly = false, refreshHandler }: 
         </Typography>
       ) : null}
       <Typography variant="caption" mb={1} component="p">
-        Requested on {triageRequest.dateTime.format(fmtConcise)} by {fullNameify(triageRequest.requestingUser)}
+        Requested on {triageRequest.dateTime.format(fmtConcise)} by {linkUser(triageRequest.requestingUser)}
       </Typography>
       <Typography variant="body2">Status: {stringifyApproval(triageRequest.approvalStatus)}</Typography>
       <Typography variant="body2" gutterBottom>
-        Requested Doctor: {fullNameify(triageRequest.doctorUser)}
+        Requested Doctor: {linkUser(triageRequest.doctorUser)}
       </Typography>
       {active ? (
         <Stack direction="row" spacing={1}>

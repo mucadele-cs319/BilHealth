@@ -21,7 +21,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { fullNameify } from "../../util/StringUtil";
+import { linkUser } from "../../util/StringUtil";
 
 interface Props {
   message: CaseMessage;
@@ -78,7 +78,7 @@ const CaseMessageItem = ({ message, readonly = false, refreshHandler }: Props) =
         <Box sx={{ width: "100%" }}>
           <Typography variant="caption" gutterBottom>
             <Link style={{ fontWeight: "bold" }} to={`/profiles/${message.user.id}`}>
-              {fullNameify(message.user)}
+              {linkUser(message.user)}
             </Link>{" "}
             on {message.dateTime.format("D MMM YYYY [at] H:mm")}
           </Typography>
