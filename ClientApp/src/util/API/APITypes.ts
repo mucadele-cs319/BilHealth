@@ -399,7 +399,7 @@ export interface User {
   testResults?: TestResult[];
   timedAccessGrants?: TimedAccessGrant[];
   // patient and doctor
-  cases?: Case[];
+  cases?: SimpleCase[];
   // doctor
   specialization?: string;
   campus?: Campus;

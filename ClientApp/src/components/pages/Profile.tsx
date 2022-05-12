@@ -15,6 +15,7 @@ import PasswordCard from "../profile/PasswordCard";
 import TestResultLinkerCard from "../profile/TestResultLinkerCard";
 import { isPatient, isStaff } from "../../util/UserTypeUtil";
 import TimedGrantCard from "../profile/TimedGrantCard";
+import MinimalCaseListCard from "../profile/MinimalCaseListCard";
 
 const Profile = () => {
   useDocumentTitle("Profile");
@@ -54,6 +55,9 @@ const Profile = () => {
                 />
               )}
               {isPatient(queryUser) ? <TestResultLinkerCard /> : null}
+              {
+                isPatient(queryUser) && !isPatient(user) && queryUser.cases ? <MinimalCaseListCard cases={queryUser.cases} /> : null
+              }
               {!isStaff(user) || !isPatient(queryUser) ? null : (
                 <BlacklistCard
                   patientId={queryUser.id as string}

@@ -87,7 +87,7 @@ const sortVaccinations = (user: User) => {
   user.vaccinations?.forEach((vaccination) => {
     vaccination.dateTime = dayjs(vaccination.dateTime);
   });
-  user.vaccinations?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+  user.vaccinations?.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const processDateOfBirth = (user: User) => {
@@ -98,14 +98,21 @@ const sortTestResults = (user: User) => {
   user.testResults?.forEach((testResult) => {
     testResult.dateTime = dayjs(testResult.dateTime);
   });
-  user.testResults?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+  user.testResults?.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const sortTimedGrants = (user: User) => {
   user.timedAccessGrants?.forEach((grant) => {
     grant.expiryTime = dayjs(grant.expiryTime);
   });
-  user.timedAccessGrants?.sort((a, b) => (a.expiryTime?.isAfter(b.expiryTime) ? -1 : 1));
+  user.timedAccessGrants?.sort((a, b) => (a.expiryTime.isAfter(b.expiryTime) ? -1 : 1));
+};
+
+const sortSimpleCases = (user: User) => {
+  user.cases?.forEach((_case) => {
+    _case.dateTime = dayjs(_case.dateTime);
+  });
+  user.cases?.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const profiles = {
@@ -122,6 +129,7 @@ const profiles = {
     sortTestResults(user);
     processDateOfBirth(user);
     sortTimedGrants(user);
+    sortSimpleCases(user);
 
     return user;
   },
@@ -133,6 +141,7 @@ const profiles = {
     sortTestResults(user);
     processDateOfBirth(user);
     sortTimedGrants(user);
+    sortSimpleCases(user);
 
     return user;
   },
