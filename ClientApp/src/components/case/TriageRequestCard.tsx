@@ -51,7 +51,7 @@ const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
             <Button
-              disabled={_case.state !== CaseState.WaitingTriage || readonly}
+              disabled={_case.state !== CaseState.WaitingTriage || readonly || creating}
               onClick={() => setCreating(true)}
               variant="text"
             >
@@ -106,8 +106,7 @@ const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
           </Box>
         )}
 
-        {_case.triageRequests.length > 0 &&
-        _case.triageRequests.some((t) => t.approvalStatus === ApprovalStatus.Rejected) ? (
+        {_case.triageRequests.length > 0 ? (
           <Box mt={2}>
             <Divider />
             <Typography mt={2} variant="h6">
