@@ -2,7 +2,6 @@ using BilHealth.Data;
 using BilHealth.Model;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Utility.Enum;
-using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
 namespace BilHealth.Services.Users
@@ -16,38 +15,6 @@ namespace BilHealth.Services.Users
         {
             AuthenticationService = authenticationService;
             Clock = clock;
-        }
-
-        public Task<List<Case>> GetOpenCases(DomainUser user)
-        {
-            if (user is Patient patient)
-            {
-                return DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State != CaseState.Closed).ToListAsync();
-            }
-            else if (user is Doctor doctor)
-            {
-                return DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State != CaseState.Closed).ToListAsync();
-            }
-            else
-            {
-                throw new ArgumentException("This user type is not supported yet", nameof(user));
-            }
-        }
-
-        public Task<List<Case>> GetPastCases(DomainUser user)
-        {
-            if (user is Patient patient)
-            {
-                return DbCtx.Cases.Where(c => c.PatientUserId == patient.Id && c.State == CaseState.Closed).ToListAsync();
-            }
-            else if (user is Doctor doctor)
-            {
-                return DbCtx.Cases.Where(c => c.DoctorUserId == doctor.Id && c.State == CaseState.Closed).ToListAsync();
-            }
-            else
-            {
-                throw new ArgumentException("This user type is not supported yet", nameof(user));
-            }
         }
 
         public async Task UpdateProfile(DomainUser user, UserProfileUpdateDto details, bool fullyEdit)
