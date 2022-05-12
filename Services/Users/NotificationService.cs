@@ -15,52 +15,40 @@ namespace BilHealth.Services.Users
             Clock = clock;
         }
 
-        private void AddNewAppointmentNotification(Guid userId, Appointment appointment)
+        private void AddNewAppointmentNotification(Guid? userId, Appointment appointment)
         {
-            var notification = new Notification
+            if (userId is Guid _userId)
             {
-                DateTime = Clock.GetCurrentInstant(),
-                UserId = userId,
-                Type = NotificationType.CaseNewAppointment,
-                ReferenceId1 = appointment.CaseId,
-                ReferenceId2 = appointment.Id
-            };
-            DbCtx.Notifications.Add(notification);
+                var notification = new Notification
+                {
+                    DateTime = Clock.GetCurrentInstant(),
+                    UserId = _userId,
+                    Type = NotificationType.CaseNewAppointment,
+                    ReferenceId1 = appointment.CaseId,
+                    ReferenceId2 = appointment.Id
+                };
+                DbCtx.Notifications.Add(notification);
+            }
         }
 
         public async Task AddNewAppointmentNotification(Appointment appointment)
         {
             var user = await DbCtx.DomainUsers.FindOrThrowAsync(appointment.RequestingUserId);
             await DbCtx.Entry(appointment).Reference(a => a.Case).LoadAsync();
-            if (appointment.Case!.DoctorUserId is null)
-                throw new InvalidOperationException($"Case ({appointment.Case.Id}) is missing a doctor");
 
             switch (user)
             {
                 case Patient:
-                    AddNewAppointmentNotification(appointment.Case.DoctorUserId.Value, appointment);
+                    AddNewAppointmentNotification(appointment.Case.DoctorUserId, appointment);
                     break;
                 case Doctor:
                     AddNewAppointmentNotification(appointment.Case.PatientUserId, appointment);
                     break;
                 default:
-                    AddNewAppointmentNotification(appointment.Case.DoctorUserId.Value, appointment);
+                    AddNewAppointmentNotification(appointment.Case.DoctorUserId, appointment);
                     AddNewAppointmentNotification(appointment.Case.PatientUserId, appointment);
                     break;
             }
-        }
-
-        public void AddAppointmentTimeChangeNotification(Guid userId, Appointment appointment)
-        {
-            var notification = new Notification
-            {
-                DateTime = Clock.GetCurrentInstant(),
-                UserId = userId,
-                Type = NotificationType.CaseAppointmentTimeChanged,
-                ReferenceId1 = appointment.CaseId,
-                ReferenceId2 = appointment.Id
-            };
-            DbCtx.Notifications.Add(notification);
         }
 
         public void AddAppointmentCancellationNotification(Guid userId, Appointment appointment)
