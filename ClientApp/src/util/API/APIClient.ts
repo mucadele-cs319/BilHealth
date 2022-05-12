@@ -4,7 +4,6 @@ import {
   AnnouncementUpdate,
   Appointment,
   AppointmentUpdate,
-  AppointmentVisit,
   AppointmentVisitUpdate,
   ApprovalStatus,
   AuditTrail,
@@ -258,19 +257,6 @@ const appointments = {
     appointment.createdAt = dayjs(appointment.createdAt);
     return appointment;
   },
-  update: async (appointmentId: string, details: AppointmentUpdate): Promise<Appointment> => {
-    const response = await fetch(`/api/appointments/${appointmentId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(details),
-    });
-    const appointment: Appointment = await response.json();
-    appointment.dateTime = dayjs(appointment.dateTime);
-    appointment.createdAt = dayjs(appointment.createdAt);
-    return appointment;
-  },
   cancel: async (appointmentId: string) => {
     await fetch(`/api/appointments/${appointmentId}/cancel`, {
       method: "PUT",
@@ -282,16 +268,10 @@ const appointments = {
     });
   },
   visits: {
-    create: async (appointmentId: string, details: AppointmentVisitUpdate): Promise<AppointmentVisit> => {
-      const response = await fetch(`/api/appointments/${appointmentId}/visit`, {
+    create: async (appointmentId: string) => {
+      await fetch(`/api/appointments/${appointmentId}/visit`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(details),
       });
-      const visit: AppointmentVisit = await response.json();
-      return visit;
     },
     update: async (appointmentId: string, details: AppointmentVisitUpdate) => {
       await fetch(`/api/appointments/${appointmentId}/visit`, {
@@ -319,6 +299,7 @@ const processCaseTimes = (_case: Case) => {
   _case.messages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
   _case.systemMessages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
   _case.triageRequests.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+  _case.appointments.sort((a, b) => (a.createdAt?.isAfter(b.createdAt) ? -1 : 1));
 };
 
 const cases = {
