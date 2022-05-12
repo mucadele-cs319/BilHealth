@@ -10,6 +10,6 @@ namespace BilHealth.Model.Dto
         public bool Canceled { get; set; } = false;
 
         public Guid PatientUserId { get; set; }
-        public Guid UserId { get; set; }
+        public SimpleUserDto GrantedUser { get; set; } = null!;
     }
 }

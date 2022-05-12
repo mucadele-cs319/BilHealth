@@ -27,7 +27,7 @@ namespace BilHealth.Services.AccessControl
             {
                 var currentTime = Clock.GetCurrentInstant();
                 return DbCtx.TimedAccessGrants.AnyAsync(g =>
-                    g.UserId == accessingUserId &&
+                    g.GrantedUserId == accessingUserId &&
                     g.PatientUserId == accessedUserId &&
                     g.Canceled == false &&
                     g.ExpiryTime.CompareTo(currentTime) > 0
@@ -38,7 +38,7 @@ namespace BilHealth.Services.AccessControl
             {
                 var currentTime = Clock.GetCurrentInstant();
                 var accessiblePatientIds = await DbCtx.TimedAccessGrants.Where(g =>
-                                                                            g.UserId == user.Id &&
+                                                                            g.GrantedUserId == user.Id &&
                                                                             g.Canceled == false &&
                                                                             g.ExpiryTime.CompareTo(currentTime) > 0
                                                                         ).Select(g => g.PatientUserId)

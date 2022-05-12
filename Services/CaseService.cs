@@ -1,6 +1,5 @@
 using BilHealth.Data;
 using BilHealth.Model;
-using BilHealth.Model.Dto;
 using BilHealth.Model.Dto.Incoming;
 using BilHealth.Services.Users;
 using BilHealth.Utility;
@@ -25,15 +24,14 @@ namespace BilHealth.Services
         {
             var _case = await DbCtx.Cases.FindOrThrowAsync(caseId);
 
-            await DbCtx.Entry(_case).Collection(c => c.Messages).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.SystemMessages).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.Appointments).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.Prescriptions).LoadAsync();
-            await DbCtx.Entry(_case).Collection(c => c.TriageRequests).LoadAsync();
+            await DbCtx.Entry(_case).Reference(c => c.PatientUser).LoadAsync();
+            await DbCtx.Entry(_case).Reference(c => c.DoctorUser).LoadAsync();
 
-            if (_case.Appointments is not null)
-                foreach (var appointment in _case.Appointments)
-                    await DbCtx.Entry(appointment).Reference(a => a.Visit).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Messages!).Query().Include(m => m.User).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.SystemMessages!).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Appointments!).Query().Include(a => a.Visit).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.Prescriptions!).Query().Include(p => p.DoctorUser).LoadAsync();
+            await DbCtx.Entry(_case).Collection(c => c.TriageRequests!).Query().Include(t => t.RequestingUser).Include(t => t.DoctorUser).LoadAsync();
 
             return _case;
         }
@@ -51,7 +49,7 @@ namespace BilHealth.Services
 
             DbCtx.Cases.Add(_case);
             await DbCtx.SaveChangesAsync();
-            return _case;
+            return await GetCase(_case.Id);
         }
 
         public async Task<CaseMessage> CreateMessage(Guid caseId, Guid userId, CaseMessageUpdateDto details)
@@ -66,6 +64,7 @@ namespace BilHealth.Services
             DbCtx.Add(message);
             await NotificationService.AddNewCaseMessageNotification(message);
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(message).Reference(m => m.User).LoadAsync();
             return message;
         }
 
@@ -79,8 +78,12 @@ namespace BilHealth.Services
                 Item = details.Item
             };
             DbCtx.Prescriptions.Add(prescription);
-            NotificationService.AddNewPrescriptionNotification(prescription.Case.PatientUser.AppUserId, prescription);
+
+            var patientUserId = await DbCtx.Cases.Where(c => c.Id == caseId).Select(c => c.PatientUserId).SingleOrDefaultAsync();
+            NotificationService.AddNewPrescriptionNotification(patientUserId, prescription);
+
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(prescription).Reference(p => p.DoctorUser).LoadAsync();
             return prescription;
         }
 
@@ -115,6 +118,8 @@ namespace BilHealth.Services
 
             DbCtx.TriageRequests.Add(triageRequest);
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(triageRequest).Reference(t => t.DoctorUser).LoadAsync();
+            await DbCtx.Entry(triageRequest).Reference(t => t.RequestingUser).LoadAsync();
             return triageRequest;
         }
 
@@ -124,6 +129,7 @@ namespace BilHealth.Services
 
             message.Content = details.Content ?? message.Content;
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(message).Reference(m => m.User).LoadAsync();
             return message;
         }
 
@@ -144,7 +150,7 @@ namespace BilHealth.Services
             CreateSystemMessage(
                 prescription.CaseId,
                 CaseSystemMessageType.PrescriptionRemoved,
-                $"The prescription with ID {prescription.Id} was removed.");
+                $"The prescription for '{prescription.Item}' was removed.");
             await DbCtx.SaveChangesAsync();
             return true;
         }
@@ -199,6 +205,7 @@ namespace BilHealth.Services
 
             prescription.Item = details.Item ?? prescription.Item;
             await DbCtx.SaveChangesAsync();
+            await DbCtx.Entry(prescription).Reference(p => p.DoctorUser).LoadAsync();
             return prescription;
         }
 

@@ -7,8 +7,8 @@ namespace BilHealth.Model.Dto
     {
         public Guid Id { get; set; }
         public Instant DateTime { get; set; }
-        public Guid RequestingUserId { get; set; }
-        public Guid DoctorUserId { get; set; }
+        public SimpleUserDto RequestingUser { get; set; } = null!;
+        public SimpleUserDto DoctorUser { get; set; } = null!;
         public Guid CaseId { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
     }

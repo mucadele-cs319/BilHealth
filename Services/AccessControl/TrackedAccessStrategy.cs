@@ -28,8 +28,8 @@ namespace BilHealth.Services.AccessControl
                     DbCtx.AuditTrails.Add(new AuditTrail
                     {
                         AccessTime = Clock.GetCurrentInstant(),
-                        UserId = accessingUserId,
-                        AccessedPatientUserId = accessedUserId,
+                        AccessingUserId = accessingUserId,
+                        AccessedUserId = accessedUserId,
                     });
                     await DbCtx.SaveChangesAsync();
                 }

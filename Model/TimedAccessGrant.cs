@@ -12,7 +12,7 @@ namespace BilHealth.Model
 
         [Required] public Guid PatientUserId { get; set; }
         public Patient PatientUser { get; set; } = null!;
-        [Required] public Guid UserId { get; set; }
-        public DomainUser User { get; set; } = null!;
+        [Required] public Guid GrantedUserId { get; set; }
+        public DomainUser GrantedUser { get; set; } = null!;
     }
 }

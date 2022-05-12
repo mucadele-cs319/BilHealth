@@ -101,8 +101,8 @@ namespace BilHealth.Services.Users
                 case Patient patient:
                     await DbCtx.Entry(patient).Collection(p => p.Vaccinations!).LoadAsync();
                     await DbCtx.Entry(patient).Collection(p => p.TestResults!).LoadAsync();
-                    await DbCtx.Entry(patient).Collection(p => p.TimedAccessGrants!).LoadAsync();
-                    await DbCtx.Entry(patient).Collection(p => p.Cases!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.TimedAccessGrants!).Query().Include(g => g.GrantedUser).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.Cases!).Query().Include(c => c.DoctorUser).Include(c => c.Messages).LoadAsync();
                     break;
             }
             return user;

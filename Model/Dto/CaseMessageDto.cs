@@ -6,7 +6,7 @@ namespace BilHealth.Model.Dto
     {
         public Guid Id { get; set; }
         public Guid CaseId { get; set; }
-        public Guid UserId { get; set; }
+        public SimpleUserDto User { get; set; } = null!;
         public Instant DateTime { get; set; }
         public string Content { get; set; } = null!;
     }
