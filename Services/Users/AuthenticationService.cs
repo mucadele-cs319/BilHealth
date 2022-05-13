@@ -130,7 +130,18 @@ namespace BilHealth.Services.Users
         /// This is not scalable. Ideally, pagination would be used.
         /// </remarks>
         /// <returns>List of all <see cref="DomainUser"/>s</returns>
-        public Task<List<DomainUser>> GetAllUsers() => DbCtx.DomainUsers.ToListAsync();
+        public Task<List<DomainUser>> GetAllUsers(string? userType)
+        {
+          if (userType == "all") return DbCtx.DomainUsers.ToListAsync();
+          else if (UserType.Names.Any(name => userType == name) == false)
+          {
+              throw new ArgumentOutOfRangeException(nameof(userType), "Invalid user type");
+          }
+          else
+          {
+              return DbCtx.DomainUsers.Where(u => u.Discriminator == userType).ToListAsync();
+          }
+        }
 
         public Task<DomainUser> GetBareUser(Guid userId) => DbCtx.DomainUsers.FindOrThrowAsync(userId);
     }
