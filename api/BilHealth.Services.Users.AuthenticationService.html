@@ -1,0 +1,909 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class AuthenticationService
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class AuthenticationService
+   ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="BilHealth.Services.Users.AuthenticationService">
+  
+  
+  <h1 id="BilHealth_Services_Users_AuthenticationService" data-uid="BilHealth.Services.Users.AuthenticationService" class="text-break">Class AuthenticationService
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="BilHealth.Services.DbServiceBase.html">DbServiceBase</a></div>
+    <div class="level2"><span class="xref">AuthenticationService</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="BilHealth.Services.Users.IAuthenticationService.html">IAuthenticationService</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="BilHealth.Services.DbServiceBase.html#BilHealth_Services_DbServiceBase_DbCtx">DbServiceBase.DbCtx</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="BilHealth.Services.Users.html">BilHealth.Services.Users</a></h6>
+  <h6><strong>Assembly</strong>: BilHealth.dll</h6>
+  <h5 id="BilHealth_Services_Users_AuthenticationService_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class AuthenticationService : DbServiceBase, IAuthenticationService</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService__ctor_BilHealth_Data_AppDbContext_UserManager_BilHealth_Model_AppUser__SignInManager_BilHealth_Model_AppUser__RoleManager_BilHealth_Model_Role__IHttpContextAccessor_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.%23ctor(BilHealth.Data.AppDbContext%2CUserManager%7BBilHealth.Model.AppUser%7D%2CSignInManager%7BBilHealth.Model.AppUser%7D%2CRoleManager%7BBilHealth.Model.Role%7D%2CIHttpContextAccessor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L20">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService__ctor_" data-uid="BilHealth.Services.Users.AuthenticationService.#ctor*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService__ctor_BilHealth_Data_AppDbContext_UserManager_BilHealth_Model_AppUser__SignInManager_BilHealth_Model_AppUser__RoleManager_BilHealth_Model_Role__IHttpContextAccessor_" data-uid="BilHealth.Services.Users.AuthenticationService.#ctor(BilHealth.Data.AppDbContext,UserManager{BilHealth.Model.AppUser},SignInManager{BilHealth.Model.AppUser},RoleManager{BilHealth.Model.Role},IHttpContextAccessor)">AuthenticationService(AppDbContext, UserManager&lt;AppUser&gt;, SignInManager&lt;AppUser&gt;, RoleManager&lt;Role&gt;, IHttpContextAccessor)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AuthenticationService(AppDbContext dbCtx, UserManager&lt;AppUser&gt; userManager, SignInManager&lt;AppUser&gt; signInManager, RoleManager&lt;Role&gt; roleManager, IHttpContextAccessor httpContextAccessor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="BilHealth.Data.AppDbContext.html">AppDbContext</a></td>
+        <td><span class="parametername">dbCtx</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">UserManager</span>&lt;<a class="xref" href="BilHealth.Model.AppUser.html">AppUser</a>&gt;</td>
+        <td><span class="parametername">userManager</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SignInManager</span>&lt;<a class="xref" href="BilHealth.Model.AppUser.html">AppUser</a>&gt;</td>
+        <td><span class="parametername">signInManager</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">RoleManager</span>&lt;<a class="xref" href="BilHealth.Model.Role.html">Role</a>&gt;</td>
+        <td><span class="parametername">roleManager</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IHttpContextAccessor</span></td>
+        <td><span class="parametername">httpContextAccessor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_AssignRole_BilHealth_Model_AppUser_System_String_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.AssignRole(BilHealth.Model.AppUser%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L70">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_AssignRole_" data-uid="BilHealth.Services.Users.AuthenticationService.AssignRole*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_AssignRole_BilHealth_Model_AppUser_System_String_" data-uid="BilHealth.Services.Users.AuthenticationService.AssignRole(BilHealth.Model.AppUser,System.String)">AssignRole(AppUser, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IdentityResult&gt; AssignRole(AppUser user, string userType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="BilHealth.Model.AppUser.html">AppUser</a></td>
+        <td><span class="parametername">user</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IdentityResult</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_ChangePassword_BilHealth_Model_AppUser_System_String_System_String_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.ChangePassword(BilHealth.Model.AppUser%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L83">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_ChangePassword_" data-uid="BilHealth.Services.Users.AuthenticationService.ChangePassword*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_ChangePassword_BilHealth_Model_AppUser_System_String_System_String_" data-uid="BilHealth.Services.Users.AuthenticationService.ChangePassword(BilHealth.Model.AppUser,System.String,System.String)">ChangePassword(AppUser, String, String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IdentityResult&gt; ChangePassword(AppUser user, string currentPassword, string newPassword)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="BilHealth.Model.AppUser.html">AppUser</a></td>
+        <td><span class="parametername">user</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">currentPassword</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">newPassword</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IdentityResult</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_ChangePasswordUnsafe_BilHealth_Model_AppUser_System_String_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.ChangePasswordUnsafe(BilHealth.Model.AppUser%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L91">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_ChangePasswordUnsafe_" data-uid="BilHealth.Services.Users.AuthenticationService.ChangePasswordUnsafe*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_ChangePasswordUnsafe_BilHealth_Model_AppUser_System_String_" data-uid="BilHealth.Services.Users.AuthenticationService.ChangePasswordUnsafe(BilHealth.Model.AppUser,System.String)">ChangePasswordUnsafe(AppUser, String)</h4>
+  <div class="markdown level1 summary"><p>Unsafe: To be used strictly for administration tasks</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;IdentityResult&gt; ChangePasswordUnsafe(AppUser user, string newPassword)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="BilHealth.Model.AppUser.html">AppUser</a></td>
+        <td><span class="parametername">user</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">newPassword</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IdentityResult</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_CreateRoles.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.CreateRoles%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L63">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_CreateRoles_" data-uid="BilHealth.Services.Users.AuthenticationService.CreateRoles*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_CreateRoles" data-uid="BilHealth.Services.Users.AuthenticationService.CreateRoles">CreateRoles()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task CreateRoles()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_DeleteUser_System_String_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.DeleteUser(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L77">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_DeleteUser_" data-uid="BilHealth.Services.Users.AuthenticationService.DeleteUser*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_DeleteUser_System_String_" data-uid="BilHealth.Services.Users.AuthenticationService.DeleteUser(System.String)">DeleteUser(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;IdentityResult&gt; DeleteUser(string userName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IdentityResult</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_GetAllUsers_System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.GetAllUsers(System.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L133">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_GetAllUsers_" data-uid="BilHealth.Services.Users.AuthenticationService.GetAllUsers*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_GetAllUsers_System_Nullable_System_String__" data-uid="BilHealth.Services.Users.AuthenticationService.GetAllUsers(System.Nullable{System.String})">GetAllUsers(Nullable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Only loads the <a class="xref" href="BilHealth.Model.AppUser.html">AppUser</a> navigation property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;DomainUser&gt;&gt; GetAllUsers(string? userType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">userType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">List</span>&lt;<a class="xref" href="BilHealth.Model.DomainUser.html">DomainUser</a>&gt;&gt;</td>
+        <td><p>List of all <a class="xref" href="BilHealth.Model.DomainUser.html">DomainUser</a>s</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="BilHealth_Services_Users_AuthenticationService_GetAllUsers_System_Nullable_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is not scalable. Ideally, pagination would be used.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_GetBareUser_Guid_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.GetBareUser(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L146">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_GetBareUser_" data-uid="BilHealth.Services.Users.AuthenticationService.GetBareUser*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_GetBareUser_Guid_" data-uid="BilHealth.Services.Users.AuthenticationService.GetBareUser(Guid)">GetBareUser(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;DomainUser&gt; GetBareUser(Guid userId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">userId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="BilHealth.Model.DomainUser.html">DomainUser</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_GetUser_ClaimsPrincipal_System_Boolean_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.GetUser(ClaimsPrincipal%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L111">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_GetUser_" data-uid="BilHealth.Services.Users.AuthenticationService.GetUser*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_GetUser_ClaimsPrincipal_System_Boolean_" data-uid="BilHealth.Services.Users.AuthenticationService.GetUser(ClaimsPrincipal,System.Boolean)">GetUser(ClaimsPrincipal, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;DomainUser&gt; GetUser(ClaimsPrincipal principal, bool bare)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ClaimsPrincipal</span></td>
+        <td><span class="parametername">principal</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">bare</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="BilHealth.Model.DomainUser.html">DomainUser</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_GetUser_Guid_System_Boolean_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.GetUser(Guid%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L117">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_GetUser_" data-uid="BilHealth.Services.Users.AuthenticationService.GetUser*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_GetUser_Guid_System_Boolean_" data-uid="BilHealth.Services.Users.AuthenticationService.GetUser(Guid,System.Boolean)">GetUser(Guid, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;DomainUser&gt; GetUser(Guid userId, bool bare)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">userId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">bare</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="BilHealth.Model.DomainUser.html">DomainUser</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_GetUserType_Guid_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.GetUserType(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L123">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_GetUserType_" data-uid="BilHealth.Services.Users.AuthenticationService.GetUserType*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_GetUserType_Guid_" data-uid="BilHealth.Services.Users.AuthenticationService.GetUserType(Guid)">GetUserType(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;string&gt; GetUserType(Guid userId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">userId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_LogIn_BilHealth_Model_Dto_Incoming_LoginDto_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.LogIn(BilHealth.Model.Dto.Incoming.LoginDto)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L50">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_LogIn_" data-uid="BilHealth.Services.Users.AuthenticationService.LogIn*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_LogIn_BilHealth_Model_Dto_Incoming_LoginDto_" data-uid="BilHealth.Services.Users.AuthenticationService.LogIn(BilHealth.Model.Dto.Incoming.LoginDto)">LogIn(LoginDto)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;SignInResult&gt; LogIn(LoginDto login)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="BilHealth.Model.Dto.Incoming.LoginDto.html">LoginDto</a></td>
+        <td><span class="parametername">login</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">SignInResult</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_LogOut.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.LogOut%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L58">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_LogOut_" data-uid="BilHealth.Services.Users.AuthenticationService.LogOut*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_LogOut" data-uid="BilHealth.Services.Users.AuthenticationService.LogOut">LogOut()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task LogOut()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_Register_BilHealth_Model_Dto_Incoming_RegistrationDto_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.Register(BilHealth.Model.Dto.Incoming.RegistrationDto)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L33">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_Register_" data-uid="BilHealth.Services.Users.AuthenticationService.Register*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_Register_BilHealth_Model_Dto_Incoming_RegistrationDto_" data-uid="BilHealth.Services.Users.AuthenticationService.Register(BilHealth.Model.Dto.Incoming.RegistrationDto)">Register(RegistrationDto)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task&lt;IdentityResult&gt; Register(RegistrationDto registration)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="BilHealth.Model.Dto.Incoming.RegistrationDto.html">RegistrationDto</a></td>
+        <td><span class="parametername">registration</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IdentityResult</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_RegisterMany_IList_BilHealth_Model_Dto_Incoming_RegistrationDto__.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.RegisterMany(IList%7BBilHealth.Model.Dto.Incoming.RegistrationDto%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L44">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_RegisterMany_" data-uid="BilHealth.Services.Users.AuthenticationService.RegisterMany*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_RegisterMany_IList_BilHealth_Model_Dto_Incoming_RegistrationDto__" data-uid="BilHealth.Services.Users.AuthenticationService.RegisterMany(IList{BilHealth.Model.Dto.Incoming.RegistrationDto})">RegisterMany(IList&lt;RegistrationDto&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task RegisterMany(IList&lt;RegistrationDto&gt; registrations)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="BilHealth.Model.Dto.Incoming.RegistrationDto.html">RegistrationDto</a>&gt;</td>
+        <td><span class="parametername">registrations</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService_UserNameExists_System_String_.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService.UserNameExists(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L75">View Source</a>
+  </span>
+  <a id="BilHealth_Services_Users_AuthenticationService_UserNameExists_" data-uid="BilHealth.Services.Users.AuthenticationService.UserNameExists*"></a>
+  <h4 id="BilHealth_Services_Users_AuthenticationService_UserNameExists_System_String_" data-uid="BilHealth.Services.Users.AuthenticationService.UserNameExists(System.String)">UserNameExists(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; UserNameExists(string userName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="BilHealth.Services.Users.IAuthenticationService.html">IAuthenticationService</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/vedattt/BilHealth/new/master/apiSpec/new?filename=BilHealth_Services_Users_AuthenticationService.md&amp;value=---%0Auid%3A%20BilHealth.Services.Users.AuthenticationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/vedattt/BilHealth/blob/master/Services/Users/AuthenticationService.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

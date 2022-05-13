@@ -1,0 +1,1439 @@
+{
+  "homepages": [],
+  "source_base_path": "/home/runner/work/BilHealth/BilHealth/docs/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.AnnouncementController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.AnnouncementController.html",
+          "hash": "qAvrOXhEQlPKmAi67aMTX4HMTI3N51vL1EQxEig8yUU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.AppointmentController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.AppointmentController.html",
+          "hash": "sg5WQDOHHogtARbWRv+9m/Aph9Twf8YSeLAY4xelc4k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.AuthController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.AuthController.html",
+          "hash": "YcWg2ljn3wJs+GZ/+TmUMpnlpDVcpL94WT/lp/3oK1k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.CaseController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.CaseController.html",
+          "hash": "HM90HFVP2aYR9GI2OEb2sNpu2WZDMUY4DGnp8E9BsF4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.NotificationController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.NotificationController.html",
+          "hash": "qcKiTIEumcBt70xuNjNLOzDkBMgAWM6QRmUqY2qgBdg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.ProfileController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.ProfileController.html",
+          "hash": "Vqar0sJ7u1OyhNqg9mSnL5TWqfaRQCAUWIGutRmHfSw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.TestResultController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.TestResultController.html",
+          "hash": "56lM7nQ2H12kd6Q/yXfvh4258FBw+lPwXR3aYD4jL4Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Controllers.html",
+          "hash": "qn1aIttwZpqZ30fqMTlRcpD0Dg16OY3Fv0iYwJPece8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Data.AppDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Data.AppDbContext.html",
+          "hash": "RHcuaZo1bn8mgdPgc2+sA7O0AD587gsliyG4LzJL7Vs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Data.EFCoreExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Data.EFCoreExtensions.html",
+          "hash": "4oJo0ldmIaIL0U/WdA+3JJuhJezEbiV7b3NLwUHC5Kw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Data.html",
+          "hash": "BY9Ixh88aYzAhJkpTM2fapdf0Z3xE+C13jtmtQpnkLM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Migrations.InitialCreate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Migrations.InitialCreate.html",
+          "hash": "0UR6dlKlesKuuY1wyF+21hZJWFE9gflv6EUbFeHdu/E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Migrations.html",
+          "hash": "9MYrfpJzir2/iXa8xfrxgmxetYe43olf5XdADlfAWsY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Admin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Admin.html",
+          "hash": "tMuAD1qx/qF/8+pc9qysFINlChYAhXpqr1D2ECY7LMk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Announcement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Announcement.html",
+          "hash": "W68oFFTlRkcfNDkGGgj//ydrZd5MWZtr+19JG7q+pwE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.AppUser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.AppUser.html",
+          "hash": "Pf4XGWLv6N4C+6jzGuF5Bu9nSExXesBXsGwl8kgH3+w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Appointment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Appointment.html",
+          "hash": "yq3v4qL/VzA3WYd4cgJtXRH1K21bwBMk7p2g9w8WVqI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.AppointmentVisit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.AppointmentVisit.html",
+          "hash": "HC8CgFXavrtU8Uu+DDzT8+rZy5Q051uFRraLxKisdH8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.AuditTrail.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.AuditTrail.html",
+          "hash": "fsqIw50q9AtHe/q7MVplPBCnmsQm7p/L6aH7fQbZuIQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Case.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Case.html",
+          "hash": "Jz8aKDl91pCSyi7GrnLaJ5ocwbFPx3nzaY53SyTOvVw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.CaseMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.CaseMessage.html",
+          "hash": "k6enOO7Na43OcaB3QTYtMXxmcg5Jy4yzLZzrIxWnkzs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.CaseSystemMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.CaseSystemMessage.html",
+          "hash": "FPs7BY71Qm2Tf6pF+EW4Z/nKpZvCxMtb4igVbJMOzIY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Doctor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Doctor.html",
+          "hash": "P8NnKDv1Vc7veTPfASxtc4OSqkoy0SxGKYcGadi/jFA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.DomainUser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.DomainUser.html",
+          "hash": "9DLd92FD3N6uBAUs6/cuPD5ha6rmXJ+wGg6wHEDYOow="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.AnnouncementDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.AnnouncementDto.html",
+          "hash": "O9y5GAyOzAiOn/+jAcZ0SwPSIFQlktyrkvcmYfNDy+s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.AppointmentDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.AppointmentDto.html",
+          "hash": "944YsaK7c3QARH4Nrn2+fM4c7i+CpK0kSqcAFcMjsYU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.AppointmentVisitDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.AppointmentVisitDto.html",
+          "hash": "i5ViV19vmhNpF9vha0pQM4AOm3NjS8i3DSNUhO0LaF0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.AuditTrailDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.AuditTrailDto.html",
+          "hash": "YCmZQE9H9NaQwIksUs0k1VVJXrxnn/gAn/PrC20GArc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.CaseDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.CaseDto.html",
+          "hash": "kRIqCuJfApkkpyLavy7la9RqcpUVAslY3/d5H2OI3Ks="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.CaseMessageDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.CaseMessageDto.html",
+          "hash": "b73TKwKO6tnY0PLo7L0EAOtgFd5TlTU6BxKn1mSPSNQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.CaseReportDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.CaseReportDto.html",
+          "hash": "CV8gCNapqzH8A5GpEgmTUAZfMXC2OMXtreXRv99szlQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.CaseSystemMessageDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.CaseSystemMessageDto.html",
+          "hash": "6+KHA7sQE1yX+Z5miggt6TG7kYnwM1GT7And/DrNknY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.AnnouncementUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.AnnouncementUpdateDto.html",
+          "hash": "BT++GSXx1M6+60CNa4UZKjQ3tPdPjXeM8fhKzNT9LCc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.AppointmentUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.AppointmentUpdateDto.html",
+          "hash": "grMRHoVonXYOjhJy7AdzQjnnrGAT5MPp/QPtWbUmSlE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.AppointmentVisitUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.AppointmentVisitUpdateDto.html",
+          "hash": "cvoQ9+cV4z6qeANYzTOkpybo5j4V8bj6ahM+dddEX3U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.CaseCreateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.CaseCreateDto.html",
+          "hash": "aN398jcONJOV3ySnabXw8WiwG9C7r8kFHPAgD1L4/c0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.CaseDiagnosisUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.CaseDiagnosisUpdateDto.html",
+          "hash": "Nad01z7Hl1+QIla+kh/WRQGkiuAI+SOhb7q3FKkYkjI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.CaseMessageUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.CaseMessageUpdateDto.html",
+          "hash": "KU6KrZ1W+mqmMDfUWXzvQWniWyA4tNb27T23O8tXYIY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.LoginDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.LoginDto.html",
+          "hash": "mpLSMiUSx9Gm3fS3P1wTPa+bUlh+WUbHz9AmGpEijyE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.PrescriptionUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.PrescriptionUpdateDto.html",
+          "hash": "ZkaZ5HrtNqkww2i/vGEcK79H9MQRY3HesZEs3Pw3vLs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.RegistrationDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.RegistrationDto.html",
+          "hash": "cYIeHWMihBmOH2IkPRLUVxQCQJ2sG1jfY6pTWez9jRQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.TimedAccessGrantCreateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.TimedAccessGrantCreateDto.html",
+          "hash": "ko1eABK5kNWcOV0+1TEBuk2TVDvIbcVbDuiEnT2ti9Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.UserProfileUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.UserProfileUpdateDto.html",
+          "hash": "b0M+WGt9uR1u9NzjFdKMa70srkmHfh62oAHSNkn+g30="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.VaccinationUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.VaccinationUpdateDto.html",
+          "hash": "jmx862qI44WO2dftpEaYuWKgAOJraNe9ZgEfoUhPdwU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.Incoming.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.Incoming.html",
+          "hash": "CspF2lF9FTiF5OeC4q/PfEkYCY86Vvlkgf6hXfC/gH4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.NotificationDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.NotificationDto.html",
+          "hash": "mzczMVK07BqyW+mwZlyp2g7KrKOY74ac7WVF1brndTM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.PrescriptionDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.PrescriptionDto.html",
+          "hash": "g/l73yaEDyHm7BnwnUQaWVye+jwHDBxE0lyhyzRa0+w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.SimpleCaseDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.SimpleCaseDto.html",
+          "hash": "7yx+8eoM+2TE9BV0EUwuff8e9UPAmsIyyz7r2YLHCxY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.SimpleUserDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.SimpleUserDto.html",
+          "hash": "Dt0ECHqC7veRBCEnjZNIH/3IGzfrmlp71f7oHCgG+Ww="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.TestResultDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.TestResultDto.html",
+          "hash": "52gV4HF5wmLkwsG0UaYHvtGCvg2J+WC1FF0yFHLi+Jw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.TimedAccessGrantDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.TimedAccessGrantDto.html",
+          "hash": "89iZwB1peRGbXtQToa5yO3htN9GsUplhZAfsXg0lx34="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.TriageRequestDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.TriageRequestDto.html",
+          "hash": "NGo/oXf76zUSLOvNtfFUuEfyX6yUv/lHZLXFItQHZnw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.UserProfileDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.UserProfileDto.html",
+          "hash": "QZwq37+ywjg8wgtIBgfn13aPBKUxWofMxfdZ3rKDdNs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.VaccinationDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.VaccinationDto.html",
+          "hash": "vKWiR5DUnuU4gXFDnV9aBFgiqf3S4mA5uFgSOucOHpM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Dto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Dto.html",
+          "hash": "ILcZjeEcbJkB5MWSACfHZp6cKKyriGrBAhfYx6ziacU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Notification.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Notification.html",
+          "hash": "GlDaJqabCWPt+bJrtpQja5xBSweBp3nm03FFFBBbaTw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Nurse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Nurse.html",
+          "hash": "j7fdZTUgEu6bfb4uQmXDy66q1xs9OxUvspGQlJ3AVS4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Patient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Patient.html",
+          "hash": "+xf5NmzokOv30kBVymJWjsCJytV+IGzIiTBV6e+P9m4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Prescription.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Prescription.html",
+          "hash": "HZj+4l/KztcEzuncEpnOGHwiWdTX2xMj41fzmmv8PmI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Role.html",
+          "hash": "4V9G/JYCfvzL8yttWmWTqmPBPelcQeZSVBGfiYYuKzg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Staff.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Staff.html",
+          "hash": "oFJgzYukkhyBlR4ETZPn3nmptCfcHd9ngGx7IVYhLEo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.TestResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.TestResult.html",
+          "hash": "HWFx0CB3xPhS0QPsnoKvRGmZ2ipzUGBIkYQN6QPUiv4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.TimedAccessGrant.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.TimedAccessGrant.html",
+          "hash": "OIcG+kEo8DVVYbiUCXQIXTui7HS4ozEPTIjX0wlVN28="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.TriageRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.TriageRequest.html",
+          "hash": "KhCrPWVmZg3JPUFMUshM3yoTTVD0mHVROzvoTVC01rQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.Vaccination.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.Vaccination.html",
+          "hash": "ocvtTV2i34GlpVb4YtVm1vokqc9C+Z5OGhCfWSzy2NA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Model.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Model.html",
+          "hash": "u5TA/ysBpnoxNy+TP7VJ5xe9VwMusXuaQrDreN9Q32s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.NoAccessStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.NoAccessStrategy.html",
+          "hash": "Dhyq0TO800xrbd+X5ro0zusOCuvwThFiWXqi9oqsT8E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.RelationalAccessStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.RelationalAccessStrategy.html",
+          "hash": "YIbcFoFPYYcQp5ODNz7CbuGfsw98b0ZIrCaCyFBsMRA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.TimedAccessStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.TimedAccessStrategy.html",
+          "hash": "qOSa978lTfB/PZtg+bVXSIZN1rl5HIZD4nsyw3mSspU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.TrackedAccessStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.TrackedAccessStrategy.html",
+          "hash": "OYCdXIbsxKKqlI/XCnBmE0xkhyLhJC1VJGkjICTBm3A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.AccessControlService.html",
+          "hash": "VJPINp32kRWx8TpHww8RGPt5WfHzrlm2vybo24IpOW4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.IAccessControlService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.IAccessControlService.html",
+          "hash": "RPcPkuaNmszgjmJK1IB/+tgvjK80PuPWGqDgeET59dU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.IAccessStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.IAccessStrategy.html",
+          "hash": "FglHE6ceF7fC2KLOiP5abPWtJnDemn00ZyYwSAv4ynI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AccessControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AccessControl.html",
+          "hash": "NRMI9YBu+dV0OIrE7DZ1pdNIvUd01JGhlHlPZ4gjYz0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AnnouncementService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AnnouncementService.html",
+          "hash": "v7G/9iKbGVvKGJZ4eRUw/m9B9OHg4awSjuHjiryzV1s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.AppointmentService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.AppointmentService.html",
+          "hash": "TtyVmlO9Thjs0/ZbcOjoKSyXBL+INlNWI6Fp0QuH0a8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.CaseService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.CaseService.html",
+          "hash": "OYGDHwccfpDw1SJwb7draexE/gUvt5BW5An3TaWq8eU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.DbServiceBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.DbServiceBase.html",
+          "hash": "GgY98ehtTjc+zCTg3J8BLWkq5p7zAWm1x3iWnaUpf5k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.IAnnouncementService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.IAnnouncementService.html",
+          "hash": "xAiHXDh80dr72qJJTuiqPHYZBcgZNdiOkMIgAfO3xkA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.IAppointmentService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.IAppointmentService.html",
+          "hash": "CGg+ofc/SGGOvc7ICJdyVTvj8RQhZzl2e2YXrqwtqlA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.ICaseService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.ICaseService.html",
+          "hash": "+RIR4kBU4gTv5zFa1uohG2c0QtvjNf80OE6zUl+N6a4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.ITestResultService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.ITestResultService.html",
+          "hash": "uI7pIDdgRqUMIx3Tioxw8iflC17x9LoUlkfTjwsFeHI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.TestResultService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.TestResultService.html",
+          "hash": "omeGEm+gStF9lt7CUcUkpMQXWXFgi1w+zsEqv7L9JVE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.AuthenticationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.AuthenticationService.html",
+          "hash": "FITRXDjH3GrMTsP8/ZRATJzMt7f+sgnHIRBOTCUrz7A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.IAuthenticationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.IAuthenticationService.html",
+          "hash": "5ijaPqkv8+prDTBoKyu7XtcnyzA3xouJOnKCoQ1St58="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.INotificationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.INotificationService.html",
+          "hash": "A6ffUcDckZkFJe31JgNpCcaPtepzmIJQoPUH0d7ml9w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.IProfileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.IProfileService.html",
+          "hash": "egDFL3s2sCWaBujigy4ohUUFMx7AI/r7qizGwyAVDik="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.NotificationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.NotificationService.html",
+          "hash": "ODPFgSa3jAStgGthWW49R2QZr/MlJ8Va7E/hTgp941U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.ProfileService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.ProfileService.html",
+          "hash": "18tLhb+on5oU27uefQ0/3UME1+RQDQihqoye4pVhhBY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.Users.html",
+          "hash": "kwdFNdDLl6uvq5MJNXFQ+FJr3I3C8K4XOswJphK/Gm4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Services.html",
+          "hash": "/5eXrX7qU78N4Ar6D6AVstTxGAACCZfDC+x98tCsFCg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.BCryptPasswordHasher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.BCryptPasswordHasher.html",
+          "hash": "bBYz/lc5xL/XvZPqr0xzCkg3g47okCQQon2DoQ0RM9A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.DomainUserFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.DomainUserFactory.html",
+          "hash": "N/7RBbQd8AXskhGlqZws7trNWQj7Qu05GCd7t0E4m+A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.DtoMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.DtoMapper.html",
+          "hash": "fzToo56p9ePmeljvOEGpZounIbCW5NzlCGE7GdhT3LU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.ApprovalStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.ApprovalStatus.html",
+          "hash": "X+LK/ko3yjqxAvlhv6uuDQEvPQlK9nPHNozdCFTH6ys="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.BloodType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.BloodType.html",
+          "hash": "tZoMyhqNNHZAKiK3A0lC5VAtLfEOYI+KkLwrust9cUQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.BloodTypeExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.BloodTypeExtensions.html",
+          "hash": "AAn1erXFWXIU9WFPmZMcbfrnS/v8zeNW3fUWwSGiS6w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.Campus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.Campus.html",
+          "hash": "zV6vnnSZKq3KavJm+XsbgBZwnIuwnIWLb9aWEhGboFQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.CaseState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.CaseState.html",
+          "hash": "SasQU32051U+ZIZI1O3rzZyBa6BU3O3ImVBG+H/fruM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.CaseSystemMessageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.CaseSystemMessageType.html",
+          "hash": "SBHsVtVGM6vx3yQx3RN08DvvoAs9z16A4XgM98XoBWc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.CaseType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.CaseType.html",
+          "hash": "j2K+/79Q7ZkTpje6EdqOai8qRQowfNSn8icahR1v1M8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.Gender.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.Gender.html",
+          "hash": "0qba/qWLwMG/H5BhTmC0GSOcEX8BXVMZaT+1QQ8+KSc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.MedicalTestType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.MedicalTestType.html",
+          "hash": "YJWc6y32ibKcJtuXi2+uTkDhRBXgn6aBZTAr2Rz1V04="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.NotificationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.NotificationType.html",
+          "hash": "0svT9bJ2PkKYJy2s5EIgq1fRHLBalz0dcw43ymIW2P0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.StringEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.StringEnum.html",
+          "hash": "zNZhegxUuq0cvFiy426KdlcsDEXt44bhGQs8oL3a6dY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.UserType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.UserType.html",
+          "hash": "1j9Mx1FsmiHBPI64Yb1G7abDL4lench6Ko84e6T1q4Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.Enum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.Enum.html",
+          "hash": "ADoV5bHPEeROE2izRjdO9njOhXPkKnA6uU9EIcJ8JiU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.IdNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.IdNotFoundException.html",
+          "hash": "fm4yT14TGeTyCCmG43LsyKXE06BTZdN55d5LY7rLKqI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BilHealth.Utility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BilHealth.Utility.html",
+          "hash": "EmwdtB3/XTZHYUEyyrC5NKiQfvoKzr4DjM3bH/AZghU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "SRGJypThNeo5wWdTR/LPcjAqpBw5Y5bk468LSh939gY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "jICMjEun5A6+W2buk93z4rsxEKNjAKntcmoNXXf09Io="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/docs.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/docs.html",
+          "hash": "swJjGQpdR9lB8PsrMdYXjeo/wm8gnPMaelC3O8lBogs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "C4ZY5YstVvlB05CejlUZ9/+AwQZJSsAqBxulPVGOjDw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "uIKLOIWq7/8/fcqDHJ7glayMSgYrpHCwx18X0+X/+dI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "u8YCS+cWeum8rzzTgo9VTCQZRzQS5AbZuuB8DGUsvYI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 109,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
