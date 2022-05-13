@@ -11,6 +11,7 @@ namespace BilHealth.Utility
             var dto = new UserProfileDto
             {
                 Id = user.Id,
+                UserName = user.AppUser.UserName,
                 UserType = user.Discriminator,
                 Email = user.AppUser.Email,
                 FirstName = user.FirstName,

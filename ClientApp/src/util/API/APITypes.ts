@@ -384,6 +384,7 @@ export interface SimpleUser {
 export interface User {
   // common
   id: string;
+  userName: string;
   userType: string;
   email: string;
   firstName: string;
