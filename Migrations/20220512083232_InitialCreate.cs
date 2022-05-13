@@ -222,21 +222,21 @@ namespace BilHealth.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AccessTime = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
-                    AccessedPatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    AccessedUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AccessingUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AuditTrails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AuditTrails_DomainUsers_AccessedPatientUserId",
-                        column: x => x.AccessedPatientUserId,
+                        name: "FK_AuditTrails_DomainUsers_AccessedUserId",
+                        column: x => x.AccessedUserId,
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AuditTrails_DomainUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_AuditTrails_DomainUsers_AccessingUserId",
+                        column: x => x.AccessingUserId,
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -301,20 +301,20 @@ namespace BilHealth.Migrations
                     Period = table.Column<Period>(type: "interval", nullable: false),
                     Canceled = table.Column<bool>(type: "boolean", nullable: false),
                     PatientUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    GrantedUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimedAccessGrants", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimedAccessGrants_DomainUsers_PatientUserId",
-                        column: x => x.PatientUserId,
+                        name: "FK_TimedAccessGrants_DomainUsers_GrantedUserId",
+                        column: x => x.GrantedUserId,
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TimedAccessGrants_DomainUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_TimedAccessGrants_DomainUsers_PatientUserId",
+                        column: x => x.PatientUserId,
                         principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -388,6 +388,12 @@ namespace BilHealth.Migrations
                         name: "FK_CaseMessage_Cases_CaseId",
                         column: x => x.CaseId,
                         principalTable: "Cases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CaseMessage_DomainUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "DomainUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -551,19 +557,24 @@ namespace BilHealth.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditTrails_AccessedPatientUserId",
+                name: "IX_AuditTrails_AccessedUserId",
                 table: "AuditTrails",
-                column: "AccessedPatientUserId");
+                column: "AccessedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditTrails_UserId",
+                name: "IX_AuditTrails_AccessingUserId",
                 table: "AuditTrails",
-                column: "UserId");
+                column: "AccessingUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CaseMessage_CaseId",
                 table: "CaseMessage",
                 column: "CaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaseMessage_UserId",
+                table: "CaseMessage",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cases_DoctorUserId",
@@ -602,14 +613,14 @@ namespace BilHealth.Migrations
                 column: "PatientUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TimedAccessGrants_GrantedUserId",
+                table: "TimedAccessGrants",
+                column: "GrantedUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TimedAccessGrants_PatientUserId",
                 table: "TimedAccessGrants",
                 column: "PatientUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimedAccessGrants_UserId",
-                table: "TimedAccessGrants",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TriageRequests_CaseId",

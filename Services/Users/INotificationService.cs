@@ -5,7 +5,6 @@ namespace BilHealth.Services.Users
     public interface INotificationService
     {
         Task AddNewAppointmentNotification(Appointment appointment);
-        void AddAppointmentTimeChangeNotification(Guid userId, Appointment appointment);
         void AddAppointmentCancellationNotification(Guid userId, Appointment appointment);
         /// <summary>
         /// Add a new notification for a new message.

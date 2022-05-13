@@ -11,6 +11,7 @@ namespace BilHealth.Utility
             var dto = new UserProfileDto
             {
                 Id = user.Id,
+                UserName = user.AppUser.UserName,
                 UserType = user.Discriminator,
                 Email = user.AppUser.Email,
                 FirstName = user.FirstName,
@@ -85,8 +86,8 @@ namespace BilHealth.Utility
                 DateTime = triageRequest.DateTime,
                 CaseId = triageRequest.CaseId,
                 ApprovalStatus = triageRequest.ApprovalStatus,
-                DoctorUserId = triageRequest.DoctorUserId,
-                RequestingUserId = triageRequest.RequestingUserId
+                DoctorUser = MapSimpleUser(triageRequest.DoctorUser),
+                RequestingUser = MapSimpleUser(triageRequest.RequestingUser),
             };
             return dto;
         }
@@ -100,8 +101,8 @@ namespace BilHealth.Utility
                 Title = _case.Title,
                 State = _case.State,
                 Type = _case.Type,
-                PatientUserId = _case.PatientUserId,
-                DoctorUserId = _case.DoctorUserId,
+                PatientUser = MapSimpleUser(_case.PatientUser),
+                DoctorUser = _case.DoctorUser is null ? null : MapSimpleUser(_case.DoctorUser),
                 Diagnosis = _case.Diagnosis
             };
 
@@ -123,15 +124,6 @@ namespace BilHealth.Utility
             return dto;
         }
 
-        public static CaseDto Map(Case _case, Patient patientUser, Doctor? doctorUser)
-        {
-            var dto = Map(_case);
-            dto.SimplePatientUser = MapSimpleUser(patientUser);
-            if (doctorUser is not null) dto.SimpleDoctorUser = MapSimpleUser(doctorUser);
-
-            return dto;
-        }
-
         public static SimpleCaseDto MapSimpleCase(Case _case)
         {
             var dto = new SimpleCaseDto
@@ -140,22 +132,13 @@ namespace BilHealth.Utility
                 DateTime = _case.DateTime,
                 State = _case.State,
                 Type = _case.Type,
-                PatientUserId = _case.PatientUserId,
-                DoctorUserId = _case.DoctorUserId,
+                PatientUser = MapSimpleUser(_case.PatientUser),
+                DoctorUser = _case.DoctorUser is null ? null : MapSimpleUser(_case.DoctorUser),
                 Title = _case.Title
             };
 
             if (_case.Messages is not null)
                 dto.MessageCount = _case.Messages.Count;
-
-            return dto;
-        }
-
-        public static SimpleCaseDto MapSimpleCase(Case _case, Patient patientUser, Doctor? doctorUser)
-        {
-            var dto = MapSimpleCase(_case);
-            dto.SimplePatientUser = MapSimpleUser(patientUser);
-            if (doctorUser is not null) dto.SimpleDoctorUser = MapSimpleUser(doctorUser);
 
             return dto;
         }
@@ -177,7 +160,7 @@ namespace BilHealth.Utility
             var dto = new AppointmentDto
             {
                 Id = appointment.Id,
-                RequestedById = appointment.RequestingUserId,
+                RequestingUser = MapSimpleUser(appointment.RequestingUser),
                 CaseId = appointment.CaseId,
                 ApprovalStatus = appointment.ApprovalStatus,
                 Attended = appointment.Attended,
@@ -185,7 +168,7 @@ namespace BilHealth.Utility
                 CreatedAt = appointment.CreatedAt,
                 DateTime = appointment.DateTime,
                 Description = appointment.Description,
-                Visit = appointment.Visit is not null ? Map(appointment.Visit) : null
+                Visit = appointment.Visit is null ? null : Map(appointment.Visit)
             };
             return dto;
         }
@@ -210,7 +193,7 @@ namespace BilHealth.Utility
             {
                 Id = message.Id,
                 CaseId = message.CaseId,
-                UserId = message.UserId,
+                User = MapSimpleUser(message.User),
                 DateTime = message.DateTime,
                 Content = message.Content
             };
@@ -252,7 +235,7 @@ namespace BilHealth.Utility
                 Id = prescription.Id,
                 CaseId = prescription.CaseId,
                 DateTime = prescription.DateTime,
-                DoctorUserId = prescription.DoctorUserId,
+                DoctorUser = MapSimpleUser(prescription.DoctorUser),
                 Item = prescription.Item
             };
             return dto;
@@ -264,8 +247,8 @@ namespace BilHealth.Utility
             {
                 Id = auditTrail.Id,
                 AccessTime = auditTrail.AccessTime,
-                AccessedPatientUserId = auditTrail.AccessedPatientUserId,
-                UserId = auditTrail.UserId
+                AccessedUser = MapSimpleUser(auditTrail.AccessedUser),
+                AccessingUser = MapSimpleUser(auditTrail.AccessingUser)
             };
             return dto;
         }
@@ -279,7 +262,7 @@ namespace BilHealth.Utility
                 Period = timedAccessGrant.Period,
                 ExpiryTime = timedAccessGrant.ExpiryTime,
                 PatientUserId = timedAccessGrant.PatientUserId,
-                UserId = timedAccessGrant.UserId
+                GrantedUser = MapSimpleUser(timedAccessGrant.GrantedUser)
             };
             return dto;
         }

@@ -12,6 +12,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { fmtConcise, linkUser } from "../../util/StringUtil";
 
 const AuditTrailCard = () => {
   const [trailList, setTrailList] = useState<AuditTrail[]>([]);
@@ -34,6 +35,7 @@ const AuditTrailCard = () => {
       <CardContent>
         <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
           Audit Trails
+          <Typography variant="body2">An audit trail allows keeping a record of who visited whose profile.</Typography>
         </Typography>
 
         <TableContainer className="mt-3 max-h-96 overflow-auto">
@@ -41,17 +43,17 @@ const AuditTrailCard = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>Accessed User ID</TableCell>
-                <TableCell>Accessing User ID</TableCell>
+                <TableCell>Accessed User</TableCell>
+                <TableCell>Accessing User</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {isLoaded
                 ? trailList.map((trail) => (
                     <TableRow key={trail.id} hover>
-                      <TableCell>{trail.accessTime.format("DD/MM/YYYY, HH:mm")}</TableCell>
-                      <TableCell>{trail.accessedPatientUserId}</TableCell>
-                      <TableCell>{trail.userId}</TableCell>
+                      <TableCell>{trail.accessTime.format(fmtConcise)}</TableCell>
+                      <TableCell>{linkUser(trail.accessedUser)}</TableCell>
+                      <TableCell>{linkUser(trail.accessingUser)}</TableCell>
                     </TableRow>
                   ))
                 : null}

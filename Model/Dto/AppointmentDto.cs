@@ -6,7 +6,7 @@ namespace BilHealth.Model.Dto
     public class AppointmentDto
     {
         public Guid Id { get; set; }
-        public Guid RequestedById { get; set; }
+        public SimpleUserDto RequestingUser { get; set; } = null!;
         public Guid CaseId { get; set; }
         public Instant CreatedAt { get; set; }
         public Instant DateTime { get; set; }

@@ -13,7 +13,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import APIClient from "../../util/API/APIClient";
 import {
   BloodType,
@@ -34,6 +34,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Divider from "@mui/material/Divider";
 import LoadingButton from "@mui/lab/LoadingButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import { fullNameify } from "../../util/StringUtil";
 
 const EditProfile = () => {
   useDocumentTitle("Editing Profile");
@@ -101,10 +102,10 @@ const EditProfile = () => {
               <CardContent>
                 <Stack direction="row" justifyContent="center">
                   <Typography variant="h5" gutterBottom>
-                    {`Editing ${queryUser.firstName} ${queryUser.lastName}'s profile`}
+                    {`Editing ${fullNameify(queryUser)}'s profile`}
                   </Typography>
                   <Stack direction="row" justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                    <Button onClick={() => navigate("./..")} variant="text">
+                    <Button component={Link} to="./.." variant="text">
                       Cancel
                     </Button>
                     <LoadingButton loading={isSavePending} onClick={handleSave} variant="text">

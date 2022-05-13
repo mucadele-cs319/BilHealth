@@ -28,25 +28,12 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet]
-        public async Task<SimpleCaseDto[]> GetPersonalized()
+        public async Task<List<SimpleCaseDto>> GetPersonalized()
         {
             var user = await AuthenticationService.GetUser(User);
             var list = await AccessControlService.GetPersonalizedCaseList(user);
 
-            var patientUsers = new List<Model.Patient>();
-            var doctorUsers = new List<Model.Doctor?>();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                patientUsers.Add((Model.Patient)await AuthenticationService.GetBareUser(list[i].PatientUserId));
-                if (list[i].DoctorUserId is Guid doctorUserId)
-                    doctorUsers.Add((Model.Doctor?)await AuthenticationService.GetBareUser(doctorUserId));
-                else doctorUsers.Add(null);
-            }
-
-            return list.Select((_case, i) =>
-                DtoMapper.MapSimpleCase(_case, patientUsers[i], doctorUsers[i])
-            ).ToArray();
+            return list.Select(DtoMapper.MapSimpleCase).ToList();
         }
 
         [HttpGet("{caseId:guid}")]
@@ -61,10 +48,8 @@ namespace BilHealth.Controllers
             catch (IdNotFoundException) { return NotFound(); }
 
             var _case = await CaseService.GetCase(caseId);
-            var patientUser = await AuthenticationService.GetBareUser(_case.PatientUserId);
-            var doctorUser = _case.DoctorUserId is null ? null : await AuthenticationService.GetBareUser((Guid)_case.DoctorUserId);
 
-            return Ok(DtoMapper.Map(_case, (Model.Patient)patientUser, (Model.Doctor?)doctorUser));
+            return Ok(DtoMapper.Map(_case));
         }
 
         [HttpPost]
@@ -124,7 +109,7 @@ namespace BilHealth.Controllers
         }
 
         [HttpPost("{caseId:guid}/triagerequest")]
-        [Authorize(Roles = $"{UserType.Nurse},{UserType.Patient}")]
+        [Authorize(Roles = $"{UserType.Nurse},{UserType.Patient},{UserType.Admin},{UserType.Staff}")]
         public async Task<TriageRequestDto> CreateTriageRequest(Guid caseId, [FromQuery] Guid doctorUserId)
         {
             var requestingUserId = (await AuthenticationService.GetUser(User)).Id;
@@ -133,19 +118,21 @@ namespace BilHealth.Controllers
         }
 
         [HttpPatch("{caseId:guid}/triagerequest")]
-        [Authorize(Roles = $"{UserType.Admin},{UserType.Doctor},{UserType.Staff}")]
         public async Task<IActionResult> SetTriageRequestApproval(Guid caseId, ApprovalStatus approval)
         {
+            var requestingUserType = (await AuthenticationService.GetUser(User, bare: true)).Discriminator;
+            if (approval == ApprovalStatus.Approved && (requestingUserType == UserType.Patient || requestingUserType == UserType.Nurse))
+                return Forbid();
             await CaseService.SetTriageRequestApproval(caseId, approval);
             return Ok();
         }
 
         [HttpPatch("{caseId:guid}/diagnosis")]
         [Authorize(Roles = UserType.Doctor)]
-        public async Task<CaseDto> SetDiagnosis(Guid caseId, [FromBody] string diagnosis)
+        public async Task<IActionResult> SetDiagnosis(Guid caseId, CaseDiagnosisUpdateDto details)
         {
-
-            return DtoMapper.Map(await CaseService.SetDiagnosis(caseId, diagnosis));
+            await CaseService.SetDiagnosis(caseId, details);
+            return Ok();
         }
 
         [HttpPatch("{caseId:guid}/unassign")]

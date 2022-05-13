@@ -8,12 +8,14 @@ import APIClient from "../../util/API/APIClient";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useUserContext } from "../UserContext";
-import { CaseType, getAllCaseTypes, stringifyCaseType } from "../../util/API/APITypes";
+import { CaseType, getAllCaseTypes, SimpleUser, stringifyCaseType, UserType } from "../../util/API/APITypes";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import { isPatient } from "../../util/UserTypeUtil";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
+import UserAutoComplete from "../UserAutoComplete";
+import Box from "@mui/material/Box";
 
 const CaseNewPage = () => {
   useDocumentTitle("Cases");
@@ -24,18 +26,18 @@ const CaseNewPage = () => {
 
   const [isPending, setIsPending] = useState(false);
 
-  const [caseType, setCaseType] = useState<number>(CaseType.Dermatology);
+  const [caseType, setCaseType] = useState<number>(CaseType.Dental);
   const [title, setTitle] = useState("");
-  const [patientUserId, setPatientUserId] = useState(isPatient(user) ? user.id : "");
+  const [patientUser, setPatientUser] = useState<SimpleUser | null>(isPatient(user) ? user : null);
 
   const handleCreate = async () => {
     setIsPending(true);
-
-    const _case = await APIClient.cases.create({ title, patientUserId, type: caseType });
+    if (patientUser === null) throw Error("patient null");
+    const _case = await APIClient.cases.create({ title, patientUserId: patientUser.id, type: caseType });
     navigate(`/cases/${_case.id}`);
   };
 
-  const validate = () => title.length > 5 && patientUserId.length > 5;
+  const validate = () => title.length > 5 && patientUser !== null;
 
   return (
     <Grid container justifyContent="center">
@@ -76,15 +78,15 @@ const CaseNewPage = () => {
                   </TextField>
                 </Grid>
                 <Grid item sm={4}>
-                  <TextField
-                    disabled={isPatient(user)}
-                    id="case-userid-input"
-                    label="Patient User ID"
-                    variant="outlined"
-                    margin="dense"
-                    value={patientUserId}
-                    onChange={(e) => setPatientUserId(e.target.value)}
-                  />
+                  <Box sx={{ margin: 1 }}>
+                    <UserAutoComplete
+                      userType={UserType.Patient}
+                      disabled={isPatient(user)}
+                      label="Patient User ID"
+                      value={patientUser}
+                      onChange={(e, v) => setPatientUser(v)}
+                    />
+                  </Box>
                 </Grid>
               </Grid>
 

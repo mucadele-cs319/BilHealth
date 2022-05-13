@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BilHealth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220507214732_InitialCreate")]
+    [Migration("20220512083232_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,17 +194,17 @@ namespace BilHealth.Migrations
                     b.Property<Instant>("AccessTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("AccessedPatientUserId")
+                    b.Property<Guid>("AccessedUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("AccessingUserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccessedPatientUserId");
+                    b.HasIndex("AccessedUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AccessingUserId");
 
                     b.ToTable("AuditTrails");
                 });
@@ -268,6 +268,8 @@ namespace BilHealth.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CaseId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CaseMessage");
                 });
@@ -457,6 +459,9 @@ namespace BilHealth.Migrations
                     b.Property<Instant>("ExpiryTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("GrantedUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("PatientUserId")
                         .HasColumnType("uuid");
 
@@ -464,14 +469,11 @@ namespace BilHealth.Migrations
                         .IsRequired()
                         .HasColumnType("interval");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientUserId");
+                    b.HasIndex("GrantedUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PatientUserId");
 
                     b.ToTable("TimedAccessGrants");
                 });
@@ -720,21 +722,21 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("BilHealth.Model.AuditTrail", b =>
                 {
-                    b.HasOne("BilHealth.Model.Patient", "AccessedPatientUser")
+                    b.HasOne("BilHealth.Model.Patient", "AccessedUser")
                         .WithMany()
-                        .HasForeignKey("AccessedPatientUserId")
+                        .HasForeignKey("AccessedUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.DomainUser", "User")
+                    b.HasOne("BilHealth.Model.DomainUser", "AccessingUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("AccessingUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AccessedPatientUser");
+                    b.Navigation("AccessedUser");
 
-                    b.Navigation("User");
+                    b.Navigation("AccessingUser");
                 });
 
             modelBuilder.Entity("BilHealth.Model.Case", b =>
@@ -762,7 +764,15 @@ namespace BilHealth.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BilHealth.Model.DomainUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Case");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BilHealth.Model.CaseSystemMessage", b =>
@@ -819,21 +829,21 @@ namespace BilHealth.Migrations
 
             modelBuilder.Entity("BilHealth.Model.TimedAccessGrant", b =>
                 {
+                    b.HasOne("BilHealth.Model.DomainUser", "GrantedUser")
+                        .WithMany()
+                        .HasForeignKey("GrantedUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BilHealth.Model.Patient", "PatientUser")
                         .WithMany("TimedAccessGrants")
                         .HasForeignKey("PatientUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BilHealth.Model.DomainUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("GrantedUser");
 
                     b.Navigation("PatientUser");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BilHealth.Model.TriageRequest", b =>

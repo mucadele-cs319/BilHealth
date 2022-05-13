@@ -7,7 +7,7 @@ namespace BilHealth.Model.Dto
         public Guid Id { get; set; }
         public Instant AccessTime { get; set; }
 
-        public Guid AccessedPatientUserId { get; set; }
-        public Guid UserId { get; set; }
+        public SimpleUserDto AccessedUser { get; set; } = null!;
+        public SimpleUserDto AccessingUser { get; set; } = null!;
     }
 }

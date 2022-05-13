@@ -3,13 +3,11 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BiotechIcon from "@mui/icons-material/Biotech";
 import Button from "@mui/material/Button";
 
 const TestResultLinkerCard = () => {
-  const navigate = useNavigate();
-
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
@@ -19,7 +17,7 @@ const TestResultLinkerCard = () => {
         <Typography variant="body2">Access medical test results online through BilHealth.</Typography>
 
         <Stack direction="row" justifyContent="end">
-          <Button onClick={() => navigate("test-results")} variant="text">
+          <Button component={Link} to="test-results" variant="text">
             View Test Results
           </Button>
         </Stack>

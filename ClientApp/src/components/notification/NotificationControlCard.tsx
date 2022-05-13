@@ -9,9 +9,14 @@ import React from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import APIClient from "../../util/API/APIClient";
 
-const NotificationControlCard = () => {
+interface Props {
+  refreshHandler: () => void;
+}
+
+const NotificationControlCard = ({ refreshHandler }: Props) => {
   const handleRead = async () => {
     await APIClient.notifications.markAllRead();
+    refreshHandler();
   };
 
   return (

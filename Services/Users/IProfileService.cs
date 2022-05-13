@@ -5,9 +5,6 @@ namespace BilHealth.Services.Users
 {
     public interface IProfileService
     {
-        Task<List<Case>> GetPastCases(DomainUser user);
-        Task<List<Case>> GetOpenCases(DomainUser user);
-
         /// <param name="fullyEdit">Set to true if the sensitive details of the profile should be updated also</param>
         Task UpdateProfile(DomainUser user, UserProfileUpdateDto details, bool fullyEdit = false);
         /// <param name="fullyEdit">Set to true if the sensitive details of the profile should be updated also</param>

@@ -9,7 +9,8 @@ import { stringifyBloodType, stringifyCampus, stringifyGender, User, UserType } 
 import ProfileDetailsItem from "./ProfileDetailsItem";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { fmtDateOnly, fullNameify } from "../../util/StringUtil";
 
 interface Props {
   data: User;
@@ -23,18 +24,16 @@ const failsafe = (content: string | number | undefined, suffix?: string) => {
 };
 
 const ProfileDetails = ({ data, editable = false }: Props) => {
-  const navigate = useNavigate();
-
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
       <CardContent>
         <Stack direction="row" justifyContent="center">
           <Typography variant="h5" gutterBottom>
-            {`${data.firstName} ${data.lastName}`} <Chip className="ml-2" size="small" label={data.userType} />
+            {fullNameify(data)} <Chip className="ml-2" size="small" label={data.userType} />
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
             {editable ? (
-              <Button onClick={() => navigate("edit")} variant="text">
+              <Button component={Link} to="edit" variant="text">
                 Edit
               </Button>
             ) : null}
@@ -49,7 +48,7 @@ const ProfileDetails = ({ data, editable = false }: Props) => {
             <ProfileDetailsItem title="Gender" content={stringifyGender(data.gender)} />
           </Grid>
           <Grid item>
-            <ProfileDetailsItem title="Date of Birth" content={failsafe(data.dateOfBirth?.format("DD/MM/YYYY"))} />
+            <ProfileDetailsItem title="Date of Birth" content={failsafe(data.dateOfBirth?.format(fmtDateOnly))} />
           </Grid>
         </Grid>
 

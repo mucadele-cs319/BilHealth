@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { separateCapitalized } from "../StringUtil";
 
 export enum UserType {
   Patient = "Patient",
@@ -56,7 +57,7 @@ export const getAllApprovalTypes = () => [ApprovalStatus.Approved, ApprovalStatu
 
 export interface Appointment {
   id: string;
-  requestedById: string;
+  requestingUser: SimpleUser;
   caseId: string;
   createdAt: Dayjs;
   dateTime: Dayjs;
@@ -75,8 +76,8 @@ export interface AppointmentUpdate {
 export interface AuditTrail {
   id: string;
   accessTime: Dayjs;
-  accessedPatientUserId: string;
-  userId: string;
+  accessedUser: SimpleUser;
+  accessingUser: SimpleUser;
 }
 
 export enum BloodType {
@@ -139,7 +140,7 @@ export const stringifyCampus = (campus: Campus | undefined) => Campus[campus || 
 export interface CaseMessage {
   id: string;
   caseId: string;
-  userId: string;
+  user: SimpleUser;
   dateTime: Dayjs;
   content: string;
 }
@@ -170,7 +171,7 @@ export interface Prescription {
   id: string;
   caseId: string;
   dateTime: Dayjs;
-  doctorUserId: string;
+  doctorUser: SimpleUser;
   item: string;
 }
 
@@ -189,7 +190,7 @@ export enum CaseType {
   Radiology,
 }
 
-export const stringifyCaseType = (caseType: CaseType | undefined) => CaseType[caseType || 0];
+export const stringifyCaseType = (caseType: CaseType | undefined) => separateCapitalized(CaseType[caseType || 0]);
 
 export const getAllCaseTypes = () => [
   CaseType.Dental,
@@ -209,16 +210,14 @@ export enum CaseState {
   WaitingTriageApproval,
 }
 
-export const stringifyCaseState = (caseState: CaseState | undefined) => CaseState[caseState || 0];
+export const stringifyCaseState = (caseState: CaseState | undefined) => separateCapitalized(CaseState[caseState || 0]);
 
 export interface Case {
   id: string;
   dateTime: Dayjs;
   title: string;
-  patientUserId: string;
-  simplePatientUser?: SimpleUser;
-  doctorUserId?: string;
-  simpleDoctorUser?: SimpleUser;
+  patientUser: SimpleUser;
+  doctorUser?: SimpleUser;
   type: CaseType;
   state: CaseState;
   messages: CaseMessage[];
@@ -226,6 +225,7 @@ export interface Case {
   prescriptions: Prescription[];
   appointments: Appointment[];
   triageRequests: TriageRequest[];
+  diagnosis: string | null;
 }
 
 export interface CaseCreate {
@@ -234,13 +234,15 @@ export interface CaseCreate {
   type: CaseType;
 }
 
+export interface CaseDiagnosisUpdate {
+  content: string | null;
+}
+
 export interface SimpleCase {
   id: string;
   dateTime: Dayjs;
-  patientUserId: string;
-  simplePatientUser?: SimpleUser;
-  doctorUserId?: string;
-  simpleDoctorUser?: SimpleUser;
+  patientUser: SimpleUser;
+  doctorUser?: SimpleUser;
   state: CaseState;
   type: CaseType;
   messageCount: number;
@@ -306,6 +308,31 @@ export enum NotificationType {
   TestResultNew, // TestResultId
 }
 
+export const stringifyNotificationType = (notificationType: NotificationType | undefined) => {
+  switch (notificationType) {
+    case NotificationType.CaseNewAppointment:
+      return "New Appointment";
+    case NotificationType.CaseAppointmentTimeChanged:
+      return "Appointment Time Change";
+    case NotificationType.CaseAppointmentCanceled:
+      return "Appointment Canceled";
+    case NotificationType.CaseNewMessage:
+      return "New Message on a Case";
+    case NotificationType.CaseClosed:
+      return "Case Closed";
+    case NotificationType.CaseTriaged:
+      return "Case Triaged";
+    case NotificationType.CaseDoctorChanged:
+      return "Doctor Change";
+    case NotificationType.CaseNewPrescription:
+      return "New Prescription";
+    case NotificationType.TestResultNew:
+      return "New Test Result";
+    default:
+      return "Unspecified";
+  }
+};
+
 export interface Notification {
   id: string;
   dateTime: Dayjs;
@@ -339,8 +366,8 @@ export interface TestResult {
 export interface TriageRequest {
   id: string;
   dateTime: Dayjs;
-  requestingUserId: string;
-  doctorUserId: string;
+  requestingUser: SimpleUser;
+  doctorUser: SimpleUser;
   caseId: string;
   approvalStatus: ApprovalStatus;
 }
@@ -357,6 +384,7 @@ export interface SimpleUser {
 export interface User {
   // common
   id: string;
+  userName: string;
   userType: string;
   email: string;
   firstName: string;
@@ -372,7 +400,7 @@ export interface User {
   testResults?: TestResult[];
   timedAccessGrants?: TimedAccessGrant[];
   // patient and doctor
-  cases?: Case[];
+  cases?: SimpleCase[];
   // doctor
   specialization?: string;
   campus?: Campus;
@@ -405,5 +433,5 @@ export interface TimedAccessGrant {
   period: string;
   canceled: boolean;
   patientUserId: string;
-  userId: string;
+  grantedUser: SimpleUser;
 }

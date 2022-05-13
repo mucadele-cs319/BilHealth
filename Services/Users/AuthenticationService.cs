@@ -101,21 +101,24 @@ namespace BilHealth.Services.Users
                 case Patient patient:
                     await DbCtx.Entry(patient).Collection(p => p.Vaccinations!).LoadAsync();
                     await DbCtx.Entry(patient).Collection(p => p.TestResults!).LoadAsync();
-                    await DbCtx.Entry(patient).Collection(p => p.TimedAccessGrants!).LoadAsync();
-                    await DbCtx.Entry(patient).Collection(p => p.Cases!).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.TimedAccessGrants!).Query().Include(g => g.GrantedUser).LoadAsync();
+                    await DbCtx.Entry(patient).Collection(p => p.Cases!).Query().Include(c => c.DoctorUser).Include(c => c.Messages).LoadAsync();
                     break;
             }
             return user;
         }
 
-        public async Task<DomainUser> GetUser(ClaimsPrincipal principal)
+        public async Task<DomainUser> GetUser(ClaimsPrincipal principal, bool bare)
         {
             var user = await UserManager.GetUserAsync(principal);
-            return await LoadUserNavigationProps(user.DomainUser);
+            return bare ? user.DomainUser : await LoadUserNavigationProps(user.DomainUser);
         }
 
-        public async Task<DomainUser> GetUser(Guid userId) =>
-            await LoadUserNavigationProps(await DbCtx.DomainUsers.FindOrThrowAsync(userId));
+        public async Task<DomainUser> GetUser(Guid userId, bool bare)
+        {
+            var user = await DbCtx.DomainUsers.FindOrThrowAsync(userId);
+            return bare ? user : await LoadUserNavigationProps(user);
+        }
 
         public Task<string> GetUserType(Guid userId) =>
             DbCtx.DomainUsers.Where(u => u.Id == userId).Select(u => u.Discriminator).SingleOrDefaultAsync()!;
@@ -127,7 +130,18 @@ namespace BilHealth.Services.Users
         /// This is not scalable. Ideally, pagination would be used.
         /// </remarks>
         /// <returns>List of all <see cref="DomainUser"/>s</returns>
-        public Task<List<DomainUser>> GetAllUsers() => DbCtx.DomainUsers.ToListAsync();
+        public Task<List<DomainUser>> GetAllUsers(string? userType)
+        {
+            if (userType == "all") return DbCtx.DomainUsers.ToListAsync();
+            else if (UserType.Names.Any(name => userType == name) == false)
+            {
+                throw new ArgumentOutOfRangeException(nameof(userType), "Invalid user type");
+            }
+            else
+            {
+                return DbCtx.DomainUsers.Where(u => u.Discriminator == userType).ToListAsync();
+            }
+        }
 
         public Task<DomainUser> GetBareUser(Guid userId) => DbCtx.DomainUsers.FindOrThrowAsync(userId);
     }

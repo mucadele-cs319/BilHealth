@@ -8,25 +8,25 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { Link } from "react-router-dom";
 import { SimpleCase, stringifyCaseState, stringifyCaseType } from "../../util/API/APITypes";
-import { fmtConcise, linkUser } from "../../util/StringUtil";
+import { fmtConcise } from "../../util/StringUtil";
 
 interface Props {
   _case: SimpleCase;
 }
 
-const CaseItemCard = ({ _case }: Props) => {
+const MinimalCaseItemCard = ({ _case }: Props) => {
   return (
-    <Card className="max-w-screen-md mb-5 mx-auto">
+    <Card className="max-w-screen-md mb-1 mx-auto">
       <CardContent>
         <Stack direction="row">
           <Box>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" fontSize="medium" gutterBottom>
               {_case.title}
               <Chip className="ml-2" size="small" label={stringifyCaseState(_case.state)} />
               <Chip className="ml-2" size="small" label={stringifyCaseType(_case.type)} />
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Opened on {_case.dateTime.format(fmtConcise)} by {linkUser(_case.patientUser)}
+              Opened on {_case.dateTime.format(fmtConcise)}
             </Typography>
           </Box>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
@@ -35,13 +35,9 @@ const CaseItemCard = ({ _case }: Props) => {
             </Button>
           </Stack>
         </Stack>
-        <Typography variant="body2">Message Count: {_case.messageCount}</Typography>
-        <Typography variant="body2">
-          Doctor Assigned: {_case.doctorUser === null ? "N/A" : linkUser(_case.doctorUser)}
-        </Typography>
       </CardContent>
     </Card>
   );
 };
 
-export default CaseItemCard;
+export default MinimalCaseItemCard;

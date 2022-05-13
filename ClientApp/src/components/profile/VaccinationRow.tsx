@@ -23,6 +23,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
+import { fmtConcise } from "../../util/StringUtil";
 
 interface Props {
   readonly?: boolean;
@@ -126,7 +127,7 @@ const VaccinationRow = ({ readonly = false, patientId, vaccination, refreshHandl
       ) : (
         <>
           <TableCell>{vaccination?.type}</TableCell>
-          <TableCell>{vaccination?.dateTime?.format("DD/MM/YYYY, HH:mm")}</TableCell>
+          <TableCell>{vaccination?.dateTime?.format(fmtConcise)}</TableCell>
           {readonly ? null : (
             <>
               <TableCell align="right">

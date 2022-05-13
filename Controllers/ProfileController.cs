@@ -28,11 +28,21 @@ namespace BilHealth.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = $"{UserType.Admin},{UserType.Staff}")]
-        public async Task<List<SimpleUserDto>> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? userType = "all")
         {
-            var users = await AuthenticationService.GetAllUsers();
-            return users.Select(DtoMapper.MapSimpleUser).ToList();
+            var requestingUserType = (await AuthenticationService.GetUser(User, bare: true)).Discriminator;
+            if (requestingUserType == UserType.Patient && (userType == "all" || userType == UserType.Patient))
+                return Forbid();
+            List<DomainUser> users = new();
+            try
+            {
+                users = await AuthenticationService.GetAllUsers(userType);
+            }
+            catch (System.Exception)
+            {
+                return BadRequest();
+            }
+            return Ok(users.Select(DtoMapper.MapSimpleUser).ToList());
         }
 
         [HttpGet("me")]

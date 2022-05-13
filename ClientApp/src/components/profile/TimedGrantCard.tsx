@@ -32,6 +32,9 @@ const TimedGrantCard = ({ refreshHandler, patientId, grants }: Props) => {
         <Stack direction="row">
           <Typography variant="h5" gutterBottom>
             Timed Access Grants
+            <Typography variant="body2">
+              You can grant nurses timed access so that they are permitted to view your medical records.
+            </Typography>
           </Typography>
           <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
             <Button

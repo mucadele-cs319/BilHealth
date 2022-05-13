@@ -11,15 +11,11 @@ import CardContent from "@mui/material/CardContent";
 import { SimpleCase } from "../../util/API/APITypes";
 import CaseItemCard from "../case/CaseItemCard";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
 const CaseList = () => {
   useDocumentTitle("Cases");
-
-  const navigate = useNavigate();
-
-  // const { user } = useUserContext();
 
   const [cases, setCases] = useState<SimpleCase[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -44,16 +40,25 @@ const CaseList = () => {
               <Stack direction="row" sx={{ mb: 3 }}>
                 <Typography variant="h5" gutterBottom>
                   Cases
+                  <Typography variant="body2">
+                    You are only able to view cases for which you have the required authorization.
+                  </Typography>
                 </Typography>
                 <Stack justifyContent="center" sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                  <Button onClick={() => navigate("/cases/new")} variant="text" startIcon={<AddIcon />}>
+                  <Button component={Link} to="/cases/new" variant="text" startIcon={<AddIcon />}>
                     Create
                   </Button>
                 </Stack>
               </Stack>
 
               {isLoaded ? (
-                cases.map((_case) => <CaseItemCard key={_case.id} _case={_case} />)
+                cases.length > 0 ? (
+                  cases.map((_case) => <CaseItemCard key={_case.id} _case={_case} />)
+                ) : (
+                  <Stack alignItems="center" className="mt-8">
+                    <Typography color="text.secondary">No viewable cases for you at this time.</Typography>
+                  </Stack>
+                )
               ) : (
                 <Stack alignItems="center" className="mt-8">
                   <CircularProgress />

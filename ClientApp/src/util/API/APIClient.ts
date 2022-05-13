@@ -4,12 +4,12 @@ import {
   AnnouncementUpdate,
   Appointment,
   AppointmentUpdate,
-  AppointmentVisit,
   AppointmentVisitUpdate,
   ApprovalStatus,
   AuditTrail,
   Case,
   CaseCreate,
+  CaseDiagnosisUpdate,
   CaseMessage,
   CaseMessageUpdate,
   CaseState,
@@ -24,6 +24,7 @@ import {
   TimedAccessGrantCreate,
   TriageRequest,
   User,
+  UserType,
   UserUpdate,
   VaccinationUpdate,
 } from "./APITypes";
@@ -86,7 +87,7 @@ const sortVaccinations = (user: User) => {
   user.vaccinations?.forEach((vaccination) => {
     vaccination.dateTime = dayjs(vaccination.dateTime);
   });
-  user.vaccinations?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+  user.vaccinations?.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const processDateOfBirth = (user: User) => {
@@ -97,19 +98,28 @@ const sortTestResults = (user: User) => {
   user.testResults?.forEach((testResult) => {
     testResult.dateTime = dayjs(testResult.dateTime);
   });
-  user.testResults?.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+  user.testResults?.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const sortTimedGrants = (user: User) => {
   user.timedAccessGrants?.forEach((grant) => {
     grant.expiryTime = dayjs(grant.expiryTime);
   });
-  user.timedAccessGrants?.sort((a, b) => (a.expiryTime?.isAfter(b.expiryTime) ? -1 : 1));
+  user.timedAccessGrants?.sort((a, b) => (a.expiryTime.isAfter(b.expiryTime) ? -1 : 1));
+};
+
+const sortSimpleCases = (user: User) => {
+  user.cases?.forEach((_case) => {
+    _case.dateTime = dayjs(_case.dateTime);
+  });
+  user.cases?.sort((a, b) => (a.dateTime.isAfter(b.dateTime) ? -1 : 1));
 };
 
 const profiles = {
-  all: async (): Promise<SimpleUser[]> => {
-    const response = await fetch("/api/profiles");
+  all: async (userType: UserType | "all" = "all"): Promise<SimpleUser[]> => {
+    let response;
+    if (userType === "all") response = await fetch("/api/profiles");
+    else response = await fetch(`/api/profiles?userType=${userType}`);
     return await response.json();
   },
   me: async (): Promise<User> => {
@@ -121,6 +131,7 @@ const profiles = {
     sortTestResults(user);
     processDateOfBirth(user);
     sortTimedGrants(user);
+    sortSimpleCases(user);
 
     return user;
   },
@@ -132,6 +143,7 @@ const profiles = {
     sortTestResults(user);
     processDateOfBirth(user);
     sortTimedGrants(user);
+    sortSimpleCases(user);
 
     return user;
   },
@@ -248,19 +260,6 @@ const appointments = {
     appointment.createdAt = dayjs(appointment.createdAt);
     return appointment;
   },
-  update: async (appointmentId: string, details: AppointmentUpdate): Promise<Appointment> => {
-    const response = await fetch(`/api/appointments/${appointmentId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(details),
-    });
-    const appointment: Appointment = await response.json();
-    appointment.dateTime = dayjs(appointment.dateTime);
-    appointment.createdAt = dayjs(appointment.createdAt);
-    return appointment;
-  },
   cancel: async (appointmentId: string) => {
     await fetch(`/api/appointments/${appointmentId}/cancel`, {
       method: "PUT",
@@ -272,16 +271,10 @@ const appointments = {
     });
   },
   visits: {
-    create: async (appointmentId: string, details: AppointmentVisitUpdate): Promise<AppointmentVisit> => {
-      const response = await fetch(`/api/appointments/${appointmentId}/visit`, {
+    create: async (appointmentId: string) => {
+      await fetch(`/api/appointments/${appointmentId}/visit`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(details),
       });
-      const visit: AppointmentVisit = await response.json();
-      return visit;
     },
     update: async (appointmentId: string, details: AppointmentVisitUpdate) => {
       await fetch(`/api/appointments/${appointmentId}/visit`, {
@@ -308,7 +301,8 @@ const processCaseTimes = (_case: Case) => {
 
   _case.messages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
   _case.systemMessages.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
-  _case.triageRequests.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? 1 : -1));
+  _case.triageRequests.sort((a, b) => (a.dateTime?.isAfter(b.dateTime) ? -1 : 1));
+  _case.appointments.sort((a, b) => (a.createdAt?.isAfter(b.createdAt) ? -1 : 1));
 };
 
 const cases = {
@@ -425,10 +419,13 @@ const cases = {
       method: "PATCH",
     });
   },
-  diagnosis: async (caseId: string, details: string) => {
+  diagnosis: async (caseId: string, details: CaseDiagnosisUpdate) => {
     await fetch(`/api/cases/${caseId}/diagnosis`, {
       method: "PATCH",
-      body: details,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(details),
     });
   },
   // getReport: async (caseId: string) => {

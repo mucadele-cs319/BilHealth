@@ -13,17 +13,16 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import IconButton from "@mui/material/IconButton";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { fullNameify } from "../../util/StringUtil";
 
 const UserListCard = () => {
-  const navigate = useNavigate();
-
   const [userList, setUserList] = useState<SimpleUser[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchString, setSearchString] = useState("");
@@ -87,7 +86,7 @@ const UserListCard = () => {
                     .filter(
                       (user) =>
                         searchString.length === 0 ||
-                        [user.userName, user.email, `${user.firstName} ${user.lastName}`, user.id].some((prop) =>
+                        [user.userName, user.email, fullNameify(user), user.id].some((prop) =>
                           prop.toLowerCase().includes(searchString.toLowerCase()),
                         ),
                     )
@@ -98,7 +97,7 @@ const UserListCard = () => {
                         <TableCell>{user.lastName}</TableCell>
                         <TableCell>{user.userType}</TableCell>
                         <TableCell align="center">
-                          <IconButton onClick={() => navigate(`/profiles/${user.id}`)}>
+                          <IconButton component={Link} to={`/profiles/${user.id}`}>
                             <AccountBoxIcon />
                           </IconButton>
                         </TableCell>

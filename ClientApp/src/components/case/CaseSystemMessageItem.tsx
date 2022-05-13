@@ -12,9 +12,9 @@ const CaseSystemMessageItem = ({ message }: Props) => {
   return (
     <Box>
       <Typography variant="caption" gutterBottom>
-        <strong>BilHealth</strong> on {message.dateTime.format("D MMM  YYYY [at] H:mm")}
+        <strong>BilHealth</strong> on {message.dateTime.format("D MMM YYYY [at] H:mm")}
       </Typography>
-      <Typography component="p" variant="overline" gutterBottom>
+      <Typography component="p" variant="caption" sx={{ whiteSpace: "pre-wrap" }} gutterBottom>
         {message.content}
       </Typography>
       <Divider />

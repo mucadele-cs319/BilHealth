@@ -60,14 +60,18 @@ namespace BilHealth.Services.AccessControl
         }
 
         public Task<List<AuditTrail>> GetRecentAuditTrails(int count = 100) =>
-            DbCtx.AuditTrails.OrderByDescending(a => a.AccessTime).Take(count).ToListAsync();
+            DbCtx.AuditTrails.OrderByDescending(a => a.AccessTime)
+                             .Take(count)
+                             .Include(a => a.AccessedUser)
+                             .Include(a => a.AccessingUser)
+                             .ToListAsync();
 
         public async Task GrantTimedAccess(Guid patientUserId, TimedAccessGrantCreateDto details)
         {
             var grant = new TimedAccessGrant
             {
                 PatientUserId = patientUserId,
-                UserId = details.UserId,
+                GrantedUserId = details.UserId,
                 Canceled = false,
                 Period = details.Period,
                 ExpiryTime = Clock.GetCurrentInstant() + details.Period.ToDuration(),
@@ -85,6 +89,8 @@ namespace BilHealth.Services.AccessControl
 
         public async Task<List<Case>> GetPersonalizedCaseList(DomainUser user) =>
             await DbCtx.Cases.Where(await AccessStrategyFactory(user.Discriminator).GetPersonalizedCaseQuery(user))
+                             .Include(c => c.PatientUser)
+                             .Include(c => c.DoctorUser)
                              .Include(c => c.Messages)
                              .ToListAsync();
     }

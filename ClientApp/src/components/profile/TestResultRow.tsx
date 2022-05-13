@@ -22,6 +22,7 @@ import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
+import { fmtConcise } from "../../util/StringUtil";
 
 interface Props {
   readonly?: boolean;
@@ -146,7 +147,7 @@ const TestResultRow = ({ readonly = false, patientId, testResult, refreshHandler
       ) : (
         <>
           <TableCell>{stringifyMedicalTest(testResult?.type as MedicalTestType)}</TableCell>
-          <TableCell>{testResult?.dateTime?.format("DD/MM/YYYY, HH:mm")}</TableCell>
+          <TableCell>{testResult?.dateTime?.format(fmtConcise)}</TableCell>
           <TableCell align="right">
             <Tooltip arrow title="View">
               <IconButton

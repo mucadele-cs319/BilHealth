@@ -15,6 +15,8 @@ import PasswordCard from "../profile/PasswordCard";
 import TestResultLinkerCard from "../profile/TestResultLinkerCard";
 import { isPatient, isStaff } from "../../util/UserTypeUtil";
 import TimedGrantCard from "../profile/TimedGrantCard";
+import MinimalCaseListCard from "../profile/MinimalCaseListCard";
+import ForbiddenAccess from "../ForbiddenAccess";
 
 const Profile = () => {
   useDocumentTitle("Profile");
@@ -24,14 +26,20 @@ const Profile = () => {
   const params = useParams();
   const [queryUser, setQueryUser] = useState<User>();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [forbidden, setForbidden] = useState(false);
 
   const refreshUser = () => {
     if (params.userid === undefined) throw Error("Couldn't get URL param for user ID");
-    APIClient.profiles.get(params.userid).then((fetchedUser) => {
-      setQueryUser(fetchedUser);
-      document.title = titleify(`${fetchedUser.firstName}'s Profile`);
-      setIsLoaded(true);
-    });
+    APIClient.profiles
+      .get(params.userid)
+      .then((fetchedUser) => {
+        setQueryUser(fetchedUser);
+        document.title = titleify(`${fetchedUser.firstName}'s Profile`);
+        setIsLoaded(true);
+      })
+      .catch(() => {
+        setForbidden(true);
+      });
   };
 
   useEffect(() => {
@@ -42,7 +50,9 @@ const Profile = () => {
     <Grid container justifyContent="center">
       <Fade in={true}>
         <Grid item lg={10} xs={11}>
-          {isLoaded && queryUser ? (
+          {forbidden ? (
+            <ForbiddenAccess />
+          ) : isLoaded && queryUser ? (
             <>
               <ProfileDetails data={queryUser as User} editable={user?.id === queryUser.id || isStaff(user)} />
               {!isPatient(queryUser) ? null : (
@@ -54,6 +64,9 @@ const Profile = () => {
                 />
               )}
               {isPatient(queryUser) ? <TestResultLinkerCard /> : null}
+              {isPatient(queryUser) && !isPatient(user) && queryUser.cases ? (
+                <MinimalCaseListCard cases={queryUser.cases} />
+              ) : null}
               {!isStaff(user) || !isPatient(queryUser) ? null : (
                 <BlacklistCard
                   patientId={queryUser.id as string}
