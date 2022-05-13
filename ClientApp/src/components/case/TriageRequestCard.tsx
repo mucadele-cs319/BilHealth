@@ -5,15 +5,15 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import APIClient from "../../util/API/APIClient";
-import { ApprovalStatus, Case, CaseState } from "../../util/API/APITypes";
+import { ApprovalStatus, Case, CaseState, SimpleUser, UserType } from "../../util/API/APITypes";
 import AddIcon from "@mui/icons-material/Add";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TriageRequestItem from "./TriageRequestItem";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Divider from "@mui/material/Divider";
+import UserAutoComplete from "../UserAutoComplete";
 
 interface Props {
   _case: Case;
@@ -25,22 +25,23 @@ const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
   const [creating, setCreating] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  const [doctorUserId, setDoctorUserId] = useState("");
+  const [doctorUser, setDoctorUser] = useState<SimpleUser | null>(null);
 
   const handleCreate = async () => {
     setIsPending(true);
-    await APIClient.cases.triageRequests.create(_case.id, doctorUserId);
+    if (doctorUser === null) throw Error("No doctor picked");
+    await APIClient.cases.triageRequests.create(_case.id, doctorUser.id);
     setIsPending(false);
     handleCancel();
     refreshHandler();
   };
 
   const handleCancel = () => {
-    setDoctorUserId("");
+    setDoctorUser(null);
     setCreating(false);
   };
 
-  const validate = () => doctorUserId.length > 0;
+  const validate = () => doctorUser !== null;
 
   return (
     <Card className="max-w-screen-md mb-5 mx-auto">
@@ -62,14 +63,14 @@ const TriageRequestCard = ({ _case, readonly, refreshHandler }: Props) => {
 
         {creating ? (
           <Stack justifyContent="center" direction="row" spacing={2}>
-            <TextField
-              id="triagerequest-id-input"
-              label="Doctor User ID"
-              variant="outlined"
-              margin="dense"
-              value={doctorUserId}
-              onChange={(e) => setDoctorUserId(e.target.value)}
-            />
+            <Box sx={{ minWidth: "240px", margin: 1 }}>
+              <UserAutoComplete
+                userType={UserType.Doctor}
+                label="Doctor User"
+                value={doctorUser}
+                onChange={(e, v) => setDoctorUser(v)}
+              />
+            </Box>
             <Stack direction="column" justifyContent="center">
               <Button onClick={handleCancel} startIcon={<CancelIcon />}>
                 Cancel
