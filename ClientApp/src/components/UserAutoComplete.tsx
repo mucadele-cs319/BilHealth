@@ -40,8 +40,7 @@ const UserAutoComplete = ({ userType = "all", label, value, onChange, disabled =
   }, [loading]);
 
   useEffect(() => {
-    if (open === false)
-      setOptions([]);
+    if (open === false) setOptions([]);
   }, [open]);
 
   return (

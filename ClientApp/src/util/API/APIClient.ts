@@ -118,8 +118,7 @@ const sortSimpleCases = (user: User) => {
 const profiles = {
   all: async (userType: UserType | "all" = "all"): Promise<SimpleUser[]> => {
     let response;
-    if (userType === "all")
-      response = await fetch("/api/profiles");
+    if (userType === "all") response = await fetch("/api/profiles");
     else response = await fetch(`/api/profiles?userType=${userType}`);
     return await response.json();
   },

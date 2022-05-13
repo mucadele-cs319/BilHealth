@@ -132,15 +132,15 @@ namespace BilHealth.Services.Users
         /// <returns>List of all <see cref="DomainUser"/>s</returns>
         public Task<List<DomainUser>> GetAllUsers(string? userType)
         {
-          if (userType == "all") return DbCtx.DomainUsers.ToListAsync();
-          else if (UserType.Names.Any(name => userType == name) == false)
-          {
-              throw new ArgumentOutOfRangeException(nameof(userType), "Invalid user type");
-          }
-          else
-          {
-              return DbCtx.DomainUsers.Where(u => u.Discriminator == userType).ToListAsync();
-          }
+            if (userType == "all") return DbCtx.DomainUsers.ToListAsync();
+            else if (UserType.Names.Any(name => userType == name) == false)
+            {
+                throw new ArgumentOutOfRangeException(nameof(userType), "Invalid user type");
+            }
+            else
+            {
+                return DbCtx.DomainUsers.Where(u => u.Discriminator == userType).ToListAsync();
+            }
         }
 
         public Task<DomainUser> GetBareUser(Guid userId) => DbCtx.DomainUsers.FindOrThrowAsync(userId);
