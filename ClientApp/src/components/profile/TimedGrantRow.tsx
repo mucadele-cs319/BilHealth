@@ -2,11 +2,10 @@ import IconButton from "@mui/material/IconButton";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import React, { useState } from "react";
-import { TimedAccessGrant } from "../../util/API/APITypes";
+import { SimpleUser, TimedAccessGrant, UserType } from "../../util/API/APITypes";
 import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Cancel";
 import APIClient from "../../util/API/APIClient";
-import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
@@ -18,6 +17,8 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { fmtConcise, linkUser } from "../../util/StringUtil";
+import Box from "@mui/material/Box";
+import UserAutoComplete from "../UserAutoComplete";
 
 interface Props {
   patientId: string;
@@ -33,7 +34,7 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
   const [deleting, setDeleting] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  const [newUserId, setNewUserId] = useState("");
+  const [nurseUser, setNurseUser] = useState<SimpleUser | null>(null);
 
   const handleDelete = async () => {
     setIsPending(true);
@@ -48,10 +49,12 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
   const handleCreate = async () => {
     setIsPending(true);
 
+    if (nurseUser === null) throw Error("Nurse not picked");
+
     await APIClient.profiles.accessControl.grantTimedAccess(patientId, {
       period: "P1D",
       patientUserId: patientId,
-      userId: newUserId,
+      userId: nurseUser?.id,
     });
     setIsPending(false);
     handleCancel();
@@ -63,7 +66,7 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
     else setEditing(false);
   };
 
-  const validate = () => newUserId.length > 10;
+  const validate = () => nurseUser !== null;
 
   const isInactive = (grant?: TimedAccessGrant) => grant && (grant.canceled || grant.expiryTime.isBefore(dayjs()));
 
@@ -73,14 +76,14 @@ const TimedGrantRow = ({ patientId, grant, refreshHandler, cancelHandler }: Prop
         <>
           <TableCell>{dayjs().add(dayjs.duration("P1D")).format(fmtConcise)}</TableCell>
           <TableCell>
-            <TextField
-              id="grant-user-input"
-              label="User ID"
-              variant="outlined"
-              margin="dense"
-              value={newUserId}
-              onChange={(e) => setNewUserId(e.target.value)}
-            />
+            <Box sx={{ margin: 1 }}>
+              <UserAutoComplete
+                userType={UserType.Nurse}
+                label="Nurse User"
+                value={nurseUser}
+                onChange={(e, v) => setNurseUser(v)}
+              />
+            </Box>
           </TableCell>
           <TableCell align="right">
             <Stack direction="column" justifyContent="center">
